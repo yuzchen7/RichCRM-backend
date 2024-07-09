@@ -7,7 +7,7 @@ require('dotenv').config();
 
 // Routers
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var v1AuthRouter = require('./routes/v1/auth');
 
 var app = express();
 
@@ -26,11 +26,12 @@ app.use(crmLogger);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.disable("x-powered-by"); //Reduce fingerprinting
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/v1/auth', v1AuthRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

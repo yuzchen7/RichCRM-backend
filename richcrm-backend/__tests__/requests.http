@@ -1,0 +1,39 @@
+### Register
+POST http://localhost:3001/v1/auth/register
+content-type: application/json
+
+{
+    "emailAddress": "test1@gmail.com",
+    "password": "1234561341",
+    "userName": "Test User 2",
+    "role": "attorney"
+}
+
+### Login
+POST http://localhost:3001/v1/auth/login
+content-type: application/json
+
+{
+    "emailAddress": "test1@gmail.com",
+    "password": "1234561341"
+}
+
+### Delete User
+POST http://localhost:3001/v1/auth/delete
+content-type: application/json
+
+{
+    "emailAddress": "test1@gmail.com",
+    "password": "1234561341"
+}
+
+### Update User
+POST http://localhost:3001/v1/auth/update
+content-type: application/json
+
+{
+    "emailAddress": "test1@gmail.com",
+    "password": "1234561341",
+    "userName": "John Doe",
+    "role": "client"
+}
