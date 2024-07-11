@@ -105,7 +105,13 @@ eb deploy
 ## <a name="dynamo"></a>Interact with DynamoDB
 
 ### 0. Run DynanoDB Server locally (OPTIONAL)
-**Noted if you are running DynamoDB locally with a endpoint, adding _--endpoint-url_, else ignore it!**
+**Noted if you are running DynamoDB locally with a endpoint, adding _--endpoint-url_, else ignore it!**  
+
+## 0. Run DynamoDB docker locally
+To run DynamoDB locally, you also need to run the docker image from [AWS](https://hub.docker.com/r/amazon/dynamodb-local), you can run the following command:
+```bash
+docker run -p 8000:8000 amazon/dynamodb-local
+``` 
 
 
 ### 1. Create Table
