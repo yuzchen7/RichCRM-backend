@@ -1,0 +1,21 @@
+### USPS OAuth Token
+POST https://api.usps.com/oauth2/v3/token
+content-type: application/json
+
+{
+  "grant_type": "client_credentials",
+  "client_id": "",
+  "client_secret": ""
+}
+
+
+### Standardize Address
+POST http://localhost:3001/v1/utils/address/standardize
+content-type: application/json
+
+{
+    "addressLine1": "22 Chapel St",
+    "city": "Brooklyn",
+    "state": "NY",
+    "zipCode": "11201"
+}

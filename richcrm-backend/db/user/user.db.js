@@ -1,12 +1,16 @@
-// User
-// ----------------
-// EmailAddress (PK) : String
-// Password : String
-// UserName : String
-// Role : Enum
+/**
+ * Author: Eden Wu
+ * Date: 2024-07-09
+ * Database Model of User
+ * 
+ * @typedef {object} User
+ * @property {string} EmailAddress - User's email address (Primary Key)
+ * @property {string} Password - User's password
+ * @property {string} UserName - User's name
+ * @property {enum} Role - User's role (ADMIN, ATTORNEY, CLIENT)
+ */
 
 const db = require('../dynamodb');
-const uuid = require('uuid');
 
 class User {
     constructor () {
