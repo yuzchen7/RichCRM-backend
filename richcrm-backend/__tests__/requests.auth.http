@@ -6,7 +6,7 @@ content-type: application/json
     "emailAddress": "test1@gmail.com",
     "password": "1234561341",
     "userName": "Test User 2",
-    "role": "attorney"
+    "role": 1
 }
 
 ### Login
@@ -35,5 +35,5 @@ content-type: application/json
     "emailAddress": "test1@gmail.com",
     "password": "1234561341",
     "userName": "John Doe",
-    "role": "client"
+    "role": 2
 }

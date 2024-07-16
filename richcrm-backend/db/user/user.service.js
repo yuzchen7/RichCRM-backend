@@ -1,5 +1,5 @@
 const User = require('./user.db');
-
+const { userRole } = require('../types');
 
 class UserService {
     async readUser (userEmail) {
