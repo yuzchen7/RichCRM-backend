@@ -17,7 +17,7 @@
  */
 
 const db = require("../dynamodb");
-const { castIntToEnum, stage, status, clientType } = require("../types");
+const { stage, status, clientType } = require("../types");
 
 class Case {
     constructor() {
@@ -84,6 +84,7 @@ class Case {
                 Status: c.status,
             },
         };
+        console.log(params);
         await db.put(params).promise();
         return params.Item;
     }
@@ -94,20 +95,16 @@ class Case {
             Key: {
                 CaseId: c.caseId,
             },
-            UpdateExpression: "set PremisesId = :p, ClientType = :c, BuyerId = :b, SellerId = :s, CreateAt = :ca, ClosingDate = :cd, #st = :st, #s = :s",
+            UpdateExpression: "set PremisesId = :p, ClosingDate = :cd, #stg = :stg, #stt = :stt",
             ExpressionAttributeNames: {
-                "#st": "Stage",
-                "#s": "Status",
+                "#stg": "Stage",
+                "#stt": "Status",
             },
             ExpressionAttributeValues: {
                 ":p": c.premisesId,
-                ":c": c.clientType,
-                ":b": c.buyerId,
-                ":s": c.sellerId,
-                ":ca": c.createAt,
                 ":cd": c.closingDate,
-                ":st": c.stage,
-                ":s": c.status,
+                ":stg": c.stage,
+                ":stt": c.status,
             },
             ReturnValues: "UPDATED_NEW",
         };

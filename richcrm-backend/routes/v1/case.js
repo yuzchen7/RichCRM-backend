@@ -7,6 +7,15 @@ var CaseController = require('../../controllers/case');
 const router = express.Router();
 
 router.post(
+    "/read",
+    check("caseId")
+        .notEmpty()
+        .withMessage("Case ID is required"),
+    validate,
+    CaseController.readCase
+);
+
+router.post(
     "/create",
     check("premisesId")
         .notEmpty()
@@ -22,6 +31,15 @@ router.post(
         .withMessage("Status is required"),
     validate,
     CaseController.createCase
+);
+
+router.post(
+    "/update",
+    check("caseId")
+        .notEmpty()
+        .withMessage("Case ID is required"),
+    validate,
+    CaseController.updateCase
 );
 
 router.post(

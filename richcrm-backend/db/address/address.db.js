@@ -10,6 +10,7 @@
  * @property {string} City - US City
  * @property {string} State - US state
  * @property {int} ZipCode - Zip code
+ * @property {int} Plus4 - Plus 4
  */
 
 const db = require('../dynamodb');
@@ -59,7 +60,8 @@ class Address {
                 AddressLine2: address.addressLine2,
                 City: address.city,
                 State: address.state,
-                ZipCode: address.zipCode
+                ZipCode: address.zipCode,
+                Plus4: address.plus4
             }
         };
         await db.put(params).promise();
@@ -73,13 +75,14 @@ class Address {
             Key: {
                 AddressId: address.addressId
             },
-            UpdateExpression: 'set AddressLine1 = :l1, AddressLine2 = :l2, City = :c, State = :s, ZipCode = :z',
+            UpdateExpression: 'set AddressLine1 = :l1, AddressLine2 = :l2, City = :c, State = :s, ZipCode = :z, Plus4 = :p',
             ExpressionAttributeValues: {
                 ':l1': address.addressLine1,
                 ':l2': address.addressLine2,
                 ':c': address.city,
                 ':s': address.state,
-                ':z': address.zipCode
+                ':z': address.zipCode,
+                ':p': address.plus4
             }
         };
         await db.update(params).promise();

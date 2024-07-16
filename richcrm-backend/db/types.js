@@ -42,6 +42,21 @@ module.exports = {
     clientType: {
         BUYER: 0,
         SELLER: 1,
-    }
+    },
 
+    // [DB] PREMISES
+    propertyType: {
+        CONDO: 0,
+        COOP: 1,
+        TOWNHOUSE: 2,
+        VACANT_LAND: 3,
+    },
+    
+    maintenanceFeePer: {
+        MONTH: 0,
+        QUARTER: 1,
+        YEAR: 2,
+    },
+
+    
 };

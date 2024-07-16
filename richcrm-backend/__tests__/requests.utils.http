@@ -19,3 +19,15 @@ content-type: application/json
     "state": "NY",
     "zipCode": "11201"
 }
+
+
+### Register Address
+POST http://localhost:3001/v1/utils/address/register
+content-type: application/json
+
+{
+    "addressLine1": "123 Burgen",
+    "city": "New Jersey",
+    "state": "NJ",
+    "zipCode": "07001"
+}

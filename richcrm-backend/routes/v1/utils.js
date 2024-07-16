@@ -5,8 +5,9 @@ var UtilsController = require('../../controllers/utils');
 
 const router = express.Router();
 
+// Address
 router.post(
-    "/address/standardize",
+    "/address/register",
     check("addressLine1")
         .notEmpty()
         .withMessage("Address Line 1 is required"),
@@ -20,7 +21,7 @@ router.post(
         .notEmpty()
         .withMessage("Zip Code is required"),
     validate,
-    UtilsController.standardizeAddress
+    UtilsController.registerAddress
 );
 
 module.exports = router;

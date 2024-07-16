@@ -10,13 +10,13 @@
  * @property {int} Block - Block number
  * @property {int} Lot - Lot number
  * @property {int} Section - Section number
- * @property {enum} PropertyType - Condo, Co-op, Townhouse, Vacant Land
+ * @property {propertyType} PropertyType - Condo, Co-op, Townhouse, Vacant Land
  * @property {boolean} VacantAtClosing - Is this premises vacant at closing?
  * @property {boolean} SubjectToTenancy - Is this premises subject to tenancy?
  * @property {boolean} HOA - Is this premises subject to HOA?
  * @property {int} ParkingSpaces - Number of parking spaces
  * @property {int} MaintenanceFee - Unit maintenance fee
- * @property {enum} MaintenanceFeePer - Maintenance fee per (month, quarter, year)
+ * @property {maintenanceFeePer} MaintenanceFeePer - Maintenance fee per (month, quarter, year)
  * @property {int} Assessments - Assessments fee
  * @property {string} AssessmentsPaidById - Foreign key to User who paid assessments
  * @property {string} ManagingCompany - Name of managing company
@@ -26,6 +26,7 @@
  */
 
 const db = require('../dynamodb');
+const {propertyType, maintenanceFeePer} = require("../types");
 
 class Premises {
     // TBD

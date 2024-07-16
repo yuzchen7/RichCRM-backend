@@ -10,10 +10,31 @@ content-type: application/json
     "buyerId": 98765
 }
 
+
+### Read Case
+POST http://localhost:3001/v1/case/read
+content-type: application/json
+
+{
+    "caseId": "0-98765-123456"
+}
+
+### Update Case
+POST http://localhost:3001/v1/case/update
+content-type: application/json
+
+{
+    "caseId": "0-98765-123456",
+    "stage": 1,
+    "status": 1,
+    "closingDate": "2024-07-20T20:04:24.740Z"
+}
+
+
 ### Delete Case
 POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "BUYER-98765-123456"
+    "caseId": "0-98765-123456"
 }
