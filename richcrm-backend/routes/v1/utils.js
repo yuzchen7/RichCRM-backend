@@ -24,4 +24,19 @@ router.post(
     UtilsController.registerAddress
 );
 
+router.post(
+    "/address/delete",
+    check("addressId")
+        .notEmpty()
+        .withMessage("Address ID is required"),
+    validate,
+    UtilsController.deleteAddress
+)
+
+router.get(
+    "/address/all",
+    validate,
+    UtilsController.getAllAddresses
+)
+
 module.exports = router;

@@ -61,6 +61,69 @@ class UtilsController {
         }
         res.end();
     }
+
+    async getAllAddresses(req, res) {
+        try {
+            const addresses = await AddressService.readAllAddresses();
+            if (addresses !== null) {
+                res.status(200).json({
+                    status: "success",
+                    data: addresses,
+                    message: 'Addresses retrieved successfully'
+                });
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: 'No addresses found'
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: 'Internal server error'
+            });
+        }
+        res.end();
+    }
+
+    async deleteAddress(req, res) {
+        const { addressId } = req.body;
+        try {
+            const address = await AddressService.readAddress(addressId);
+            if (address === null) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: 'Address not found'
+                });
+            }
+            const deletedAddress = await AddressService.deleteAddress(addressId);
+            if (deletedAddress !== null) {
+                res.status(200).json({
+                    status: "success",
+                    data: [deletedAddress],
+                    message: 'Address deleted successfully'
+                });
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: 'Address deletion failed'
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: 'Internal server error'
+            });
+        }
+        res.end();
+    }
 }
 
 module.exports = new UtilsController();

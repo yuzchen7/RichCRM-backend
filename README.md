@@ -133,7 +133,7 @@ aws dynamodb create-table \
     --attribute-definitions \
         AttributeName=AddressId,AttributeType=S \
     --key-schema AttributeName=AddressId,KeyType=HASH \
-    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --provisioned-throughput ReadCapacityUnits=2,WriteCapacityUnits=1 \
     --table-class STANDARD \
     --endpoint-url http://localhost:8000
 

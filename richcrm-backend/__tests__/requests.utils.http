@@ -9,8 +9,8 @@ content-type: application/json
 }
 
 
-### Standardize Address
-POST http://localhost:3001/v1/utils/address/standardize
+### Register Address
+POST http://localhost:3001/v1/utils/address/register
 content-type: application/json
 
 {
@@ -20,14 +20,16 @@ content-type: application/json
     "zipCode": "11201"
 }
 
-
-### Register Address
-POST http://localhost:3001/v1/utils/address/register
+### Delete Address
+POST http://localhost:3001/v1/utils/address/delete
 content-type: application/json
 
 {
-    "addressLine1": "123 Burgen",
-    "city": "New Jersey",
-    "state": "NJ",
-    "zipCode": "07001"
+    "addressId": "22 CHAPEL ST, BROOKLYN, NY 11201-1945 US"
 }
+
+
+
+### Get All Address
+GET http://localhost:3001/v1/utils/address/all
+
