@@ -1,0 +1,19 @@
+### Create Case
+POST http://localhost:3001/v1/case/create
+content-type: application/json
+
+{
+    "premisesId": 123456,
+    "stage": 0,
+    "status": 0,
+    "clientType": 0,
+    "buyerId": 98765
+}
+
+### Delete Case
+POST http://localhost:3001/v1/case/delete
+content-type: application/json
+
+{
+    "caseId": "BUYER-98765-123456"
+}

@@ -117,12 +117,33 @@ docker run -p 8000:8000 amazon/dynamodb-local
 ### 1. Create Table
 
 ```bash
+# User
 aws dynamodb create-table \
     --table-name User \
     --attribute-definitions \
         AttributeName=EmailAddress,AttributeType=S \
     --key-schema AttributeName=EmailAddress,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=1 \
+    --table-class STANDARD \
+    --endpoint-url http://localhost:8000
+
+# Address
+aws dynamodb create-table \
+    --table-name Address \
+    --attribute-definitions \
+        AttributeName=AddressId,AttributeType=S \
+    --key-schema AttributeName=AddressId,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --table-class STANDARD \
+    --endpoint-url http://localhost:8000
+
+# Case
+aws dynamodb create-table \
+    --table-name Case \
+    --attribute-definitions \
+        AttributeName=CaseId,AttributeType=S \
+    --key-schema AttributeName=CaseId,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=100,WriteCapacityUnits=1 \
     --table-class STANDARD \
     --endpoint-url http://localhost:8000
 ```

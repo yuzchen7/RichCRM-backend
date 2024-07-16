@@ -1,10 +1,5 @@
 const User = require('./user.db');
 
-const userRole = {
-    ADMIN: 'admin',
-    ATTORNEY: 'attorney',
-    CLIENT: 'client'
-}
 
 class UserService {
     async readUser (userEmail) {
