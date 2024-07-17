@@ -1,0 +1,148 @@
+{
+    "Address": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "130 W 3RD ST, NEW YORK, NY 10012-1296 US"},
+                    "AddressLine1": {"S": "130 W 3RD ST"},
+                    "City": {"S": "NEW YORK"},
+                    "State": {"S": "NEW YORK"},
+                    "ZipCode": {"S": "10012"},
+                    "Plus4": {"S": "1296"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "742 EVERGREEN TERRACE, SPRINGFIELD, IL 62704-1111 US"},
+                    "AddressLine1": {"S": "742 EVERGREEN TERRACE"},
+                    "City": {"S": "SPRINGFIELD"},
+                    "State": {"S": "IL"},
+                    "ZipCode": {"S": "62704"},
+                    "Plus4": {"S": "1111"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "1600 PENNSYLVANIA AVE NW, WASHINGTON, DC 20500-0004 US"},
+                    "AddressLine1": {"S": "1600 PENNSYLVANIA AVE NW"},
+                    "City": {"S": "WASHINGTON"},
+                    "State": {"S": "DC"},
+                    "ZipCode": {"S": "20500"},
+                    "Plus4": {"S": "0004"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "1 INFINITE LOOP, CUPERTINO, CA 95014-2083 US"},
+                    "AddressLine1": {"S": "1 INFINITE LOOP"},
+                    "City": {"S": "CUPERTINO"},
+                    "State": {"S": "CA"},
+                    "ZipCode": {"S": "95014"},
+                    "Plus4": {"S": "2083"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "4059 MT LEE DR, HOLLYWOOD, CA 90068-4115 US"},
+                    "AddressLine1": {"S": "4059 MT LEE DR"},
+                    "City": {"S": "HOLLYWOOD"},
+                    "State": {"S": "CA"},
+                    "ZipCode": {"S": "90068"},
+                    "Plus4": {"S": "4115"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"},
+                    "AddressLine1": {"S": "1600 AMPHITHEATRE PKWY"},
+                    "City": {"S": "MOUNTAIN VIEW"},
+                    "State": {"S": "CA"},
+                    "ZipCode": {"S": "94043"},
+                    "Plus4": {"S": "1351"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "350 5TH AVE, NEW YORK, NY 10118-0110 US"},
+                    "AddressLine1": {"S": "350 5TH AVE"},
+                    "City": {"S": "NEW YORK"},
+                    "State": {"S": "NY"},
+                    "ZipCode": {"S": "10118"},
+                    "Plus4": {"S": "0110"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "1601 WILLOW RD, MENLO PARK, CA 94025-1452 US"},
+                    "AddressLine1": {"S": "1601 WILLOW RD"},
+                    "City": {"S": "MENLO PARK"},
+                    "State": {"S": "CA"},
+                    "ZipCode": {"S": "94025"},
+                    "Plus4": {"S": "1452"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "1 MICROSOFT WAY, REDMOND, WA 98052-8300 US"},
+                    "AddressLine1": {"S": "1 MICROSOFT WAY"},
+                    "City": {"S": "REDMOND"},
+                    "State": {"S": "WA"},
+                    "ZipCode": {"S": "98052"},
+                    "Plus4": {"S": "8300"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "1111 S FIGUEROA ST, LOS ANGELES, CA 90015-1300 US"},
+                    "AddressLine1": {"S": "1111 S FIGUEROA ST"},
+                    "City": {"S": "LOS ANGELES"},
+                    "State": {"S": "CA"},
+                    "ZipCode": {"S": "90015"},
+                    "Plus4": {"S": "1300"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "3500 S LAS VEGAS BLVD, LAS VEGAS, NV 89109-8900 US"},
+                    "AddressLine1": {"S": "3500 S LAS VEGAS BLVD"},
+                    "City": {"S": "LAS VEGAS"},
+                    "State": {"S": "NV"},
+                    "ZipCode": {"S": "89109"},
+                    "Plus4": {"S": "8900"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "AddressId": {"S": "500 S BUENA VISTA ST, BURBANK, CA 91521-0002 US"},
+                    "AddressLine1": {"S": "500 S BUENA VISTA ST"},
+                    "City": {"S": "BURBANK"},
+                    "State": {"S": "CA"},
+                    "ZipCode": {"S": "91521"},
+                    "Plus4": {"S": "0002"}
+                }
+            }
+        }
+    ]
+}

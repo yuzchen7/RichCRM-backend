@@ -14,10 +14,10 @@ POST http://localhost:3001/v1/utils/address/register
 content-type: application/json
 
 {
-    "addressLine1": "22 Chapel St",
-    "city": "Brooklyn",
+    "addressLine1": "130 W Third St",
+    "city": "New York",
     "state": "NY",
-    "zipCode": "11201"
+    "zipCode": "10012"
 }
 
 ### Delete Address

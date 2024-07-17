@@ -8,7 +8,7 @@
         "emailAddress": "",
         "password": "",
         "userName": "",
-        "role": "admin | attorney | client"
+        "role": "0 | 1 | 2"
     }
     ```
 - POST - **v1/auth/login**
@@ -184,5 +184,12 @@ aws dynamodb update-item \
     --expression-attribute-names '{"#n": "UserName", "#r": "Role"}' \
     --expression-attribute-values '{":n": {"S":"Eden"}, ":r": {"S":"admin"}}' \
     --return-values ALL_NEW \
+    --endpoint-url http://localhost:8000
+```
+
+### 5. **Batch Write to Tables (Local Debugging Purposes)**
+
+```bash
+aws dynamodb batch-write-item --request-items mock-data-dynamo/addresses.json \
     --endpoint-url http://localhost:8000
 ```
