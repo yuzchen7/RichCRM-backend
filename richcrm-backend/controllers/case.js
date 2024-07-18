@@ -4,7 +4,7 @@ const Types = require("../db/types");
 class CaseController {
 
     async readCase(req, res) {
-        const {caseId} = req.body;
+        const {caseId} = req.params;
         if (caseId === undefined) {
             console.log("[CaseController][readCase] Invalid case id");
             return null;
@@ -14,7 +14,17 @@ class CaseController {
             if (c !== null) {
                 res.status(200).json({
                     status: "success",
-                    data: [c],
+                    data: [{
+                        "caseId": c.CaseId,
+                        "premisesId": c.PremisesId,
+                        "stage": c.Stage,
+                        "status": c.Status,
+                        "clientType": c.ClientType,
+                        "buyerId": c.BuyerId,
+                        "sellerId": c.SellerId,
+                        "createAt": c.CreateAt,
+                        "closingDate": c.ClosingDate
+                    }],
                     message: '[CaseController][readCase] Case retrieved successfully'
                 });
             } else {
@@ -106,7 +116,16 @@ class CaseController {
             if (c !== null) {
                 res.status(200).json({
                     status: "success",
-                    data: [c],
+                    data: [{
+                        "caseId": c.CaseId,
+                        "premisesId": c.PremisesId,
+                        "stage": c.Stage,
+                        "status": c.Status,
+                        "clientType": c.ClientType,
+                        "buyerId": c.BuyerId,
+                        "sellerId": c.SellerId,
+                        "createAt": c.CreateAt
+                    }],
                     message: '[CaseController][createCase] Case created successfully'
                 });
             } else {
@@ -176,7 +195,17 @@ class CaseController {
             if (c !== null) {
                 res.status(200).json({
                     status: "success",
-                    data: [c],
+                    data: [{
+                        "caseId": c.CaseId,
+                        "premisesId": c.PremisesId,
+                        "stage": c.Stage,
+                        "status": c.Status,
+                        "clientType": c.ClientType,
+                        "buyerId": c.BuyerId,
+                        "sellerId": c.SellerId,
+                        "createAt": c.CreateAt,
+                        "closingDate": c.ClosingDate
+                    }],
                     message: '[CaseController][updateCase] Case updated successfully'
                 });
             } else {

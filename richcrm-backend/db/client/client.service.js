@@ -17,6 +17,7 @@ class ClientService {
             client.title === undefined ||
             client.firstName === undefined ||
             client.lastName === undefined ||
+            client.gender === undefined ||
             client.cellNumber === undefined ||
             client.email === undefined ||
             client.ssn === undefined ||

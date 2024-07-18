@@ -115,7 +115,8 @@ docker run -p 8000:8000 amazon/dynamodb-local
 
 Export the AWS profile to the local environment: 
 ```bash
-export AWS_PROFILE=richtech-ai-lab
+export AWS_PROFILE=rich-crm
+export AWS_EB_PROFILE=rich-crm
 ```
 
 
@@ -128,7 +129,7 @@ aws dynamodb create-table \
     --attribute-definitions \
         AttributeName=EmailAddress,AttributeType=S \
     --key-schema AttributeName=EmailAddress,KeyType=HASH \
-    --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=1 \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
     --table-class STANDARD \
     --endpoint-url http://localhost:8000
 
@@ -138,7 +139,7 @@ aws dynamodb create-table \
     --attribute-definitions \
         AttributeName=AddressId,AttributeType=S \
     --key-schema AttributeName=AddressId,KeyType=HASH \
-    --provisioned-throughput ReadCapacityUnits=2,WriteCapacityUnits=1 \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
     --table-class STANDARD \
     --endpoint-url http://localhost:8000
 
@@ -148,7 +149,7 @@ aws dynamodb create-table \
     --attribute-definitions \
         AttributeName=CaseId,AttributeType=S \
     --key-schema AttributeName=CaseId,KeyType=HASH \
-    --provisioned-throughput ReadCapacityUnits=100,WriteCapacityUnits=1 \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
     --table-class STANDARD \
     --endpoint-url http://localhost:8000
 
@@ -158,7 +159,7 @@ aws dynamodb create-table \
     --attribute-definitions \
         AttributeName=ClientId,AttributeType=S \
     --key-schema AttributeName=ClientId,KeyType=HASH \
-    --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=1 \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
     --table-class STANDARD \
     --endpoint-url http://localhost:8000
 ```

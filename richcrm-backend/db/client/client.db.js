@@ -12,7 +12,7 @@
  * @property {string} CellNumber - Client's cell phone number
  * @property {string} WorkNumber - Client's work phone number
  * @property {string} Email - Client's email address
- * @property {string} WeChatAccount - Client's WeChat Account
+ * @property {string} WechatAccount - Client's WeChat Account
  * @property {string} SSN - Client's Social Security Number
  * @property {Date} DOB - Client's date of birth
  * @property {string} AttorneyId - Foreign key to Attorney
@@ -47,6 +47,7 @@ class Client {
                 Title: client.title,
                 FirstName: client.firstName,
                 LastName: client.lastName,
+                Gender: client.gender,
                 CellNumber: client.cellNumber,
                 WorkNumber: client.workNumber,
                 Email: client.email,
@@ -68,11 +69,12 @@ class Client {
             Key: {
                 ClientId: client.clientId,
             },
-            UpdateExpression: 'set Title = :t, FirstName = :f, LastName = :l, CellNumber = :c, WorkNumber = :w, Email = :e, WeChatAccount = :wc, DOB = :d, AttorneyId = :a, BankAttorneyId = :b, AddressId = :ad',
+            UpdateExpression: 'set Title = :t, FirstName = :f, LastName = :l, Gender = :g, CellNumber = :c, WorkNumber = :w, Email = :e, WechatAccount = :wc, DOB = :d, AttorneyId = :a, BankAttorneyId = :b, AddressId = :ad',
             ExpressionAttributeValues: {
                 ':t': client.title,
                 ':f': client.firstName,
                 ':l': client.lastName,
+                ':g': client.gender,
                 ':c': client.cellNumber,
                 ':w': client.workNumber,
                 ':e': client.email,
@@ -85,7 +87,7 @@ class Client {
             ReturnValues: 'UPDATED_NEW',
         };
         const data = await db.update(params).promise();
-        return data;
+        return data.Attributes;
     }
 
     async deleteClient(clientId) {

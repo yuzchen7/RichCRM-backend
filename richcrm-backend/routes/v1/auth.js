@@ -5,6 +5,29 @@ var AuthController = require('../../controllers/auth');
 
 const router = express.Router();
 
+/**
+ * @api {post} v1/auth/register Register a new user
+ * @apiName RegisterUser
+ * @apiGroup Auth
+ *
+ * @apiBody {String} emailAddress Email address of the User.
+ * @apiBody {String} password Password of the User.
+ * @apiBody {String} userName User name of the User.
+ * @apiBody {Number} role Role of the User (0-Admin, 1-Attorney).
+ *
+ * @apiSuccess {String} emailAddress Email address of the User.
+ * @apiSuccess {String} password Password of the User.
+ * @apiSuccess {String} userName User name of the User.
+ * @apiSuccess {Number} role Role of the User (0-Admin, 1-Attorney).
+ * 
+ * @apiSuccessExample Example data on success:
+ * {
+ *  "emailAddress": "test@test.com",
+ *  "password": "password",
+ *  "userName": "Test User",
+ *  "role": 0
+ * }
+ */
 router.post(
     "/register",
     check("emailAddress")
@@ -26,6 +49,27 @@ router.post(
     AuthController.registerUser
 );
 
+/**
+ * @api {post} v1/auth/login Login a user
+ * @apiName LoginUser
+ * @apiGroup Auth
+ *
+ * @apiBody {String} emailAddress Email address of the User.
+ * @apiBody {String} password Password of the User.
+ *
+ * @apiSuccess {String} emailAddress Email address of the User.
+ * @apiSuccess {String} password Password of the User.
+ * @apiSuccess {String} userName User name of the User.
+ * @apiSuccess {Number} role Role of the User (0-Admin, 1-Attorney).
+ * 
+ * @apiSuccessExample Example data on success:
+ * {
+ *  "emailAddress": "test@test.com",
+ *  "password": "password",
+ *  "userName": "Test User",
+ *  "role": 0
+ * }
+ */
 router.post(
     "/login",
     check("emailAddress")
@@ -41,6 +85,19 @@ router.post(
     AuthController.loginUser
 );
 
+
+/**
+ * @api {post} v1/auth/delete Delete a user
+ * @apiName DeleteUser
+ * @apiGroup Auth
+ *
+ * @apiBody {String} emailAddress Email address of the User.
+ * @apiBody {String} password Password of the User.
+ *
+ * 
+ * @apiSuccessExample Example data on success:
+ * {}
+ */
 router.post(
     "/delete",
     check("emailAddress")
@@ -56,6 +113,27 @@ router.post(
     AuthController.deleteUser
 );
 
+/**
+ * @api {post} v1/auth/update Update a user
+ * @apiName UpdateUser
+ * @apiGroup Auth
+ *
+ * @apiBody {String} emailAddress Email address of the User.
+ * @apiBody {String} password Password of the User.
+ * @apiBody {String} userName User name of the User.
+ * @apiBody {Number} role Role of the User (0-Admin, 1-Attorney).
+ *
+ * @apiSuccess {String} password Password of the User.
+ * @apiSuccess {String} userName User name of the User.
+ * @apiSuccess {Number} role Role of the User (0-Admin, 1-Attorney).
+ * 
+ * @apiSuccessExample Example data on success:
+ * {
+ *  "password": "password",
+ *  "userName": "Test User",
+ *  "role": 0
+ * }
+ */
 router.post(
     "/update",
     check("emailAddress")

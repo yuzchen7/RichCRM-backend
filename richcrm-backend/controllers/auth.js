@@ -16,7 +16,12 @@ class AuthController {
             if (user !== null) {
                 res.status(200).json({
                     status: "success",
-                    data: [user],
+                    data: [{
+                        emailAddress: user.EmailAddress,
+                        password: user.Password,
+                        userName: user.UserName,
+                        role: user.Role
+                    }],
                     message: 'User created successfully'
                 });
             } else {
@@ -57,7 +62,12 @@ class AuthController {
             }
             res.status(200).json({
                 status: "success",
-                data: [user],
+                data: [{
+                    emailAddress: user.EmailAddress,
+                    password: user.Password,
+                    userName: user.UserName,
+                    role: user.Role
+                }],
                 message: 'User logged in successfully'
             });
         } catch (error) {
@@ -127,7 +137,11 @@ class AuthController {
             }
             res.status(200).json({
                 status: "success",
-                data: [result],
+                data: [{
+                    password: result.Password,
+                    userName: result.UserName,
+                    role: result.Role
+                }],
                 message: 'User updated successfully'
             });
         } catch (error) {

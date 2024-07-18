@@ -1,10 +1,11 @@
 var ClientService = require("../db/client/client.service");
 var AddressService = require("../db/address/address.service");
 const Types = require("../db/types");
+const e = require("express");
 
 class ClientController {
     async registerClient(req, res) {
-        const { title, firstName, lastName, cellNumber, email, ssn, addressId } = req.body;
+        const { title, firstName, lastName, gender, cellNumber, email, ssn, addressId } = req.body;
 
         try {
             // Check if client already exists
@@ -30,11 +31,19 @@ class ClientController {
             if (Types.castIntToEnum(Types.title, title) === undefined) {
                 titleParsed = Types.title.NA;
             }
+
+            // Check if the gender is valid
+            var genderParsed = gender;
+            if (Types.castIntToEnum(Types.gender, gender) === undefined) {
+                genderParsed = Types.gender.NA;
+            }
+
             const client = await ClientService.createClient({
                 clientId: ssn,
                 title: titleParsed,
                 firstName: firstName,
                 lastName: lastName,
+                gender: genderParsed,
                 cellNumber: cellNumber,
                 email: email,
                 ssn: ssn,
@@ -43,7 +52,22 @@ class ClientController {
             if (client !== null) {
                 res.status(200).json({
                     status: "success",
-                    data: [client],
+                    data: [{
+                        clientId: client.ClientId,
+                        title: client.Title,
+                        firstName: client.FirstName,
+                        lastName: client.LastName,
+                        gender: client.Gender,
+                        cellNumber: client.CellNumber,
+                        workNumber: client.WorkNumber,
+                        email: client.Email,
+                        wechatAccount: client.WechatAccount,
+                        ssn: client.SSN,
+                        dob: client.DOB,
+                        addressId: client.AddressId,
+                        attorneyId: client.AttorneyId,
+                        bankAttorneyId: client.BankAttorneyId,
+                    }],
                     message: '[ClientController][registerClient] Client created successfully'
                 });
             } else {
@@ -70,7 +94,22 @@ class ClientController {
             if (client !== null) {
                 res.status(200).json({
                     status: "success",
-                    data: [client],
+                    data: [{
+                        clientId: client.ClientId,
+                        title: client.Title,
+                        firstName: client.FirstName,
+                        lastName: client.LastName,
+                        gender: client.Gender,
+                        cellNumber: client.CellNumber,
+                        workNumber: client.WorkNumber,
+                        email: client.Email,
+                        wechatAccount: client.WechatAccount,
+                        ssn: client.SSN,
+                        dob: client.DOB,
+                        addressId: client.AddressId,
+                        attorneyId: client.AttorneyId,
+                        bankAttorneyId: client.BankAttorneyId,
+                    }],
                     message: '[ClientController][getClient] Client retrieved successfully'
                 });
             } else {
@@ -105,17 +144,18 @@ class ClientController {
             }
             var clientObj = {
                 clientId: clientId,
-                title: existingClient.title,
-                firstName: existingClient.firstName,
-                lastName: existingClient.lastName,
-                cellNumber: existingClient.cellNumber,
-                workNumber: existingClient.workNumber,
-                email: existingClient.email,
-                wechatAccount: existingClient.wechatAccount,
-                dob: existingClient.dob,
-                attorneyId: existingClient.attorneyId,
-                bankAttorneyId: existingClient.bankAttorneyId,
-                addressId: existingClient.addressId
+                title: existingClient.Title,
+                firstName: existingClient.FirstName,
+                lastName: existingClient.LastName,
+                gender: existingClient.Gender,
+                cellNumber: existingClient.CellNumber,
+                workNumber: existingClient.WorkNumber,
+                email: existingClient.Email,
+                wechatAccount: existingClient.WechatAccount,
+                dob: existingClient.DOB,
+                attorneyId: existingClient.AttorneyId,
+                bankAttorneyId: existingClient.BankAttorneyId,
+                addressId: existingClient.AddressId
             };
             // Check if address exists
             const existingAddress = await AddressService.readAddress(addressId);
@@ -190,7 +230,22 @@ class ClientController {
             if (client !== null) {
                 res.status(200).json({
                     status: "success",
-                    data: [client],
+                    data: [{
+                        clientId: client.ClientId,
+                        title: client.Title,
+                        firstName: client.FirstName,
+                        lastName: client.LastName,
+                        gender: client.Gender,
+                        cellNumber: client.CellNumber,
+                        workNumber: client.WorkNumber,
+                        email: client.Email,
+                        wechatAccount: client.WechatAccount,
+                        ssn: client.SSN,
+                        dob: client.DOB,
+                        addressId: client.AddressId,
+                        attorneyId: client.AttorneyId,
+                        bankAttorneyId: client.BankAttorneyId,
+                    }],
                     message: '[ClientController][updateClient] Client updated successfully'
                 });
             } else {
@@ -217,7 +272,7 @@ class ClientController {
             if (client !== null) {
                 res.status(200).json({
                     status: "success",
-                    data: [client],
+                    data: [],
                     message: '[ClientController][deleteClient] Client deleted successfully'
                 });
             } else {
