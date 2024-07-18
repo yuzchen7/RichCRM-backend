@@ -58,5 +58,20 @@ module.exports = {
         YEAR: 2,
     },
 
-    
+    // [DB] CLIENT
+    title: {
+        NA: 0,
+        MR: 1,
+        MRS: 2,
+        MS: 3,
+        DR: 4,
+    },
+
+    gender: {
+        NA: 0,
+        MALE: 1,
+        FEMALE: 2,
+    }
+
+
 };

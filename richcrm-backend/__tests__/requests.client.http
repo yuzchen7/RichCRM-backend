@@ -1,0 +1,44 @@
+### Register Client
+POST http://localhost:3001/v1/client/register
+content-type: application/json
+
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "cellNumber": "1234567890",
+    "email": "john.doe@hotmail.com",
+    "ssn": "123-45-6789",
+    "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"
+}
+
+### Get Client
+GET http://localhost:3001/v1/client/123-45-6789
+
+
+### Update Client
+POST http://localhost:3001/v1/client/update
+content-type: application/json
+
+{
+    "clientId": "123-45-6789",
+    "title": 1,
+    "firstName": "Jean",
+    "lastName": "Dean",
+    "gender": 1,
+    "cellNumber": "1234567890",
+    "workNumber": "1234567890",
+    "email": "jean.dean@hotmail.com",
+    "wechatAccount": "jean.dean", 
+    "dob": "1990-01-01", 
+    "attorneyId": 1, 
+    "bankAttorneyId": 1, 
+    "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"
+}
+
+### Delete Client
+POST http://localhost:3001/v1/client/delete
+content-type: application/json
+
+{
+    "clientId": "123-45-6789"
+}

@@ -113,6 +113,11 @@ To run DynamoDB locally, you also need to run the docker image from [AWS](https:
 docker run -p 8000:8000 amazon/dynamodb-local
 ``` 
 
+Export the AWS profile to the local environment: 
+```bash
+export AWS_PROFILE=richtech-ai-lab
+```
+
 
 ### 1. Create Table
 
@@ -144,6 +149,16 @@ aws dynamodb create-table \
         AttributeName=CaseId,AttributeType=S \
     --key-schema AttributeName=CaseId,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=100,WriteCapacityUnits=1 \
+    --table-class STANDARD \
+    --endpoint-url http://localhost:8000
+
+# Client
+aws dynamodb create-table \
+    --table-name Client \
+    --attribute-definitions \
+        AttributeName=ClientId,AttributeType=S \
+    --key-schema AttributeName=ClientId,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=1 \
     --table-class STANDARD \
     --endpoint-url http://localhost:8000
 ```
@@ -190,6 +205,11 @@ aws dynamodb update-item \
 ### 5. **Batch Write to Tables (Local Debugging Purposes)**
 
 ```bash
-aws dynamodb batch-write-item --request-items mock-data-dynamo/addresses.json \
+# Addresses
+aws dynamodb batch-write-item --request-items file://mock-data-dynamo/addresses.json \
+    --endpoint-url http://localhost:8000
+
+# Clients
+aws dynamodb batch-write-item --request-items file://mock-data-dynamo/clients.json \
     --endpoint-url http://localhost:8000
 ```

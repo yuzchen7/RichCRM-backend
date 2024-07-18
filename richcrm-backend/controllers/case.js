@@ -6,7 +6,7 @@ class CaseController {
     async readCase(req, res) {
         const {caseId} = req.body;
         if (caseId === undefined) {
-            console.log("[CASE-Read] Invalid case id");
+            console.log("[CaseController][readCase] Invalid case id");
             return null;
         }
         try {
@@ -15,13 +15,13 @@ class CaseController {
                 res.status(200).json({
                     status: "success",
                     data: [c],
-                    message: 'Case retrieved successfully'
+                    message: '[CaseController][readCase] Case retrieved successfully'
                 });
             } else {
                 res.status(400).json({
                     status: "failed",
                     data: [],
-                    message: 'Case does not exist'
+                    message: '[CaseController][readCase] Case does not exist'
                 });
             }
         } catch (error) {
@@ -29,7 +29,7 @@ class CaseController {
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: 'Internal server error'
+                message: '[CaseController][readCase] Internal server error'
             });
         }
     }
@@ -37,51 +37,51 @@ class CaseController {
     async createCase(req, res) {
         const {premisesId, clientType, buyerId, sellerId, stage, status} = req.body;
         if (premisesId === undefined) {
-            console.log("[CASE-Create] Invalid premises id");
+            console.log("[CaseController][createCase] Invalid premises id");
             return null;
         }
         // Check if the stage is valid
         const stageEnum = Types.castIntToEnum(Types.stage, stage);
         if (stageEnum === undefined) {
-            console.log("[CASE-Create] Invalid stage");
+            console.log("[CaseController][createCase] Invalid stage");
             return null;
         }
 
         // Check if the status is valid
         const statusEnum = Types.castIntToEnum(Types.status, status);
         if (statusEnum === undefined) {
-            console.log("[CASE-Create] Invalid status");
+            console.log("[CaseController][createCase] Invalid status");
             return null;
         }
 
         // Check if the client type is valid
         const clientTypeEnum = Types.castIntToEnum(Types.clientType, clientType);
         if (clientTypeEnum === undefined) {
-            console.log("[CASE-Create] Invalid client type");
+            console.log("[CaseController][createCase] Invalid client type");
             return null;
         }
         var caseId;
         switch (clientType) {
             case Types.clientType.BUYER:
                 if (buyerId === undefined) {
-                    console.log("[CASE-Create] Invalid buyer id");
+                    console.log("[CaseController][createCase] Invalid buyer id");
                     return null;
                 } else {
                     caseId = generateCaseId(clientType, buyerId, premisesId);
-                    console.log(`[CASE-Create] Generated case id: ${caseId}`);
+                    console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
                 }
                 break;
             case Types.clientType.SELLER:
                 if (sellerId === undefined) {
-                    console.log("[CASE-Create] Invalid seller id");
+                    console.log("[CaseController][createCase] Invalid seller id");
                     return null;
                 } else {
                     caseId = generateCaseId(clientType, sellerId, premisesId);
-                    console.log(`[CASE-Create] Generated case id: ${caseId}`);
+                    console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
                 }
                 break;
             default:
-                console.log("[CASE-Create] Invalid client type");
+                console.log("[CaseController][createCase] Invalid client type");
                 return null;
         }
         try {
@@ -90,7 +90,7 @@ class CaseController {
                 return res.status(400).json({
                     status: "failed",
                     data: [],
-                    message: 'Case already exists'
+                    message: '[CaseController][createCase] Case already exists'
                 });
             }
             const c = await CaseService.createCase({
@@ -107,13 +107,13 @@ class CaseController {
                 res.status(200).json({
                     status: "success",
                     data: [c],
-                    message: 'Case created successfully'
+                    message: '[CaseController][createCase] Case created successfully'
                 });
             } else {
                 res.status(400).json({
                     status: "failed",
                     data: [],
-                    message: 'Case creation failed'
+                    message: '[CaseController][createCase] Case creation failed'
                 });
             }
         } catch (error) {
@@ -121,7 +121,7 @@ class CaseController {
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: 'Internal server error'
+                message: '[CaseController][createCase] Internal server error'
             });
         }
         res.end();
@@ -131,7 +131,7 @@ class CaseController {
         const {caseId, stage, status, premisesId, closingDate} = req.body;
 
         if (caseId === undefined) {
-            console.log("[CASE-Delete] Invalid case id");
+            console.log("[CaseController][updateCase] Invalid case id");
             return null;
         }
 
@@ -141,21 +141,21 @@ class CaseController {
             return res.status(400).json({
                 status: "failed",
                 data: [],
-                message: 'Case does not exist'
+                message: '[CaseController][updateCase] Case does not exist'
             });
         }
 
         // Check if the stage is valid
         const stageEnum = Types.castIntToEnum(Types.stage, stage);
         if (stageEnum === undefined) {
-            console.log("[CASE-Update] Invalid stage");
+            console.log("[CaseController][updateCase] Invalid stage");
             return null;
         }
 
         // Check if the status is valid
         const statusEnum = Types.castIntToEnum(Types.status, status);
         if (statusEnum === undefined) {
-            console.log("[CASE-Update] Invalid status");
+            console.log("[CaseController][updateCase] Invalid status");
             return null;
         }
 
@@ -177,13 +177,13 @@ class CaseController {
                 res.status(200).json({
                     status: "success",
                     data: [c],
-                    message: 'Case updated successfully'
+                    message: '[CaseController][updateCase] Case updated successfully'
                 });
             } else {
                 res.status(400).json({
                     status: "failed",
                     data: [],
-                    message: 'Case update failed'
+                    message: '[CaseController][updateCase] Case update failed'
                 });
             }
         } catch (error) {
@@ -191,7 +191,7 @@ class CaseController {
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: 'Internal server error'
+                message: '[CaseController][updateCase] Internal server error'
             });
         }
     }
@@ -199,7 +199,7 @@ class CaseController {
     async deleteCase(req, res) {
         const {caseId} = req.body;
         if (caseId === undefined) {
-            console.log("[CASE-Delete] Invalid case id");
+            console.log("[CaseController][deleteCase] Invalid case id");
             return null;
         }
         try {
@@ -208,21 +208,21 @@ class CaseController {
                 return res.status(400).json({
                     status: "failed",
                     data: [],
-                    message: 'Case does not exist'
+                    message: '[CaseController][deleteCase] Case does not exist'
                 });
             }
             await CaseService.deleteCase(caseId);
             res.status(200).json({
                 status: "success",
                 data: [],
-                message: 'Case deleted successfully'
+                message: '[CaseController][deleteCase] Case deleted successfully'
             });
         } catch (error) {
             console.error(error);
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: 'Internal server error'
+                message: '[CaseController][deleteCase] Internal server error'
             });
         }
         res.end();
@@ -230,7 +230,7 @@ class CaseController {
 }
 
 const generateCaseId = (clientType, clientId, premisesId) => {
-    console.log(`[CASE-Create] Generating case id for client type: ${clientType}, client id: ${clientId}, premises id: ${premisesId}`);
+    console.log(`[CaseController][generateCaseId] Generating case id for client type: ${clientType}, client id: ${clientId}, premises id: ${premisesId}`);
     return `${clientType}-${clientId}-${premisesId}`;
 }
 

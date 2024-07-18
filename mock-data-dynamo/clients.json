@@ -1,0 +1,204 @@
+{
+    "Client": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "ClientId": {"S": "123-45-6789"},
+                    "FirstName": {"S": "Homer"},
+                    "LastName": {"S": "Simpson"},
+                    "AddressId": {"S": "742 EVERGREEN TERRACE, SPRINGFIELD, IL 62704-1111 US"},
+                    "Title": {"N": "0"},
+                    "Gender": {"N": "0"},
+                    "CellNumber": {"S": "1234567890"},
+                    "WorkNumber": {"S": "1234567890"},
+                    "Email": {"S": "homer@test.com"},
+                    "WechatAccount": {"S": "homer.simpson"},
+                    "SSN": {"S": "123-45-6789"},
+                    "DOB": {"S": "1956-05-12"},
+                    "AttorneyId": {"N": "1"},
+                    "BankAttorneyId": {"N": "2"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "ClientId": {"S": "234-56-7890"},
+                    "FirstName": {"S": "Lisa"},
+                    "LastName": {"S": "Simpson"},
+                    "AddressId": {"S": "742 EVERGREEN TERRACE, SPRINGFIELD, IL 62704-1111 US"},
+                    "Title": {"N": "1"},
+                    "Gender": {"N": "1"},
+                    "CellNumber": {"S": "2345678901"},
+                    "WorkNumber": {"S": "2345678901"},
+                    "Email": {"S": "lisa@test.com"},
+                    "WechatAccount": {"S": "lisa.simpson"},
+                    "SSN": {"S": "234-56-7890"},
+                    "DOB": {"S": "1982-01-09"},
+                    "AttorneyId": {"N": "1"},
+                    "BankAttorneyId": {"N": "2"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "ClientId": {"S": "345-67-8901"},
+                    "FirstName": {"S": "Marge"},
+                    "LastName": {"S": "Simpson"},
+                    "AddressId": {"S": "742 EVERGREEN TERRACE, SPRINGFIELD, IL 62704-1111 US"},
+                    "Title": {"N": "0"},
+                    "Gender": {"N": "1"},
+                    "CellNumber": {"S": "3456789012"},
+                    "WorkNumber": {"S": "3456789012"},
+                    "Email": {"S": "marge@test.com"},
+                    "WechatAccount": {"S": "marge.simpson"},
+                    "SSN": {"S": "345-67-8901"},
+                    "DOB": {"S": "1953-10-01"},
+                    "AttorneyId": {"N": "1"},
+                    "BankAttorneyId": {"N": "2"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "ClientId": {"S": "456-78-9012"},
+                    "FirstName": {"S": "Bart"},
+                    "LastName": {"S": "Simpson"},
+                    "AddressId": {"S": "742 EVERGREEN TERRACE, SPRINGFIELD, IL 62704-1111 US"},
+                    "Title": {"N": "1"},
+                    "Gender": {"N": "0"},
+                    "CellNumber": {"S": "4567890123"},
+                    "WorkNumber": {"S": "4567890123"},
+                    "Email": {"S": "bart@test.com"},
+                    "WechatAccount": {"S": "bart.simpson"},
+                    "SSN": {"S": "456-78-9012"},
+                    "DOB": {"S": "1979-04-01"},
+                    "AttorneyId": {"N": "1"},
+                    "BankAttorneyId": {"N": "2"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "ClientId": {"S": "567-89-0123"},
+                    "FirstName": {"S": "Maggie"},
+                    "LastName": {"S": "Simpson"},
+                    "AddressId": {"S": "742 EVERGREEN TERRACE, SPRINGFIELD, IL 62704-1111 US"},
+                    "Title": {"N": "1"},
+                    "Gender": {"N": "1"},
+                    "CellNumber": {"S": "5678901234"},
+                    "WorkNumber": {"S": "5678901234"},
+                    "Email": {"S": "maggie@test.com"},
+                    "WechatAccount": {"S": "maggie.simpson"},
+                    "SSN": {"S": "567-89-0123"},
+                    "DOB": {"S": "1988-01-12"},
+                    "AttorneyId": {"N": "1"},
+                    "BankAttorneyId": {"N": "2"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "ClientId": {"S": "678-90-1234"},
+                    "FirstName": {"S": "Peter"},
+                    "LastName": {"S": "Griffin"},
+                    "AddressId": {"S": "31 SPOONER ST, QUAHOG, RI 00093-0001 US"},
+                    "Title": {"N": "0"},
+                    "Gender": {"N": "0"},
+                    "CellNumber": {"S": "6789012345"},
+                    "WorkNumber": {"S": "6789012345"},
+                    "Email": {"S": "peter@test.com"},
+                    "WechatAccount": {"S": "peter.griffin"},
+                    "SSN": {"S": "678-90-1234"},
+                    "DOB": {"S": "1966-02-15"},
+                    "AttorneyId": {"N": "1"},
+                    "BankAttorneyId": {"N": "2"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "ClientId": {"S": "789-01-2345"},
+                    "FirstName": {"S": "Lois"},
+                    "LastName": {"S": "Griffin"},
+                    "AddressId": {"S": "31 SPOONER ST, QUAHOG, RI 00093-0001 US"},
+                    "Title": {"N": "0"},
+                    "Gender": {"N": "1"},
+                    "CellNumber": {"S": "7890123456"},
+                    "WorkNumber": {"S": "7890123456"},
+                    "Email": {"S": "lois@test.com"},
+                    "WechatAccount": {"S": "lois.griffin"},
+                    "SSN": {"S": "789-01-2345"},
+                    "DOB": {"S": "1968-06-03"},
+                    "AttorneyId": {"N": "1"},
+                    "BankAttorneyId": {"N": "2"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "ClientId": {"S": "890-12-3456"},
+                    "FirstName": {"S": "Stewie"},
+                    "LastName": {"S": "Griffin"},
+                    "AddressId": {"S": "31 SPOONER ST, QUAHOG, RI 00093-0001 US"},
+                    "Title": {"N": "1"},
+                    "Gender": {"N": "0"},
+                    "CellNumber": {"S": "8901234567"},
+                    "WorkNumber": {"S": "8901234567"},
+                    "Email": {"S": "stewie@test.com"},
+                    "WechatAccount": {"S": "stewie.griffin"},
+                    "SSN": {"S": "890-12-3456"},
+                    "DOB": {"S": "1999-04-05"},
+                    "AttorneyId": {"N": "1"},
+                    "BankAttorneyId": {"N": "2"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "ClientId": {"S": "901-23-4567"},
+                    "FirstName": {"S": "Brian"},
+                    "LastName": {"S": "Griffin"},
+                    "AddressId": {"S": "31 SPOONER ST, QUAHOG, RI 00093-0001 US"},
+                    "Title": {"N": "0"},
+                    "Gender": {"N": "0"},
+                    "CellNumber": {"S": "9012345678"},
+                    "WorkNumber": {"S": "9012345678"},
+                    "Email": {"S": "brian@test.com"},
+                    "WechatAccount": {"S": "brian.griffin"},
+                    "SSN": {"S": "901-23-4567"},
+                    "DOB": {"S": "1991-02-24"},
+                    "AttorneyId": {"N": "1"},
+                    "BankAttorneyId": {"N": "2"}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "ClientId": {"S": "012-34-5678"},
+                    "FirstName": {"S": "Meg"},
+                    "LastName": {"S": "Griffin"},
+                    "AddressId": {"S": "31 SPOONER ST, QUAHOG, RI 00093-0001 US"},
+                    "Title": {"N": "1"},
+                    "Gender": {"N": "1"},
+                    "CellNumber": {"S": "0123456789"},
+                    "WorkNumber": {"S": "0123456789"},
+                    "Email": {"S": "meg@test.com"},
+                    "WechatAccount": {"S": "meg.griffin"},
+                    "SSN": {"S": "012-34-5678"},
+                    "DOB": {"S": "1984-03-23"},
+                    "AttorneyId": {"N": "1"},
+                    "BankAttorneyId": {"N": "2"}
+                }
+            }
+        }
+    ]
+}
