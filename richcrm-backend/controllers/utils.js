@@ -41,7 +41,15 @@ class UtilsController {
             if (address !== null) {
                 res.status(200).json({
                     status: "success",
-                    data: [address],
+                    data: [{
+                        addressId: address.AddressId,
+                        addressLine1: address.AddressLine1,
+                        addressLine2: address.AddressLine2,
+                        city: address.City,
+                        state: address.State,
+                        zipCode: address.ZipCode,
+                        plus4: address.Plus4
+                    }],
                     message: 'Address created successfully'
                 });
             } else {

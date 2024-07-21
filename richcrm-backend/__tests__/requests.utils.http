@@ -25,7 +25,7 @@ POST http://localhost:3001/v1/utils/address/delete
 content-type: application/json
 
 {
-    "addressId": "22 CHAPEL ST, BROOKLYN, NY 11201-1945 US"
+    "addressId": "130 W 3RD ST, NEW YORK, NY 10012-1296 US"
 }
 
 

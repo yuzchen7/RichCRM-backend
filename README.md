@@ -1,39 +1,7 @@
 # RichCRM Backend
 
 ## API Documentation
-### Authentication
-- POST - **v1/auth/register**
-    ```json
-    {
-        "emailAddress": "",
-        "password": "",
-        "userName": "",
-        "role": "0 | 1 | 2"
-    }
-    ```
-- POST - **v1/auth/login**
-    ```json
-    {
-        "emailAddress": "",
-        "password": ""
-    }
-    ```
-- POST - **v1/auth/delete**
-    ```json
-    {
-        "emailAddress": "",
-        "password": ""
-    }
-    ```
-- POST - **v1/auth/update**
-    ```json
-    {
-        "emailAddress": "",
-        "password": "",
-        "userName": "",
-        "role": "admin | attorney | client"
-    }
-    ```
+Please refer to the [API Documentation](/API-doc/index.html) for more information.
 
 
 ## Deployment Locally
@@ -51,6 +19,9 @@ PORT=3001
 ACCESSKEYID=AKIA...
 SECRETACCESSKEY=
 REGION=us-east-1
+
+# RADAR
+RADAR_TEST_KEY=prj_test_pk_...
 ```
 
 ## Elastic Beanstalk Deployment

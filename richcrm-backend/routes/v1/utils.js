@@ -6,6 +6,37 @@ var UtilsController = require('../../controllers/utils');
 const router = express.Router();
 
 // Address
+
+/**
+ * @api {post} v1/utils/address/register Register a new address
+ * @apiName RegisterClient
+ * @apiGroup Utils
+ * 
+ * @apiBody {String} addressLine1 Address Line 1.
+ * @apiBody {String} addressLine2 Address Line 2.
+ * @apiBody {String} city City.
+ * @apiBody {String} state State.
+ * @apiBody {String} zipCode Zip Code.
+ * 
+ * @apiSuccess {String} addressId Address ID.
+ * @apiSuccess {String} addressLine1 Address Line 1.
+ * @apiSuccess {String} addressLine2 Address Line 2.
+ * @apiSuccess {String} city City.
+ * @apiSuccess {String} state State.
+ * @apiSuccess {String} zipCode Zip Code.
+ * @apiSuccess {String} plus4 Plus 4.
+ * 
+ * @apiSuccessExample Example data on success:
+ * {
+ *  "addressId": "130 W 3RD ST, NEW YORK, NY 10012-1296 US",
+ *  "addressLine1": "130 W 3RD ST",
+ *  "city": "NEW YORK",
+ *  "state": "NEW YORK",
+ *  "zipCode": "10012",
+ *  "plus4": "1296"
+ * }
+ * 
+ */
 router.post(
     "/address/register",
     check("addressLine1")
@@ -24,6 +55,17 @@ router.post(
     UtilsController.registerAddress
 );
 
+
+/**
+ * @api {post} v1/utils/address/delete Delete an address
+ * @apiName DeleteAddress
+ * @apiGroup Utils
+ * 
+ * @apiBody {String} addressId Address ID.
+ * 
+ * @apiSuccessExample Example data on success:
+ * {}
+ */
 router.post(
     "/address/delete",
     check("addressId")
@@ -33,6 +75,35 @@ router.post(
     UtilsController.deleteAddress
 )
 
+
+/**
+ * @api {get} v1/utils/address/all Get all addresses
+ * @apiName GetAllAddresses
+ * @apiGroup Utils
+ * 
+ * @apiSuccess {String} addressId Address ID.
+ * @apiSuccess {String} addressLine1 Address Line 1.
+ * @apiSuccess {String} addressLine2 Address Line 2.
+ * @apiSuccess {String} city City.
+ * @apiSuccess {String} state State.
+ * @apiSuccess {String} zipCode Zip Code.
+ * @apiSuccess {String} plus4 Plus 4.
+ * 
+ * @apiSuccessExample Example data on success:
+ * {
+ *  [
+ *   {
+ *    "addressId": "130 W 3RD ST, NEW YORK, NY 10012-1296 US",
+ *    "addressLine1": "130 W 3RD ST",
+ *    "city": "NEW YORK",
+ *    "state": "NEW YORK",
+ *    "zipCode": "10012",
+ *    "plus4": "1296"
+ *   },
+ *   {...}
+ *  ]
+ * }
+ */
 router.get(
     "/address/all",
     validate,
