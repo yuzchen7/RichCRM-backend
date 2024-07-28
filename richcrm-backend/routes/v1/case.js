@@ -14,6 +14,7 @@ const router = express.Router();
  * @apiParam {String} caseId Case ID.
  *
  * @apiSuccess {String} caseId Case ID.
+ * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} premisesId Premises ID.
  * @apiSuccess {Number} clientType Client Type (0-Buyer, 1-Seller).
  * @apiSuccess {String} buyerId Buyer ID.
@@ -26,6 +27,7 @@ const router = express.Router();
  * @apiSuccessExample Example data on success:
  * {
  *  "caseId": "0-98765-123456",
+ *  "creatorId": "test1@gmail.com",
  *  "premisesId": 123456,
  *  "stage": 1,
  *  "status": 1,
@@ -90,6 +92,7 @@ router.post(
  * @apiGroup Case
  *
  * @apiBody {String} premisesId Premises ID.
+ * @apiBody {String} creatorId Creator ID.
  * @apiBody {Number} clientType Client Type (0-Buyer, 1-Seller).
  * @apiBody {String} buyerId Buyer ID.
  * @apiBody {String} sellerId Seller ID.
@@ -97,6 +100,7 @@ router.post(
  * @apiBody {String} status Status of the case (0-Confirming, 1-Setup, 2-Go Over, 3-Signing, 4-Clear).
  *
  * @apiSuccess {String} caseId Case ID.
+ * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} premisesId Premises ID.
  * @apiSuccess {Number} clientType Client Type (0-Buyer, 1-Seller).
  * @apiSuccess {String} buyerId Buyer ID.
@@ -108,6 +112,7 @@ router.post(
  * @apiSuccessExample Example data on success:
  * {
  *  "caseId": "0-98765-123456",
+ *  "creatorId": "test1@gmail.com",
  *  "premisesId": 123456,
  *  "stage": 0,
  *  "status": 0,
@@ -144,11 +149,13 @@ router.post(
  * @apiGroup Case
  *
  * @apiBody {String} caseId Case ID.
+ * @apiBody {String} creatorId Creator ID.
  * @apiBody {Number} stage Stage of the case (0-Case Start, 1-Contract, 2-Mortgage, 3-Closing).
  * @apiBody {Number} status Status of the case (0-Confirming, 1-Setup, 2-Go Over, 3-Signing, 4-Clear).
  * @apiBody {String} closingDate Closing date of the case.
  *
  * @apiSuccess {String} caseId Case ID.
+ * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {String} stage Stage of the case (0-Case Start, 1-Contract, 2-Mortgage, 3-Closing).
  * @apiSuccess {String} status Status of the case (0-Confirming, 1-Setup, 2-Go Over, 3-Signing, 4-Clear).
  * @apiSuccess {String} closingDate Closing date of the case.
@@ -156,6 +163,7 @@ router.post(
  * @apiSuccessExample Example data on success:
  * {
  *  "caseId": "0-98765-123456",
+ *  "creatorId": "test1@gmail.com",
  *  "stage": 0,
  *  "status": 0,
  *  "closingDate": "2024-07-18T19:52:16.672Z",
