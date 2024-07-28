@@ -1,5 +1,6 @@
 var ClientService = require("../db/client/client.service");
 var AddressService = require("../db/address/address.service");
+const { v4: uuidv4 } = require('uuid');
 const Types = require("../db/types");
 const e = require("express");
 
@@ -9,22 +10,32 @@ class ClientController {
 
         try {
             // Check if client already exists
-            const existingClient = await ClientService.readClient(ssn);
-            if (existingClient !== null) {
+            var existingClients = await ClientService.readClientByEmail(email);
+            if (existingClients !== null && existingClients.length > 0) {
                 return res.status(400).json({
                     status: "failed",
                     data: [],
-                    message: '[ClientController][registerClient] Client already exists'
+                    message: '[ClientController][registerClient] Client with this email already exists'
+                });
+            }
+            existingClients = await ClientService.readClientByPhoneNumber(cellNumber);
+            if (existingClients !== null && existingClients.length > 0) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[ClientController][registerClient] Client with this number already exists'
                 });
             }
             // Check if address exists
-            const existingAddress = await AddressService.readAddress(addressId);
-            if (existingAddress === null) {
-                return res.status(400).json({
-                    status: "failed",
-                    data: [],
-                    message: '[ClientController][registerClient] Address does not exist'
-                });
+            if (addressId !== undefined) {
+                const existingAddress = await AddressService.readAddress(addressId);
+                if (existingAddress === null) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[ClientController][registerClient] Address does not exist'
+                    });
+                }
             }
             // Check if title is valid
             var titleParsed = title;
@@ -39,7 +50,7 @@ class ClientController {
             }
 
             const client = await ClientService.createClient({
-                clientId: ssn,
+                clientId: uuidv4(),
                 title: titleParsed,
                 firstName: firstName,
                 lastName: lastName,
@@ -86,6 +97,48 @@ class ClientController {
             });
         }
     }
+
+    async queryClients(req, res) {
+        const { keyword } = req.body;
+        var clientList = [];
+        try {
+            const clients = await ClientService.readClientByKeyWord(keyword);
+            if (clients !== null) {
+                clients.forEach(client => {
+                    clientList.push({
+                        clientId: client.ClientId,
+                        title: client.Title,
+                        firstName: client.FirstName,
+                        lastName: client.LastName,
+                        gender: client.Gender,
+                        cellNumber: client.CellNumber,
+                        workNumber: client.WorkNumber,
+                        email: client.Email,
+                        wechatAccount: client.WechatAccount,
+                        ssn: client.SSN,
+                        dob: client.DOB,
+                        addressId: client.AddressId,
+                        attorneyId: client.AttorneyId,
+                        bankAttorneyId: client.BankAttorneyId,
+                    });
+                });
+            }
+            res.status(200).json({
+                status: "success",
+                data: clientList,
+                message: '[ClientController][queryClient] Clients retrieved successfully'
+            });           
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: '[ClientController][queryClient] Internal server error'
+            });
+        }
+    }
+
 
     async getClient(req, res) {
         const { clientId } = req.params;

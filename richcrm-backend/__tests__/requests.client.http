@@ -11,8 +11,17 @@ content-type: application/json
     "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"
 }
 
+### Query Clients
+POST http://localhost:3001/v1/client/query
+content-type: application/json
+
+{
+    "keyword": "John"
+}
+
+
 ### Get Client
-GET http://localhost:3001/v1/client/123-45-6789
+GET http://localhost:3001/v1/client/75ff033c-9e95-4d0e-a53f-fe4614d8ffb4
 
 
 ### Update Client
@@ -20,7 +29,7 @@ POST http://localhost:3001/v1/client/update
 content-type: application/json
 
 {
-    "clientId": "123-45-6789",
+    "clientId": "8bbd3423-e3c9-4749-bf97-6f977e6343f4",
     "title": 1,
     "firstName": "Jean",
     "lastName": "Dean",
@@ -32,6 +41,7 @@ content-type: application/json
     "dob": "1990-01-01", 
     "attorneyId": 1, 
     "bankAttorneyId": 1, 
+    "ssn": "123-45-6789",
     "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"
 }
 
@@ -40,5 +50,5 @@ POST http://localhost:3001/v1/client/delete
 content-type: application/json
 
 {
-    "clientId": "123-45-6789"
+    "clientId": "75ff033c-9e95-4d0e-a53f-fe4614d8ffb4"
 }

@@ -11,6 +11,40 @@ class ClientService {
         return null;
     }
 
+    async readClientByKeyWord(keyword) {
+        if (keyword === undefined || keyword === "") {
+            console.log("[ClientService][readClientByKeyWord] Invalid keyword");
+            return null;
+        }
+        const data = await Client.getClientByKeyword(keyword);
+
+        if (data.Items !== undefined) {
+            return data.Items;
+        }
+
+        return null;
+    }
+
+    async readClientByPhoneNumber(phoneNumber) {
+        const data = await Client.getClientByPhoneNumber(phoneNumber);
+
+        if (data.Items !== undefined) {
+            return data.Items;
+        }
+
+        return null;
+    }
+
+    async readClientByEmail(email) {
+        const data = await Client.getClientByEmail(email);
+
+        if (data.Items !== undefined) {
+            return data.Items;
+        }
+
+        return null;
+    }
+
     async createClient(client) {
         // Check if the client object is valid
         if (client.clientId === undefined ||

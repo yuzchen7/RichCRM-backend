@@ -39,6 +39,44 @@ class Client {
         return data;
     }
 
+    async getClientByPhoneNumber(phoneNumber) {
+        const params = {
+            TableName: this.table,
+            FilterExpression: 'CellNumber = :c',
+            ExpressionAttributeValues: {
+                ':c': phoneNumber,
+            },
+        };
+        const data = await db.scan(params).promise();
+        return data;
+    }
+
+    async getClientByEmail(email) {
+        const params = {
+            TableName: this.table,
+            FilterExpression: 'Email = :e',
+            ExpressionAttributeValues: {
+                ':e': email,
+            },
+        };
+        const data = await db.scan(params).promise();
+        console.log('Client data:', data);
+        return data;
+    }
+
+    async getClientByKeyword(keyword) {
+        const params = {
+            TableName: this.table,
+            FilterExpression: 'contains(FirstName, :k) or contains(LastName, :k) or contains(Email, :k) or contains(CellNumber, :k)',
+            ExpressionAttributeValues: {
+                ':k': keyword,
+            },
+        };
+        const data = await db.scan(params).promise();
+        return data;
+    }
+
+
     async createClient(client) {
         const params = {
             TableName: this.table,

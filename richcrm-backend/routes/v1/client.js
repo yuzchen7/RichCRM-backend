@@ -57,14 +57,59 @@ router.post(
         .notEmpty()
         .isEmail()
         .withMessage("Email is required"),
-    check("ssn")
-        .notEmpty()
-        .withMessage("SSN is required"),
-    check("addressId")
-        .notEmpty()
-        .withMessage("Address ID is required"),
     validate,
     ClientController.registerClient
+);
+
+
+/**
+ * @api {post} v1/client/query Query clients
+ * @apiName QueryClients
+ * @apiGroup Client
+ * 
+ * @apiBody {String} keyword Keyword to search for.
+ * 
+ * @apiSuccess {String} clientId Client ID.
+ * @apiSuccess {Number} title Title of the Client (0-NA, 1-MR, 2-MRS, 3-MS, 4-DR).
+ * @apiSuccess {String} firstName First Name of the Client.
+ * @apiSuccess {String} lastName Last Name of the Client.
+ * @apiSuccess {String} gender Gender of the Client (0-NA, 1-MALE, 2-FEMALE).
+ * @apiSuccess {String} cellNumber Cell Number of the Client.
+ * @apiSuccess {String} workNumber Work Number of the Client.
+ * @apiSuccess {String} email Email of the Client.
+ * @apiSuccess {String} wechatAccount Wechat Account of the Client.
+ * @apiSuccess {String} ssn SSN of the Client.
+ * @apiSuccess {String} dob Date of Birth of the Client.
+ * @apiSuccess {String} attorneyId Attorney ID of the Client.
+ * @apiSuccess {String} bankAttorneyId Bank Attorney ID of the Client.
+ * @apiSuccess {String} addressId Address ID of the Client.
+ * 
+ * @apiSuccessExample Example data on success:
+ * [{
+ *  "clientId":"123-45-6789",
+ *  "title": 0,
+ *  "firstName": "John",
+ *  "lastName": "Doe",
+ *  "gender": 0,
+ *  "cellNumber": "1234567890",
+ *  "email": "john.doe@hotmail.com",
+ *  "ssn": "123-45-6789",
+ *  "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"
+ *  "workNumber": "1234567890",
+ *  "wechatAccount": "john.doe",
+ *  "dob": "1990-01-01T00:00:00.000Z",
+ *  "attorneyId": 1,
+ *  "bankAttorneyId": 2
+ * }]
+ * 
+ */
+router.post(
+    "/query",
+    check("keyword")
+        .notEmpty()
+        .withMessage("Keyword is required"),
+    validate,
+    ClientController.queryClients
 );
 
 /**
