@@ -1,4 +1,5 @@
 const CaseService = require('../db/case/case.service');
+const UserService = require('../db/user/user.service');
 const Types = require("../db/types");
 
 class CaseController {
@@ -6,8 +7,11 @@ class CaseController {
     async readCase(req, res) {
         const {caseId} = req.params;
         if (caseId === undefined) {
-            console.log("[CaseController][readCase] Invalid case id");
-            return null;
+            return res.status(400).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][readCase] Invalid case id'
+            });
         }
         try {
             const c = await CaseService.readCase(caseId);
@@ -43,39 +47,120 @@ class CaseController {
             });
         }
     }
+
+    async readAllCasesByCreatorId(req, res) {
+        const { creatorId } = req.body;
+        try {
+            var caseList = [];
+            const cases = await CaseService.readAllCasesByCreatorId(creatorId);
+            if (cases !== null) {
+                cases.forEach(c => {
+                    caseList.push({
+                        "caseId": c.CaseId,
+                        "creatorId": c.CreatorId,
+                        "premisesId": c.PremisesId,
+                        "stage": c.Stage,
+                        "status": c.Status,
+                        "clientType": c.ClientType,
+                        "buyerId": c.BuyerId,
+                        "sellerId": c.SellerId,
+                        "createAt": c.CreateAt,
+                        "closingDate": c.ClosingDate
+                    });
+                });
+            }
+            res.status(200).json({
+                status: "success",
+                data: caseList,
+                message: '[CaseController][readAllCasesByCreatorId] Cases retrieved successfully'
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][readAllCasesByCreatorId] Internal server error'
+            });
+        }
+    }
+
+
     
     async createCase(req, res) {
-        const {premisesId, clientType, buyerId, sellerId, stage, status} = req.body;
+        const {creatorId, premisesId, clientType, buyerId, sellerId, stage, status} = req.body;
+
+        // Check if the creator id is valid
+        if (creatorId === undefined) {
+            return res.status(400).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][createCase] Invalid creator id'
+            });
+        } else {
+            try {
+                const creator = await UserService.readUser(creatorId);
+                if (creator === null) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[CaseController][createCase] Creator does not exist'
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({
+                    status: "failed",
+                    data: [],
+                    message: '[CaseController][createCase] Internal server error'
+                });
+            }
+        }
+
         if (premisesId === undefined) {
-            console.log("[CaseController][createCase] Invalid premises id");
-            return null;
+            return res.status(400).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][createCase] Invalid premises id'
+            });
         }
         // Check if the stage is valid
         const stageEnum = Types.castIntToEnum(Types.stage, stage);
         if (stageEnum === undefined) {
-            console.log("[CaseController][createCase] Invalid stage");
-            return null;
+            return res.status(400).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][createCase] Invalid stage'
+            });
         }
 
         // Check if the status is valid
         const statusEnum = Types.castIntToEnum(Types.status, status);
         if (statusEnum === undefined) {
-            console.log("[CaseController][createCase] Invalid status");
-            return null;
+            return res.status(400).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][createCase] Invalid status'
+            });
         }
 
         // Check if the client type is valid
         const clientTypeEnum = Types.castIntToEnum(Types.clientType, clientType);
         if (clientTypeEnum === undefined) {
-            console.log("[CaseController][createCase] Invalid client type");
-            return null;
+            return res.status(400).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][createCase] Invalid client type'
+            });
         }
         var caseId;
         switch (clientType) {
             case Types.clientType.BUYER:
                 if (buyerId === undefined) {
-                    console.log("[CaseController][createCase] Invalid buyer id");
-                    return null;
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[CaseController][createCase] Invalid buyer id'
+                    });
                 } else {
                     caseId = generateCaseId(clientType, buyerId, premisesId);
                     console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
@@ -83,16 +168,22 @@ class CaseController {
                 break;
             case Types.clientType.SELLER:
                 if (sellerId === undefined) {
-                    console.log("[CaseController][createCase] Invalid seller id");
-                    return null;
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[CaseController][createCase] Invalid seller id'
+                    });
                 } else {
                     caseId = generateCaseId(clientType, sellerId, premisesId);
                     console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
                 }
                 break;
             default:
-                console.log("[CaseController][createCase] Invalid client type");
-                return null;
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[CaseController][createCase] Invalid client type'
+                });
         }
         try {
             const existingCase = await CaseService.readCase(caseId);
@@ -104,6 +195,7 @@ class CaseController {
                 });
             }
             const c = await CaseService.createCase({
+                creatorId,
                 caseId,
                 premisesId,
                 stage,
@@ -118,6 +210,7 @@ class CaseController {
                     status: "success",
                     data: [{
                         "caseId": c.CaseId,
+                        "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
                         "status": c.Status,
@@ -147,11 +240,42 @@ class CaseController {
     }
 
     async updateCase(req, res) {
-        const {caseId, stage, status, premisesId, closingDate} = req.body;
+        const {caseId, creatorId, stage, status, premisesId, closingDate} = req.body;
 
+        // Check if the case id is valid
         if (caseId === undefined) {
-            console.log("[CaseController][updateCase] Invalid case id");
-            return null;
+            return res.status(400).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][updateCase] Invalid case id'
+            });
+        }
+
+        // Check if the creator id is valid
+        if (creatorId === undefined) {
+            return res.status(400).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][updateCase] Invalid creator id'
+            });
+        } else {
+            try {
+                const creator = await UserService.readUser(creatorId);
+                if (creator === null) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[CaseController][updateCase] Creator does not exist'
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({
+                    status: "failed",
+                    data: [],
+                    message: '[CaseController][updateCase] Internal server error'
+                });
+            }
         }
 
         // Get the existing case
@@ -167,15 +291,21 @@ class CaseController {
         // Check if the stage is valid
         const stageEnum = Types.castIntToEnum(Types.stage, stage);
         if (stageEnum === undefined) {
-            console.log("[CaseController][updateCase] Invalid stage");
-            return null;
+            return res.status(400).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][updateCase] Invalid stage'
+            });
         }
 
         // Check if the status is valid
         const statusEnum = Types.castIntToEnum(Types.status, status);
         if (statusEnum === undefined) {
-            console.log("[CaseController][updateCase] Invalid status");
-            return null;
+            return res.status(400).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][updateCase] Invalid status'
+            });
         }
 
         var newPremisesId = premisesId;
@@ -187,6 +317,7 @@ class CaseController {
         try {
             const c = await CaseService.updateCase({
                 caseId: caseId,
+                creatorId: creatorId,
                 premisesId: newPremisesId,
                 stage: stage,
                 status: status,
@@ -197,6 +328,7 @@ class CaseController {
                     status: "success",
                     data: [{
                         "caseId": c.CaseId,
+                        "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
                         "status": c.Status,

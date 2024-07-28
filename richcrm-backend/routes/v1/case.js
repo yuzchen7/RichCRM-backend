@@ -45,6 +45,46 @@ router.get(
 );
 
 /**
+ * @api {post} v1/case/all Get all cases
+ * @apiName GetAllCases
+ * @apiGroup Case
+ * 
+ * @apiBody {String} creatorId Creator ID.
+ * 
+ * @apiSuccess {String} caseId Case ID.
+ * @apiSuccess {Number} creatorId Creator ID.
+ * @apiSuccess {Number} premisesId Premises ID.
+ * @apiSuccess {Number} stage Stage of the case (0-Case Start, 1-Contract, 2-Mortgage, 3-Closing).
+ * @apiSuccess {Number} status Status of the case (0-Confirming, 1-Setup, 2-Go Over, 3-Signing, 4-Clear).
+ * @apiSuccess {Number} clientType Client Type (0-Buyer, 1-Seller).
+ * @apiSuccess {String} buyerId Buyer ID.
+ * @apiSuccess {String} sellerId Seller ID.
+ * @apiSuccess {String} createAt Creation date of the case.
+ * @apiSuccess {String} closingDate Closing date of the case.
+ * 
+ * @apiSuccessExample Example data on success:
+ * [{
+ * "caseId": "0-98765-123456",
+ *  "premisesId": 123456,
+ *  "stage": 1,
+ *  "status": 1,
+ *  "clientType": 0,
+ *  "buyerId": 98765,
+ *  "createAt": "2024-07-18T19:52:16.672Z",
+ *  "closingDate": "2024-07-20T20:04:24.740Z"
+ * }]
+ * 
+ */
+router.post(
+    "/all",
+    check("creatorId")
+        .notEmpty()
+        .withMessage("Creator ID is required"),
+    validate,
+    CaseController.readAllCasesByCreatorId
+);
+
+/**
  * @api {post} v1/case/create Create a new case
  * @apiName CreateCase
  * @apiGroup Case
@@ -81,6 +121,9 @@ router.post(
     check("premisesId")
         .notEmpty()
         .withMessage("Premises ID is required"),
+    check("creatorId")
+        .notEmpty()
+        .withMessage("Creator ID is required"),
     check("clientType")
         .notEmpty()
         .withMessage("Client Type is required"),

@@ -60,7 +60,6 @@ class Client {
             },
         };
         const data = await db.scan(params).promise();
-        console.log('Client data:', data);
         return data;
     }
 

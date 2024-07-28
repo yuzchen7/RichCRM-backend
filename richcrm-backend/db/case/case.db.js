@@ -5,6 +5,7 @@
  * 
  * @typedef {object} Case
  * @property {string} CaseId - Case ID
+ * @property {string} CreatorId - Foreign key to User who created this case
  * @property {string} PremisesId - Foreign key to Premises
  * @property {clientType} ClientType - Is this case for buyside or sellside clients?
  * @property {string} BuyerId - Foreign key to Buyers
@@ -32,6 +33,18 @@ class Case {
             },
         };
         const data = await db.get(params).promise();
+        return data;
+    }
+
+    async getAllCasesByCreatorId(creatorId) {
+        const params = {
+            TableName: this.table,
+            FilterExpression: "CreatorId = :c",
+            ExpressionAttributeValues: {
+                ":c": creatorId,
+            },
+        };
+        const data = await db.scan(params).promise();
         return data;
     }
 
@@ -74,6 +87,7 @@ class Case {
             TableName: this.table,
             Item: {
                 CaseId: c.caseId,
+                CreatorId: c.creatorId,
                 PremisesId: c.premisesId,
                 ClientType: c.clientType,
                 BuyerId: c.buyerId,
@@ -95,12 +109,13 @@ class Case {
             Key: {
                 CaseId: c.caseId,
             },
-            UpdateExpression: "set PremisesId = :p, ClosingDate = :cd, #stg = :stg, #stt = :stt",
+            UpdateExpression: "set CreatorId = :c, PremisesId = :p, ClosingDate = :cd, #stg = :stg, #stt = :stt",
             ExpressionAttributeNames: {
                 "#stg": "Stage",
                 "#stt": "Status",
             },
             ExpressionAttributeValues: {
+                ":c": c.creatorId,
                 ":p": c.premisesId,
                 ":cd": c.closingDate,
                 ":stg": c.stage,

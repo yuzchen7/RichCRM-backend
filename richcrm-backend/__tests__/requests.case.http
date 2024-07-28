@@ -4,6 +4,7 @@ content-type: application/json
 
 {
     "premisesId": 123456,
+    "creatorId": "test1@gmail.com",
     "stage": 0,
     "status": 0,
     "clientType": 0,
@@ -15,12 +16,23 @@ content-type: application/json
 GET http://localhost:3001/v1/case/0-98765-123456
 
 
+### Read All Cases by Creator
+POST http://localhost:3001/v1/case/all
+content-type: application/json
+
+{
+    "creatorId": "test1@gmail.com"
+}
+
+
+
 ### Update Case
 POST http://localhost:3001/v1/case/update
 content-type: application/json
 
 {
     "caseId": "0-98765-123456",
+    "creatorId": "test1@gmail.com",
     "stage": 1,
     "status": 1,
     "closingDate": "2024-07-20T20:24:24.740Z"

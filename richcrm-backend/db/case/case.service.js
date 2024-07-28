@@ -31,6 +31,16 @@ class CaseService {
         return null;
     }
 
+    async readAllCasesByCreatorId(creatorId) {
+        const data = await Case.getAllCasesByCreatorId(creatorId);
+
+        if (data.Items !== undefined) {
+            return data.Items;
+        }
+
+        return null;
+    }
+
     async readAllCases() {
         const data = await Case.getAllCases();
 
@@ -43,7 +53,8 @@ class CaseService {
 
     async createCase(c) {
         // Check if the case object is valid
-        if (c.caseId === undefined ||
+        if (c.creatorId === undefined ||
+            c.caseId === undefined ||
             c.stage === undefined ||
             c.status === undefined ||
             c.clientType === undefined) {
