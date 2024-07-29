@@ -11,6 +11,7 @@ var v1AuthRouter = require('./routes/v1/auth');
 var v1UtilsRouter = require('./routes/v1/utils');
 var v1CaseRouter = require('./routes/v1/case');
 var v1ClientRouter = require('./routes/v1/client');
+var v1PremisesRouter = require('./routes/v1/premises');
 
 var app = express();
 
@@ -38,6 +39,7 @@ app.use('/v1/auth', v1AuthRouter);
 app.use('/v1/utils', v1UtilsRouter);
 app.use('/v1/case', v1CaseRouter);
 app.use('/v1/client', v1ClientRouter);
+app.use('/v1/premises', v1PremisesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

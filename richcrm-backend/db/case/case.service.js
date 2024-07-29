@@ -55,6 +55,7 @@ class CaseService {
         // Check if the case object is valid
         if (c.creatorId === undefined ||
             c.caseId === undefined ||
+            c.premisesId === undefined ||
             c.stage === undefined ||
             c.status === undefined ||
             c.clientType === undefined) {

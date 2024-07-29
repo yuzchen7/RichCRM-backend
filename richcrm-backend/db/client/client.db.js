@@ -95,7 +95,6 @@ class Client {
                 AddressId: client.addressId,
             },
         };
-        console.log('Client params:', params);
         await db.put(params).promise();
         return params.Item;
     }

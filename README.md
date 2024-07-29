@@ -133,6 +133,16 @@ aws dynamodb create-table \
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
     --table-class STANDARD \
     --endpoint-url http://localhost:8000
+
+# Premises
+aws dynamodb create-table \
+    --table-name Premises \
+    --attribute-definitions \
+        AttributeName=PremisesId,AttributeType=S \
+    --key-schema AttributeName=PremisesId,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --table-class STANDARD \
+    --endpoint-url http://localhost:8000
 ```
 ### 2. Delete table
 ```bash

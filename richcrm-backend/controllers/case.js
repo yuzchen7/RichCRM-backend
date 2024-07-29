@@ -1,5 +1,7 @@
 const CaseService = require('../db/case/case.service');
 const UserService = require('../db/user/user.service');
+const PremisesService = require('../db/premises/premises.service');
+const ClientService = require('../db/client/client.service');
 const Types = require("../db/types");
 
 class CaseController {
@@ -116,13 +118,24 @@ class CaseController {
             }
         }
 
-        if (premisesId === undefined) {
-            return res.status(400).json({
+        // Check if the premises id is valid
+        try {
+            const premises = await PremisesService.readPremises(premisesId);
+            if (premises === null) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[CaseController][createCase] Premises does not exist'
+                });
+            }
+        } catch (error) {
+            return res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[CaseController][createCase] Invalid premises id'
+                message: '[CaseController][createCase] readPremises internal server error'
             });
         }
+
         // Check if the stage is valid
         const stageEnum = Types.castIntToEnum(Types.stage, stage);
         if (stageEnum === undefined) {
@@ -152,39 +165,54 @@ class CaseController {
                 message: '[CaseController][createCase] Invalid client type'
             });
         }
+
+        // Check if the buyerId / SellerId is valid -> Generate caseId
         var caseId;
-        switch (clientType) {
-            case Types.clientType.BUYER:
-                if (buyerId === undefined) {
+        try {
+            switch (clientType) {
+                case Types.clientType.BUYER:
+                    const buyer = await ClientService.readClient(buyerId);
+                    if (buyerId === undefined || buyer === null) {
+                        return res.status(400).json({
+                            status: "failed",
+                            data: [],
+                            message: '[CaseController][createCase] Invalid buyer id'
+                        });
+                    } else {
+                        caseId = generateCaseId(clientType, buyerId, premisesId);
+                        console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
+                    }
+                    break;
+                case Types.clientType.SELLER:
+                    const seller = await ClientService.readClient(sellerId);
+                    if (sellerId === undefined || seller === null) {
+                        return res.status(400).json({
+                            status: "failed",
+                            data: [],
+                            message: '[CaseController][createCase] Invalid seller id'
+                        });
+                    } else {
+                        caseId = generateCaseId(clientType, sellerId, premisesId);
+                        console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
+                    }
+                    break;
+                default:
                     return res.status(400).json({
                         status: "failed",
                         data: [],
-                        message: '[CaseController][createCase] Invalid buyer id'
+                        message: '[CaseController][createCase] Invalid client type'
                     });
-                } else {
-                    caseId = generateCaseId(clientType, buyerId, premisesId);
-                    console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
-                }
-                break;
-            case Types.clientType.SELLER:
-                if (sellerId === undefined) {
-                    return res.status(400).json({
-                        status: "failed",
-                        data: [],
-                        message: '[CaseController][createCase] Invalid seller id'
-                    });
-                } else {
-                    caseId = generateCaseId(clientType, sellerId, premisesId);
-                    console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
-                }
-                break;
-            default:
-                return res.status(400).json({
-                    status: "failed",
-                    data: [],
-                    message: '[CaseController][createCase] Invalid client type'
-                });
+            }
+        } catch (error) {
+            return res.status(500).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][createCase] readClient internal server error'
+            });
         }
+        
+        
+
         try {
             const existingCase = await CaseService.readCase(caseId);
             if (existingCase !== null) {
@@ -229,7 +257,6 @@ class CaseController {
                 });
             }
         } catch (error) {
-            console.error(error);
             res.status(500).json({
                 status: "failed",
                 data: [],
@@ -392,7 +419,7 @@ class CaseController {
 
 const generateCaseId = (clientType, clientId, premisesId) => {
     console.log(`[CaseController][generateCaseId] Generating case id for client type: ${clientType}, client id: ${clientId}, premises id: ${premisesId}`);
-    return `${clientType}-${clientId}-${premisesId}`;
+    return `${clientType}_${clientId}_${premisesId}`;
 }
 
 module.exports = new CaseController();

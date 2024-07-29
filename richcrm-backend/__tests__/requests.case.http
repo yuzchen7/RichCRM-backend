@@ -3,12 +3,12 @@ POST http://localhost:3001/v1/case/create
 content-type: application/json
 
 {
-    "premisesId": 123456,
+    "premisesId": "52f10722-e44c-4816-842d-e0491849ec68",
     "creatorId": "test1@gmail.com",
     "stage": 0,
     "status": 0,
     "clientType": 0,
-    "buyerId": 98765
+    "buyerId": "e628b2ab-fb55-41b5-830a-13a755f74bfb"
 }
 
 
@@ -44,5 +44,5 @@ POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "0-98765-123456"
+    "caseId": "0-e628b2ab-fb55-41b5-830a-13a755f74bfb-52f10722-e44c-4816-842d-e0491849ec68"
 }
