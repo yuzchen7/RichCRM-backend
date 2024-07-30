@@ -24,7 +24,6 @@ class CaseController {
                         "caseId": c.CaseId,
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
-                        "status": c.Status,
                         "clientType": c.ClientType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
@@ -62,7 +61,6 @@ class CaseController {
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
-                        "status": c.Status,
                         "clientType": c.ClientType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
@@ -89,7 +87,7 @@ class CaseController {
 
     
     async createCase(req, res) {
-        const {creatorId, premisesId, clientType, buyerId, sellerId, stage, status} = req.body;
+        const {creatorId, premisesId, clientType, buyerId, sellerId, stage} = req.body;
 
         // Check if the creator id is valid
         if (creatorId === undefined) {
@@ -143,16 +141,6 @@ class CaseController {
                 status: "failed",
                 data: [],
                 message: '[CaseController][createCase] Invalid stage'
-            });
-        }
-
-        // Check if the status is valid
-        const statusEnum = Types.castIntToEnum(Types.status, status);
-        if (statusEnum === undefined) {
-            return res.status(400).json({
-                status: "failed",
-                data: [],
-                message: '[CaseController][createCase] Invalid status'
             });
         }
 
@@ -227,7 +215,6 @@ class CaseController {
                 caseId,
                 premisesId,
                 stage,
-                status,
                 clientType,
                 buyerId,
                 sellerId,
@@ -241,7 +228,6 @@ class CaseController {
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
-                        "status": c.Status,
                         "clientType": c.ClientType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
@@ -267,7 +253,7 @@ class CaseController {
     }
 
     async updateCase(req, res) {
-        const {caseId, creatorId, stage, status, premisesId, closingDate} = req.body;
+        const {caseId, creatorId, stage, premisesId, closingDate} = req.body;
 
         // Check if the case id is valid
         if (caseId === undefined) {
@@ -325,16 +311,6 @@ class CaseController {
             });
         }
 
-        // Check if the status is valid
-        const statusEnum = Types.castIntToEnum(Types.status, status);
-        if (statusEnum === undefined) {
-            return res.status(400).json({
-                status: "failed",
-                data: [],
-                message: '[CaseController][updateCase] Invalid status'
-            });
-        }
-
         var newPremisesId = premisesId;
         if (newPremisesId === undefined) {
             newPremisesId = existingCase.PremisesId;
@@ -347,7 +323,6 @@ class CaseController {
                 creatorId: creatorId,
                 premisesId: newPremisesId,
                 stage: stage,
-                status: status,
                 closingDate: new Date(closingDate).toISOString()
             });
             if (c !== null) {
@@ -358,7 +333,6 @@ class CaseController {
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
-                        "status": c.Status,
                         "clientType": c.ClientType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,

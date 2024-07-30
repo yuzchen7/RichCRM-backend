@@ -3,17 +3,16 @@ POST http://localhost:3001/v1/case/create
 content-type: application/json
 
 {
-    "premisesId": "52f10722-e44c-4816-842d-e0491849ec68",
+    "premisesId": "b394ec2a-24c0-4913-b065-09bcaecbeb9a",
     "creatorId": "test1@gmail.com",
     "stage": 0,
-    "status": 0,
     "clientType": 0,
-    "buyerId": "e628b2ab-fb55-41b5-830a-13a755f74bfb"
+    "buyerId": "f3117eaa-e3a7-4b3e-88fb-37a8741a181e"
 }
 
 
 ### Read Case
-GET http://localhost:3001/v1/case/0-98765-123456
+GET http://localhost:3001/v1/case/0_f3117eaa-e3a7-4b3e-88fb-37a8741a181e_b394ec2a-24c0-4913-b065-09bcaecbeb9a
 
 
 ### Read All Cases by Creator
@@ -31,10 +30,9 @@ POST http://localhost:3001/v1/case/update
 content-type: application/json
 
 {
-    "caseId": "0-98765-123456",
+    "caseId": "0_f3117eaa-e3a7-4b3e-88fb-37a8741a181e_b394ec2a-24c0-4913-b065-09bcaecbeb9a",
     "creatorId": "test1@gmail.com",
-    "stage": 1,
-    "status": 1,
+    "stage": 3,
     "closingDate": "2024-07-20T20:24:24.740Z"
 }
 
@@ -44,5 +42,5 @@ POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "0-e628b2ab-fb55-41b5-830a-13a755f74bfb-52f10722-e44c-4816-842d-e0491849ec68"
+    "caseId": "0_f3117eaa-e3a7-4b3e-88fb-37a8741a181e_b394ec2a-24c0-4913-b065-09bcaecbeb9a"
 }

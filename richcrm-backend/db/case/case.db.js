@@ -12,13 +12,12 @@
  * @property {string} SellerId - Foreign key to Sellers
  * @property {Date} CreateAt - When this case was created
  * @property {Date} ClosingDate - When this case was closed
- * @property {stage} Stage - The stage of this case
- * @property {status} Status - The status of this case
+ * @property {stage} Stage - The stage of this case(0-START, 1-CONTRACT_PREPARING, 2-CONTRACT_SIGNING, 3-MORTGAGE, 4-CLOSING)
  * 
  */
 
 const db = require("../dynamodb");
-const { stage, status, clientType } = require("../types");
+const { stage, clientType } = require("../types");
 
 class Case {
     constructor() {
@@ -94,8 +93,7 @@ class Case {
                 SellerId: c.sellerId,
                 CreateAt: c.createAt,
                 ClosingDate: c.closingDate,
-                Stage: c.stage,
-                Status: c.status,
+                Stage: c.stage
             },
         };
         console.log(params);
@@ -109,17 +107,15 @@ class Case {
             Key: {
                 CaseId: c.caseId,
             },
-            UpdateExpression: "set CreatorId = :c, PremisesId = :p, ClosingDate = :cd, #stg = :stg, #stt = :stt",
+            UpdateExpression: "set CreatorId = :c, PremisesId = :p, ClosingDate = :cd, #stg = :stg",
             ExpressionAttributeNames: {
                 "#stg": "Stage",
-                "#stt": "Status",
             },
             ExpressionAttributeValues: {
                 ":c": c.creatorId,
                 ":p": c.premisesId,
                 ":cd": c.closingDate,
                 ":stg": c.stage,
-                ":stt": c.status,
             },
             ReturnValues: "UPDATED_NEW",
         };

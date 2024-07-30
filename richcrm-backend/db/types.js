@@ -26,17 +26,10 @@ module.exports = {
     // [DB] CASE
     stage: {
         START: 0,
-        CONTRACT: 1,
-        MORTGAGE: 2,
-        CLOSING: 3,
-    },
-
-    status: {
-        CONFIRMING: 0,
-        SETUP: 1,
-        GO_OVER: 2,
-        SIGNING: 3,
-        CLEAR: 4,
+        CONTRACT_PREPARING: 1,
+        CONTRACT_SIGNING: 2,
+        MORTGAGE: 3,
+        CLOSING: 4,
     },
 
     clientType: {
