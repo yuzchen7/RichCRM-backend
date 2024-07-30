@@ -143,6 +143,15 @@ aws dynamodb create-table \
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
     --table-class STANDARD \
     --endpoint-url http://localhost:8000
+
+# Stage
+aws dynamodb create-table \
+    --table-name Stage \
+    --attribute-definitions \
+        AttributeName=StageId,AttributeType=S \
+    --key-schema AttributeName=StageId,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --table-class STANDARD
 ```
 ### 2. Delete table
 ```bash

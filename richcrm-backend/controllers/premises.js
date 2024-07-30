@@ -109,12 +109,11 @@ class PremisesController {
             // Check if the address exists
             const address = await AddressService.readAddress(addressId);
             if (address === null) {
-                res.status(400).json({
+                return res.status(400).json({
                     status: "failed",
                     data: [],
                     message: '[PremisesController][createPremises] Address not found',
                 });
-                return;
             }
 
             // Check if the property type is valid
@@ -159,7 +158,7 @@ class PremisesController {
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[PremisesController][createPremises] Internal server error',
+                message: `[PremisesController][createPremises] Internal server error: ${error}`,
             });
         }
     }

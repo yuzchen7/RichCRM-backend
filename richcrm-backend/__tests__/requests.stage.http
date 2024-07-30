@@ -1,0 +1,8 @@
+### Create Stage
+POST http://localhost:3001/v1/stage/create
+Content-Type: application/json
+
+{
+    "stageType": 1,
+    "caseId": "0_f3117eaa-e3a7-4b3e-88fb-37a8741a181e_b394ec2a-24c0-4913-b065-09bcaecbeb9a"
+}

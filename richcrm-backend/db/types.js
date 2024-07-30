@@ -64,7 +64,22 @@ module.exports = {
         NA: 0,
         MALE: 1,
         FEMALE: 2,
+    },
+
+    // [DB] STAGE
+    
+
+    // [DB] TASK
+    taskType: {
+        ACTION: 0,
+        CONTACT: 1,
+        UPLOAD: 2,
+    },
+
+    status: {
+        NOT_STARTED: 0,
+        PENDING: 1,
+        FINISHED: 2,
+        OVERDUE: 3,
     }
-
-
 };
