@@ -105,23 +105,49 @@ class Client {
             Key: {
                 ClientId: client.clientId,
             },
-            UpdateExpression: 'set Title = :t, FirstName = :f, LastName = :l, Gender = :g, CellNumber = :c, WorkNumber = :w, Email = :e, WechatAccount = :wc, DOB = :d, AttorneyId = :a, BankAttorneyId = :b, AddressId = :ad',
+            UpdateExpression: 'set Title = :t, FirstName = :f, LastName = :l, Gender = :g, CellNumber = :c, Email = :e',
             ExpressionAttributeValues: {
                 ':t': client.title,
                 ':f': client.firstName,
                 ':l': client.lastName,
                 ':g': client.gender,
                 ':c': client.cellNumber,
-                ':w': client.workNumber,
                 ':e': client.email,
-                ':wc': client.wechatAccount,
-                ':d': client.dob,
-                ':a': client.attorneyId,
-                ':b': client.bankAttorneyId,
-                ':ad': client.addressId,
             },
             ReturnValues: 'UPDATED_NEW',
         };
+
+        // Optional fields
+        if (client.ssn !== undefined) {
+            params.ExpressionAttributeValues[':ssn'] = client.ssn;
+            params.UpdateExpression += ', SSN = :ssn';
+        }
+        if (client.attorneyId !== undefined) {
+            params.ExpressionAttributeValues[':a'] = client.attorneyId;
+            params.UpdateExpression += ', AttorneyId = :a';
+        }
+        if (client.bankAttorneyId !== undefined) {
+            params.ExpressionAttributeValues[':b'] = client.bankAttorneyId;
+            params.UpdateExpression += ', BankAttorneyId = :b';
+        }
+        if (client.addressId !== undefined) {
+            params.ExpressionAttributeValues[':ad'] = client.addressId;
+            params.UpdateExpression += ', AddressId = :ad';
+        }
+        if (client.wechatAccount !== undefined) {
+            params.ExpressionAttributeValues[':wc'] = client.wechatAccount;
+            params.UpdateExpression += ', WechatAccount = :wc';
+        }
+        if (client.dob !== undefined) {
+            params.ExpressionAttributeValues[':d'] = client.dob;
+            params.UpdateExpression += ', DOB = :d';
+        }
+        if (client.workNumber !== undefined) {
+            params.ExpressionAttributeValues[':w'] = client.workNumber;
+            params.UpdateExpression += ', WorkNumber = :w';
+        }
+
+
         const data = await db.update(params).promise();
         return data.Attributes;
     }

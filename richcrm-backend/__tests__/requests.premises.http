@@ -5,12 +5,12 @@ content-type: application/json
 {
     "name": "RichCRM",
     "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US",
-    "propertyType": 6
+    "propertyType": 2
 }
 
 
 ### Read Premises by Id
-GET http://localhost:3001/v1/premises/52f10722-e44c-4816-842d-e0491849ec68
+GET http://localhost:3001/v1/premises/7e4ea9b0-98dc-4617-9f9d-41201bbbbe33
 
 
 ### Read Premises by AddressId
@@ -19,4 +19,36 @@ content-type: application/json
 
 {
     "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"
+}
+
+### Update Premises
+POST http://localhost:3001/v1/premises/update
+content-type: application/json
+
+{
+    "premisesId": "7e4ea9b0-98dc-4617-9f9d-41201bbbbe33",
+    "name": "Test Premises #1",
+    "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US",
+    "block": 1,
+    "lot": 1,
+    "section": 1,
+    "vacantAtClosing": true,
+    "subjectToTenancy": false,
+    "hoa": true,
+    "parkingSpaces": 2,
+    "maintenanceFee": 100,
+    "maintenanceFeePer": 1,
+    "assessments": 100,
+    "assessmentsPaidById": "123456",
+    "managingCompany": "RichCRM",
+    "isTwoFamily": false
+}
+
+
+### Delete Premises
+POST http://localhost:3001/v1/premises/delete
+content-type: application/json
+
+{
+    "premisesId": "7e4ea9b0-98dc-4617-9f9d-41201bbbbe33"
 }

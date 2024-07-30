@@ -14,18 +14,12 @@ const router = express.Router();
  * @apiBody {String} lastName Last Name of the Client.
  * @apiBody {String} cellNumber Cell Number of the Client.
  * @apiBody {String} email Email of the Client.
- * @apiBody {String} ssn SSN of the Client.
- * @apiBody {String} addressId Address ID of the Client.
  * 
  * @apiSuccess {String} clientId Client ID.
  * @apiSuccess {Number} title Title of the Client (0-NA, 1-MR, 2-MRS, 3-MS, 4-DR).
  * @apiSuccess {String} firstName First Name of the Client.
  * @apiSuccess {String} lastName Last Name of the Client.
  * @apiSuccess {Number} gender Gender of the Client (0-NA, 1-MALE, 2-FEMALE).
- * @apiSuccess {String} cellNumber Cell Number of the Client.
- * @apiSuccess {String} email Email of the Client.
- * @apiSuccess {String} ssn SSN of the Client.
- * @apiSuccess {String} addressId Address ID of the Client.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -36,8 +30,6 @@ const router = express.Router();
  *  "gender": 0,
  *  "cellNumber": "1234567890",
  *  "email": "john.doe@hotmail.com",
- *  "ssn": "123-45-6789",
- *  "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"
  * }
  * 
  */

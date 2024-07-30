@@ -23,37 +23,24 @@ class PremisesService {
 
     async createPremises(p) {
         // Check if the premises object is valid
-        if (p.PremisesId === undefined ||
-            p.Name === undefined ||
-            p.AddressId === undefined ||
-            p.PropertyType === undefined) {
+        if (p.premisesId === undefined ||
+            p.name === undefined ||
+            p.addressId === undefined ||
+            p.propertyType === undefined) {
             console.log("[PREMISES-Create] Invalid premises object");
             return null;
         }
 
         const data = await Premises.createPremises(p);
-        return data.Item;
+        return data;
     }
 
     async updatePremises(p) {
         // Check if the premises object is valid
-        if (p.PremisesId === undefined ||
-            p.Name === undefined ||
-            p.AddressId === undefined ||
-            p.PropertyType === undefined ||
-            p.Block === undefined ||
-            p.Lot === undefined ||
-            p.Section === undefined ||
-            p.VacantAtClosing === undefined ||
-            p.SubjectToTenancy === undefined ||
-            p.HOA === undefined ||
-            p.ParkingSpaces === undefined ||
-            p.MaintenanceFee === undefined ||
-            p.MaintenanceFeePer === undefined ||
-            p.Assessments === undefined ||
-            p.AssessmentsPaidById === undefined ||
-            p.ManagingCompany === undefined ||
-            p.IsTwoFamily === undefined
+        if (p.premisesId === undefined ||
+            p.name === undefined ||
+            p.addressId === undefined ||
+            p.propertyType === undefined
         ) {
             console.log("[PREMISES-Update] Invalid premises object");
             return null;

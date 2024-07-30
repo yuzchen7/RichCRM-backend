@@ -6,9 +6,7 @@ content-type: application/json
     "firstName": "John",
     "lastName": "Doe",
     "cellNumber": "1234567890",
-    "email": "john.doe@hotmail.com",
-    "ssn": "123-45-6789",
-    "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"
+    "email": "john.doe@hotmail.com"
 }
 
 ### Query Clients
@@ -16,7 +14,7 @@ POST http://localhost:3001/v1/client/query
 content-type: application/json
 
 {
-    "keyword": "John"
+    "keyword": "Jean"
 }
 
 
@@ -29,7 +27,7 @@ POST http://localhost:3001/v1/client/update
 content-type: application/json
 
 {
-    "clientId": "8bbd3423-e3c9-4749-bf97-6f977e6343f4",
+    "clientId": "f3117eaa-e3a7-4b3e-88fb-37a8741a181e",
     "title": 1,
     "firstName": "Jean",
     "lastName": "Dean",
@@ -50,5 +48,5 @@ POST http://localhost:3001/v1/client/delete
 content-type: application/json
 
 {
-    "clientId": "75ff033c-9e95-4d0e-a53f-fe4614d8ffb4"
+    "clientId": "e628b2ab-fb55-41b5-830a-13a755f74bfb"
 }

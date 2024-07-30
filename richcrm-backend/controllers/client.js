@@ -183,7 +183,7 @@ class ClientController {
     }
 
     async updateClient(req, res) {
-        const { clientId, title, firstName, lastName, gender, cellNumber, workNumber, email, wechatAccount, dob, attorneyId, bankAttorneyId, addressId } = req.body;
+        const { clientId, title, firstName, lastName, gender, cellNumber, workNumber, email, wechatAccount, ssn, dob, attorneyId, bankAttorneyId, addressId } = req.body;
 
         try {
             // Check if client exists
@@ -205,6 +205,7 @@ class ClientController {
                 workNumber: existingClient.WorkNumber,
                 email: existingClient.Email,
                 wechatAccount: existingClient.WechatAccount,
+                ssn: existingClient.SSN,
                 dob: existingClient.DOB,
                 attorneyId: existingClient.AttorneyId,
                 bankAttorneyId: existingClient.BankAttorneyId,
@@ -232,6 +233,11 @@ class ClientController {
                 genderParsed = Types.gender.NA;
             }
             clientObj.gender = genderParsed;
+
+            // Check if ssn is valid
+            if (ssn !== undefined) {
+                clientObj.ssn = ssn;
+            }
 
             // Check if dob is valid
             if (dob !== undefined) {

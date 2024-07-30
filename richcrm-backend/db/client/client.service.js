@@ -48,14 +48,10 @@ class ClientService {
     async createClient(client) {
         // Check if the client object is valid
         if (client.clientId === undefined ||
-            client.title === undefined ||
             client.firstName === undefined ||
             client.lastName === undefined ||
-            client.gender === undefined ||
             client.cellNumber === undefined ||
-            client.email === undefined ||
-            client.ssn === undefined ||
-            client.addressId === undefined) {
+            client.email === undefined) {
             console.log('[CLIENT-Create] Invalid client object');
             return null;
         }
