@@ -182,6 +182,14 @@ aws dynamodb update-item \
     --expression-attribute-values '{":n": {"S":"Eden"}, ":r": {"S":"admin"}}' \
     --return-values ALL_NEW \
     --endpoint-url http://localhost:8000
+
+aws dynamodb update-item \
+    --table-name Premises \
+    --key '{"PremisesId":{"S":"2ff1e12c-d65a-4bfb-86b8-2db1a562421f"}}' \
+    --update-expression 'set #n = :n, AddressId = :a, Block = :b, Lot = :l' \
+    --expression-attribute-names '{"#n": "Name"}' \
+    --expression-attribute-values '{":n": {"S":"Eden"}, ":a": {"S":"1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"}, ":b": {"N": "1"}, ":l": {"N": "1"}}' \
+    --return-values UPDATED_NEW
 ```
 
 ### 5. **Batch Write to Tables (Local Debugging Purposes)**
