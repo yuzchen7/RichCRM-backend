@@ -19,7 +19,7 @@ const router = express.Router();
  * @apiSuccess {Number} clientType Client Type (0-Buyer, 1-Seller).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.  
- * @apiSuccess {String} stage Stage of the case (0-Case Start, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} createAt Creation date of the case.
  * @apiSuccess {String} closingDate Closing date of the case.
  * 
@@ -54,7 +54,7 @@ router.get(
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} premisesId Premises ID.
- * @apiSuccess {String} stage Stage of the case (0-Case Start, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {Number} clientType Client Type (0-Buyer, 1-Seller).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.
@@ -92,7 +92,7 @@ router.post(
  * @apiBody {Number} clientType Client Type (0-Buyer, 1-Seller).
  * @apiBody {String} buyerId Buyer ID.
  * @apiBody {String} sellerId Seller ID.
- * @apiBody {String} stage Stage of the case (0-Case Start, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiBody {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  *
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
@@ -100,7 +100,7 @@ router.post(
  * @apiSuccess {Number} clientType Client Type (0-Buyer, 1-Seller).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.  
- * @apiSuccess {String} stage Stage of the case (0-Case Start, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} createAt Creation date of the case.
  * 
  * @apiSuccessExample Example data on success:
@@ -140,12 +140,12 @@ router.post(
  *
  * @apiBody {String} caseId Case ID.
  * @apiBody {String} creatorId Creator ID.
- * @apiBody {Number} stage Stage of the case (0-Case Start, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiBody {Number} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiBody {String} closingDate Closing date of the case.
  *
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
- * @apiSuccess {Number} stage Stage of the case (0-Case Start, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {Number} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} status Status of the case (0-Confirming, 1-Setup, 2-Go Over, 3-Signing, 4-Clear).
  * @apiSuccess {String} closingDate Closing date of the case.
  * 

@@ -25,7 +25,7 @@ module.exports = {
 
     // [DB] CASE
     stage: {
-        START: 0,
+        SETUP: 0,
         CONTRACT_PREPARING: 1,
         CONTRACT_SIGNING: 2,
         MORTGAGE: 3,

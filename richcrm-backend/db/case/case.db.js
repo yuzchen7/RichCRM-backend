@@ -12,7 +12,7 @@
  * @property {string} SellerId - Foreign key to Sellers
  * @property {Date} CreateAt - When this case was created
  * @property {Date} ClosingDate - When this case was closed
- * @property {stage} Stage - The stage of this case(0-START, 1-CONTRACT_PREPARING, 2-CONTRACT_SIGNING, 3-MORTGAGE, 4-CLOSING)
+ * @property {stage} Stage - The stage of this case(0-SETUP, 1-CONTRACT_PREPARING, 2-CONTRACT_SIGNING, 3-MORTGAGE, 4-CLOSING)
  * 
  */
 
