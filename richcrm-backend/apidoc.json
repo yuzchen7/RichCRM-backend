@@ -1,15 +1,15 @@
 {
     "name": "RichCRM Backend API",
     "version": "0.1.0",
-    "description": "API documentation for RichCRM backend",
+    "description": "REST API for RichCRM Backend",
     "apidoc": {
         "header": {
             "title": "Introduction",
-            "filename": "../API-doc/header.md"
+            "filename": "../apidoc/header.md"
         },
         "footer": {
             "title": "Appendix",
-            "filename": "../API-doc/footer.md"
+            "filename": "../apidoc/footer.md"
         }
     }
 }
