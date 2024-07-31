@@ -12,8 +12,8 @@ const router = express.Router();
  * 
  * @apiBody {String} firstName First Name of the Client.
  * @apiBody {String} lastName Last Name of the Client.
- * @apiBody {String} cellNumber Cell Number of the Client.
- * @apiBody {String} email Email of the Client.
+ * @apiBody {String} cellNumber [Optional] Cell Number of the Client.
+ * @apiBody {String} email [Optional] Email of the Client.
  * 
  * @apiSuccess {String} clientId Client ID.
  * @apiSuccess {Number} title Title of the Client (0-NA, 1-MR, 2-MRS, 3-MS, 4-DR).
@@ -42,13 +42,13 @@ router.post(
         .notEmpty()
         .withMessage("Last Name is required"),
     check("cellNumber")
-        .notEmpty()
+        .optional()
         .isMobilePhone()
-        .withMessage("Cell Number is required"),
+        .withMessage("Cell Number should be a valid phone number"),
     check("email")
-        .notEmpty()
+        .optional()
         .isEmail()
-        .withMessage("Email is required"),
+        .withMessage("Email should be a valid email address"),
     validate,
     ClientController.registerClient
 );

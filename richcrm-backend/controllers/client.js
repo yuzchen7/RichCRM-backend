@@ -10,21 +10,29 @@ class ClientController {
 
         try {
             // Check if client already exists
-            var existingClients = await ClientService.readClientByEmail(email);
-            if (existingClients !== null && existingClients.length > 0) {
-                return res.status(400).json({
-                    status: "failed",
-                    data: [],
-                    message: '[ClientController][registerClient] Client with this email already exists'
-                });
+
+            // Check if email exists
+            if (email !== undefined) {
+                var existingClients = await ClientService.readClientByEmail(email);
+                if (existingClients !== null && existingClients.length > 0) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[ClientController][registerClient] Client with this email already exists'
+                    });
+                }
             }
-            existingClients = await ClientService.readClientByPhoneNumber(cellNumber);
-            if (existingClients !== null && existingClients.length > 0) {
-                return res.status(400).json({
-                    status: "failed",
-                    data: [],
-                    message: '[ClientController][registerClient] Client with this number already exists'
-                });
+
+            // Check if cell number exists
+            if (cellNumber !== undefined) {
+                existingClients = await ClientService.readClientByPhoneNumber(cellNumber);
+                if (existingClients !== null && existingClients.length > 0) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[ClientController][registerClient] Client with this number already exists'
+                    });
+                }
             }
             // Check if address exists
             if (addressId !== undefined) {
@@ -270,12 +278,28 @@ class ClientController {
             }
 
             // Check if cellNumber is valid
-            if (cellNumber !== undefined) {
+            if (cellNumber !== undefined && cellNumber !== clientObj.cellNumber) {
+                const existingClients = await ClientService.readClientByPhoneNumber(cellNumber);
+                if (existingClients !== null && existingClients.length > 0) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[ClientController][updateClient] Client with this number already exists'
+                    });
+                }
                 clientObj.cellNumber = cellNumber;
             }
 
             // Check if email is valid
-            if (email !== undefined) {
+            if (email !== undefined && email !== clientObj.cellNumber) {
+                const existingClients = await ClientService.readClientByEmail(email);
+                if (existingClients !== null && existingClients.length > 0) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[ClientController][updateClient] Client with this email already exists'
+                    });
+                }
                 clientObj.email = email;
             }
 

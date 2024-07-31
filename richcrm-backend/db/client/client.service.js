@@ -49,9 +49,7 @@ class ClientService {
         // Check if the client object is valid
         if (client.clientId === undefined ||
             client.firstName === undefined ||
-            client.lastName === undefined ||
-            client.cellNumber === undefined ||
-            client.email === undefined) {
+            client.lastName === undefined) {
             console.log('[CLIENT-Create] Invalid client object');
             return null;
         }
