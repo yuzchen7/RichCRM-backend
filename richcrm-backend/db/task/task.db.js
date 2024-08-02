@@ -69,8 +69,8 @@ class Task {
 
         // Optional fields
         if (task.templates !== undefined)  { 
-            params.ExpressionAttributeValues[':ts'] = [task.templates];
-            params.UpdateExpression  += ", Templates = list_append(Templates, :ts)"; 
+            params.ExpressionAttributeValues[':ts'] = task.templates;
+            params.UpdateExpression  += ", Templates = :ts"; 
         }
 
         if (task.fileURL !== undefined)  {
@@ -94,4 +94,4 @@ class Task {
     }
 }
 
-module.exports = Task;
+module.exports = new Task();

@@ -30,6 +30,18 @@ router.post(
 )
 
 router.post(
+    "/update",
+    check("stageId")
+        .notEmpty()
+        .withMessage("Stage ID is required"),
+    check("stageStatus")
+        .notEmpty()
+        .withMessage("Stage Status is required"),
+    validate,
+    StageController.updateStage
+)
+
+router.post(
     "/delete",
     check("stageId")
         .notEmpty()

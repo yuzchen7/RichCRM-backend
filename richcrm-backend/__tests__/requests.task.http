@@ -1,0 +1,30 @@
+### Create Task
+POST http://localhost:3001/v1/task/create
+content-type: application/json
+
+{
+    "taskType": 1,
+    "name": "Case set up",
+    "status": 1
+}
+
+### Get Task by Task ID
+GET http://localhost:3001/v1/task/59a0302e-0cde-4c04-8ff3-99cd4d25a79a
+
+
+### Update Task by Task ID
+POST http://localhost:3001/v1/task/update
+content-type: application/json
+
+{
+    "taskId": "59a0302e-0cde-4c04-8ff3-99cd4d25a79a",
+    "status": 2
+}
+
+### Delete Task by Task ID
+POST http://localhost:3001/v1/task/delete
+content-type: application/json
+
+{
+    "taskId": "59a0302e-0cde-4c04-8ff3-99cd4d25a79a"
+}

@@ -152,6 +152,15 @@ aws dynamodb create-table \
     --key-schema AttributeName=StageId,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
     --table-class STANDARD
+
+# Task
+aws dynamodb create-table \
+    --table-name Task \
+    --attribute-definitions \
+        AttributeName=TaskId,AttributeType=S \
+    --key-schema AttributeName=TaskId,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --table-class STANDARD
 ```
 ### 2. Delete table
 ```bash

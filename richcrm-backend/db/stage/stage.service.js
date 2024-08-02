@@ -22,17 +22,13 @@ class StageService {
     }
 
     async getStagesByCaseIdAndStageType(caseId, stageType) {
-        const data = await Stage.getStagesByCaseId(caseId);
+        const data = await Stage.getStagesByCaseIdAndStageType(caseId, stageType);
 
-        if (data.Items === undefined) {
-            return null;
+        if (data.Items !== undefined) {
+            return data.Items;
         }
 
-        const stages = data.Items.filter((stage) => {
-            return stage.stageType === stageType;
-        });
-
-        return stages.Items;
+        return null;
     }
 
     async createStage(stage) {

@@ -42,6 +42,19 @@ class Stage {
         return data;
     }
 
+    async getStagesByCaseIdAndStageType(caseId, stageType) {
+        const params = {
+            TableName: this.table,
+            FilterExpression: "CaseId = :c AND StageType = :s",
+            ExpressionAttributeValues: {
+                ":c": caseId,
+                ":s": stageType,
+            },
+        };
+        const data = await db.scan(params).promise();
+        return data;
+    }
+
     async createStage(stage) {
         const params = {
             TableName: this.table,
@@ -70,15 +83,17 @@ class Stage {
             ExpressionAttributeValues: {
                 ':s': stage.stageStatus,
             },
+            ReturnValues: "UPDATED_NEW",
         };
 
         // Optional fields
         if (stage.tasks !== undefined) {
-            params.ExpressionAttributeValues[':ts'] = [stage.tasks];
-            params.UpdateExpression += ', Tasks = list_append(Tasks, :ts)';
+            params.ExpressionAttributeValues[':ts'] = stage.tasks;
+            params.UpdateExpression += ', Tasks = :ts';
         }
-        await db.update(params).promise();
-        return params.Item;
+        const data = await db.update(params).promise();
+        
+        return data.Attributes;
     }
 
     async deleteStage(stageId) {
