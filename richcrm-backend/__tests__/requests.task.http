@@ -5,7 +5,11 @@ content-type: application/json
 {
     "taskType": 1,
     "name": "Case set up",
-    "status": 1
+    "status": 1,
+    "templates": [
+        {"templateTitle": "Test Email Template 1"},
+        {"templateTitle": "Test Email Template 2"}
+    ]
 }
 
 ### Get Task by Task ID

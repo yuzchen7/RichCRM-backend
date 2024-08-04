@@ -1,0 +1,36 @@
+### Create template
+POST http://localhost:3001/v1/template/create
+content-type: application/json
+
+{
+    "templateTitle": "[Notice] Your account has been created",
+    "templateContent": "Dear %(firstName) \n\nYour account has been created successfully.\n\nBest Regards,\nRichCRM Team"
+}
+
+
+### Get template by template Title
+POST http://localhost:3001/v1/template/read
+content-type: application/json
+
+{
+    "templateTitle": "[Notice] Your account has been created"
+}
+
+
+### Update template by template Title
+POST http://localhost:3001/v1/template/update
+content-type: application/json
+
+{
+    "templateTitle": "[Notice] Your account has been created",
+    "templateContent": "Hi %(firstName) \n\nYour account has been created successfully.\n\nBest Regards,\nRichCRM Team"
+}
+
+
+### Delete template by template Title
+POST http://localhost:3001/v1/template/delete
+content-type: application/json
+
+{
+    "templateTitle": "[Notice] Your account has been created"
+}

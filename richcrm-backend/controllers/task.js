@@ -1,4 +1,5 @@
 const TaskService = require('../db/task/task.service');
+const TemplateService = require('../db/template/template.service');
 
 const Types = require('../db/types');
 const { v4: uuidv4 } = require('uuid');
@@ -59,16 +60,33 @@ class TaskController {
                 });
             }
 
+            // Check if the templates exist
+            var templateTitles = [];
+            if (templates !== undefined && templates.length > 0) {
+                for (let i = 0; i < templates.length; i++) {
+                    const templateTitle = templates[i].templateTitle;
+                    
+                    const template = await TemplateService.getTemplateByTitle(templateTitle);
+                    if (template !== null) {
+                        if (!templateTitles.includes(templateTitle)) {
+                            templateTitles.push(templateTitle);
+                        }
+                    } else {
+                        console.log(`[TaskController][createTask] Template not found: ${templateTitle}`);
+                    }
+                }
+            }
+
             const taskId = uuidv4();
-            const task = {
-                taskId,
-                taskType,
-                name,
-                status,
-                templates,
-                fileURL
+            const taskObj = {
+                taskId: taskId,
+                taskType: taskType,
+                name: name,
+                status: status,
+                templates: templateTitles,
+                fileURL: fileURL
             };
-            const data = await TaskService.createTask(task);
+            const data = await TaskService.createTask(taskObj);
             return res.status(200).json({
                 status: "success",
                 data: [{

@@ -1,0 +1,28 @@
+{
+    "Template": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "TemplateTitle": {"S": "Test Email Template 1"},
+                    "TemplateContent": {"S": "Hello %(lastName), this is a test email template 1."}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "TemplateTitle": {"S": "Test Email Template 2"},
+                    "TemplateContent": {"S": "Hello %(lastName), this is a test email template 2."}
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "TemplateTitle": {"S": "Test Email Template 3"},
+                    "TemplateContent": {"S": "Hello %(lastName), this is a test email template 3."}
+                }
+            }
+        }
+    ]
+}

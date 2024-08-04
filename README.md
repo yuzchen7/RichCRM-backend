@@ -161,6 +161,17 @@ aws dynamodb create-table \
     --key-schema AttributeName=TaskId,KeyType=HASH \
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
     --table-class STANDARD
+
+# Template
+aws dynamodb create-table \
+    --table-name Template \
+    --attribute-definitions \
+        AttributeName=TemplateTitle,AttributeType=S \
+    --key-schema AttributeName=TemplateTitle,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --table-class STANDARD
+
+
 ```
 ### 2. Delete table
 ```bash
@@ -219,5 +230,9 @@ aws dynamodb batch-write-item --request-items file://mock-data-dynamo/addresses.
 
 # Clients
 aws dynamodb batch-write-item --request-items file://mock-data-dynamo/clients.json \
+    --endpoint-url http://localhost:8000
+
+# Templates
+aws dynamodb batch-write-item --request-items file://mock-data-dynamo/templates.json \
     --endpoint-url http://localhost:8000
 ```
