@@ -1,0 +1,39 @@
+### Create Task
+POST http://localhost:3001/v1/task/create
+content-type: application/json
+
+{
+    "taskType": 1,
+    "name": "Customized Taskkkk",
+    "status": 1,
+    "templates": [
+        {"templateTitle": "Test Email Template 1"},
+        {"templateTitle": "Test Email Template 2"}
+    ]
+}
+
+### Get Task by Task ID
+GET http://localhost:3001/v1/task/9ae8ee7c-a4b9-447b-8775-633cd507de0d
+
+
+### Update Task by Task ID
+POST http://localhost:3001/v1/task/update
+content-type: application/json
+
+{
+    "taskId": "e29e020b-9735-40a4-a494-2b6df1949c1b",
+    "status": 2,
+    "templates": [
+        {"templateTitle": "Test Email Template 1"},
+        {"templateTitle": "Test Email Template 3"},
+        {"templateTitle": "Test Email Template 4"}
+    ]
+}
+
+### Delete Task by Task ID
+POST http://localhost:3001/v1/task/delete
+content-type: application/json
+
+{
+    "taskId": "e29e020b-9735-40a4-a494-2b6df1949c1b"
+}

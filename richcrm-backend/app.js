@@ -12,6 +12,9 @@ var v1UtilsRouter = require('./routes/v1/utils');
 var v1CaseRouter = require('./routes/v1/case');
 var v1ClientRouter = require('./routes/v1/client');
 var v1PremisesRouter = require('./routes/v1/premises');
+var v1StageRouter = require('./routes/v1/stage');
+var v1TaskRouter = require('./routes/v1/task');
+var v1TemplateRouter = require('./routes/v1/template');
 
 var app = express();
 
@@ -40,6 +43,9 @@ app.use('/v1/utils', v1UtilsRouter);
 app.use('/v1/case', v1CaseRouter);
 app.use('/v1/client', v1ClientRouter);
 app.use('/v1/premises', v1PremisesRouter);
+app.use('/v1/stage', v1StageRouter);
+app.use('/v1/task', v1TaskRouter);
+app.use('/v1/template', v1TemplateRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
