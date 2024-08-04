@@ -1,5 +1,7 @@
 const StageService = require('../db/stage/stage.service');
 const CaseService = require('../db/case/case.service');
+const TaskService = require('../db/task/task.service');
+const UtilsController = require('./utils');
 
 const Types = require('../db/types');
 const { v4: uuidv4 } = require('uuid');
@@ -73,12 +75,34 @@ class StageController {
                 });
             }
 
+            
+
             const stageId = uuidv4();
+            // IMPORTANT: Generate new tasks for this stage
+            var tasks = [];
+            const taskConfigs = Types.stageDefaultTaskList[stageTypeEnum]
+            for (let i = 0; i < taskConfigs.length; i++) {
+                const taskId = uuidv4();
+                const taskConfig = taskConfigs[i];
+                // Check if the templates exists
+                const templateTitles = await UtilsController.validateTemplates(taskConfig.templates);
+
+                const taskObj = {
+                    taskId: taskId,
+                    taskType: taskConfig.taskType,
+                    name: taskConfig.name,
+                    status: taskConfig.status,
+                    templates: templateTitles,
+                };
+                const t = await TaskService.createTask(taskObj);
+                tasks.push(t.TaskId);
+            }
+
             const stage = {
                 stageId: stageId,
                 stageType: stageType,
                 caseId: caseId,
-                tasks: [],
+                tasks: tasks,
                 stageStatus: Types.status.NOT_STARTED,
             };
 
@@ -187,6 +211,27 @@ class StageController {
     async deleteStage(req, res) {
         const { stageId } = req.body;
         try {
+            const stage = await StageService.getStageById(stageId);
+            if (stage === null) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[StageController][deleteStage] Stage not found'
+                });
+            }
+
+            const tasks = stage.Tasks;
+            for (let i = 0; i < tasks.length; i++) {
+                const t = await TaskService.deleteTask(tasks[i]);
+                if (t === null) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[StageController][deleteStage] Task not deleted'
+                    });
+                }
+            }
+
             const s = await StageService.deleteStage(stageId);
             if (s !== null) {
                 return res.status(200).json({

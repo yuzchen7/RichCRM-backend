@@ -67,6 +67,33 @@ module.exports = {
     },
 
     // [DB] STAGE
+    stageDefaultTaskList: {
+        SETUP: [
+            {
+                taskType: 0,
+                name: "Case set up",
+                status: 0,
+            },
+            {
+                taskType: 2,
+                name: "Inspection report",
+                status: 0,
+            },
+            {
+                taskType: 1,
+                name: "Confirm case details",
+                status: 0,
+                templates: [
+                    {templateTitle: "Test Email Template 1"},
+                    {templateTitle: "Test Email Template 2"},
+                ]
+            },
+        ],
+        CONTRACT_PREPARING: [],
+        CONTRACT_SIGNING: [],
+        MORTGAGE: [],
+        CLOSING: []
+    },
     
 
     // [DB] TASK

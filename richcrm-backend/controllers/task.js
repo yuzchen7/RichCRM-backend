@@ -1,5 +1,6 @@
 const TaskService = require('../db/task/task.service');
 const TemplateService = require('../db/template/template.service');
+const UtilsController = require('./utils');
 
 const Types = require('../db/types');
 const { v4: uuidv4 } = require('uuid');
@@ -61,21 +62,7 @@ class TaskController {
             }
 
             // Check if the templates exist
-            var templateTitles = [];
-            if (templates !== undefined && templates.length > 0) {
-                for (let i = 0; i < templates.length; i++) {
-                    const templateTitle = templates[i].templateTitle;
-                    
-                    const template = await TemplateService.getTemplateByTitle(templateTitle);
-                    if (template !== null) {
-                        if (!templateTitles.includes(templateTitle)) {
-                            templateTitles.push(templateTitle);
-                        }
-                    } else {
-                        console.log(`[TaskController][createTask] Template not found: ${templateTitle}`);
-                    }
-                }
-            }
+            const templateTitles = await UtilsController.validateTemplates(templates);
 
             const taskId = uuidv4();
             const taskObj = {

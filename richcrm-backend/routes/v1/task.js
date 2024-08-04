@@ -16,10 +16,6 @@ router.post(
     check("status")
         .notEmpty()
         .withMessage("Status is required"),
-    check("templates")
-        .notEmpty()
-        .isArray()
-        .withMessage("Templates is required"),
     validate,
     TaskController.createTask
 )
