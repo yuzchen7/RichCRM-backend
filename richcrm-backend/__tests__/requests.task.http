@@ -4,7 +4,7 @@ content-type: application/json
 
 {
     "taskType": 1,
-    "name": "Case set up",
+    "name": "Customized Taskkkk",
     "status": 1,
     "templates": [
         {"templateTitle": "Test Email Template 1"},
@@ -13,7 +13,7 @@ content-type: application/json
 }
 
 ### Get Task by Task ID
-GET http://localhost:3001/v1/task/59a0302e-0cde-4c04-8ff3-99cd4d25a79a
+GET http://localhost:3001/v1/task/9ae8ee7c-a4b9-447b-8775-633cd507de0d
 
 
 ### Update Task by Task ID
@@ -21,8 +21,13 @@ POST http://localhost:3001/v1/task/update
 content-type: application/json
 
 {
-    "taskId": "59a0302e-0cde-4c04-8ff3-99cd4d25a79a",
-    "status": 2
+    "taskId": "e29e020b-9735-40a4-a494-2b6df1949c1b",
+    "status": 2,
+    "templates": [
+        {"templateTitle": "Test Email Template 1"},
+        {"templateTitle": "Test Email Template 3"},
+        {"templateTitle": "Test Email Template 4"}
+    ]
 }
 
 ### Delete Task by Task ID
@@ -30,5 +35,5 @@ POST http://localhost:3001/v1/task/delete
 content-type: application/json
 
 {
-    "taskId": "59a0302e-0cde-4c04-8ff3-99cd4d25a79a"
+    "taskId": "e29e020b-9735-40a4-a494-2b6df1949c1b"
 }

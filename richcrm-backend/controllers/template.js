@@ -125,10 +125,7 @@ class TemplateController {
             const data = await TemplateService.deleteTemplate(templateTitle);
             return res.status(200).json({
                 status: "success",
-                data: [{
-                    templateTitle: data.TemplateTitle,
-                    templateContent: data.TemplateContent
-                }],
+                data: [],
                 message: '[TemplateController][deleteTemplate] Template deleted'
             });
         } catch (error) {

@@ -1,5 +1,6 @@
 var AddressService = require('../db/address/address.service');
 var TemplateService = require('../db/template/template.service');
+var TaskService = require('../db/task/task.service');
 var { standardizeAddress } = require('../middlewares/utils');
 
 
@@ -152,6 +153,22 @@ class UtilsController {
             }
         }
         return templateTitles;
+    }
+
+    // Update new task to task list
+    async updateTaskList(tasks, newTask) {
+        if (newTask !== undefined) {
+            if (!tasks.includes(newTask)) {
+                // validate if task exists
+                const task = await TaskService.getTaskById(newTask);
+                if (task === null) {
+                    console.log(`[StageController][updateStage] Task not found: ${newTask}`);
+                    return tasks;
+                }
+                tasks.push(newTask);
+            }
+        }
+        return tasks;
     }
 }
 

@@ -13,7 +13,6 @@ class StageController {
         const stageType = parseInt(req.params.stageType);
         try {
             const stages = await StageService.getStagesByCaseIdAndStageType(caseId, stageType);
-            console.log(caseId, stageType, stages);
             if (stages === null || stages.length == 0) {
                 return res.status(400).json({
                     status: "failed",
@@ -172,13 +171,14 @@ class StageController {
             }
 
             // Check if tasks are the same
+            if (stageObj.tasks === undefined) {
+                stageObj.tasks = [];
+            }
+            
             if (newTask !== undefined) {
-                if (!stageObj.tasks.includes(newTask)) {
-                    stageObj.tasks.push(newTask);
-                }
+                stageObj.tasks = await UtilsController.updateTaskList(stageObj.tasks, newTask);
             }
 
-            
             const s = await StageService.updateStage(stageObj);
             if (s !== null) {
                 return res.status(200).json({

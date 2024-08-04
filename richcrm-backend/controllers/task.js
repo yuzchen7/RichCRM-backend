@@ -136,9 +136,9 @@ class TaskController {
             }
 
             if (templates !== undefined) {
-                taskObj.templates = templates;
+                taskObj.templates = await UtilsController.validateTemplates(templates);
             }
-
+            
             if (fileURL !== undefined) {
                 taskObj.fileURL = fileURL;
             }
@@ -168,6 +168,14 @@ class TaskController {
     async deleteTask(req, res) {
         const { taskId } = req.body;
         try {
+            const task = await TaskService.getTaskById(taskId);
+            if (task === null) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[TaskController][deleteTask] Task not found'
+                });
+            }
             const t = await TaskService.deleteTask(taskId);
             if (t !== null) {
                 return res.status(200).json({
