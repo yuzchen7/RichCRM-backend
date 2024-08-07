@@ -23,9 +23,17 @@ class UtilsController {
             // Check if address already exists
             const existingAddress = await AddressService.readAddress(addressId);
             if (existingAddress !== null) {
-                return res.status(400).json({
-                    status: "failed",
-                    data: [],
+                return res.status(200).json({
+                    status: "success",
+                    data: [{
+                        addressId: existingAddress.AddressId,
+                        addressLine1: existingAddress.AddressLine1,
+                        addressLine2: existingAddress.AddressLine2,
+                        city: existingAddress.City,
+                        state: existingAddress.State,
+                        zipCode: existingAddress.ZipCode,
+                        plus4: existingAddress.Plus4
+                    }],
                     message: 'Address already exists'
                 });
             }
@@ -33,11 +41,11 @@ class UtilsController {
             // Create address
             const address = await AddressService.createAddress({
                 addressId: addressId,
-                addressLine1: standardizedData.addressLabel,
+                addressLine1: standardizedData.addressLine1,
                 addressLine2: addressLine2,
                 city: standardizedData.city,
-                state: standardizedData.county,
-                zipCode: standardizedData.postalCode,
+                state: standardizedData.state,
+                zipCode: standardizedData.zipCode,
                 plus4: standardizedData.plus4
             });
             if (address !== null) {

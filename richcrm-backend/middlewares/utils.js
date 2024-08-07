@@ -11,30 +11,40 @@ const standardizeAddress = async (addressLine1, addressLine2, city, state, zipCo
             message: 'Address Line 1 must start with a number and follow with the street name, please check and try again'
         });
     }
-    const number = addresses[0];
-    addresses.shift();
-    const street = addresses.join(' ');
+    // const number = addresses[0];
+    // addresses.shift();
+    // const street = addresses.join(' ');
     try {
-        const res = await axios.get("https://api.radar.io/v1/addresses/validate", {
+        const res = await axios.get("https://us-street.api.smarty.com/street-address", {
             params: {
-                "countryCode": "US",
-                "stateCode": state,
+                "auth-id": `${process.env.SMARTY_AUTH_ID}`,
+                "auth-token": `${process.env.SMARTY_AUTH_TOKEN}`,
+                "state": state,
                 "city": city,
-                "postalCode": zipCode,
-                "street": street,
-                "number": number
+                "zipcode": zipCode,
+                "street": addressLine1,
+                "secondary": addressLine2
             },
-            headers: {
-                'Authorization': `${process.env.RADAR_TEST_KEY}`
-            }
+            // headers: {
+            //     'Authorization': `${process.env.RADAR_TEST_KEY}`
+            // }
         });
-        if (res.data.meta === undefined ||
-            res.data.result.verificationStatus === undefined ||
-            res.data.result.verificationStatus === "unverified" ||
-            res.data.meta.code !== 200) {
+        const data = res.data[0];
+        if (data.last_line === undefined ||
+            data.delivery_line_1 === undefined ||
+            data.components === undefined) {
             return null;
         }
-        return res.data.address;
+        return {
+            formattedAddress: data.last_line,
+            addressLine1: data.delivery_line_1,
+            city: data.components.city_name,
+            state: data.components.state_abbreviation,
+            zipCode: data.components.zipcode,
+            plus4: data.components.plus4_code,
+            // latitude: data.metadata.latitude,
+            // longitude: data.metadata.longitude
+        };
     } catch (err) {
         return null;
     }
