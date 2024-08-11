@@ -40,9 +40,11 @@ module.exports = {
     // [DB] PREMISES
     propertyType: {
         CONDO: 0,
-        COOP: 1,
-        TOWNHOUSE: 2,
-        VACANT_LAND: 3,
+        HOUSE: 1,
+        CO_OP: 2,
+        COMMERCIAL: 3,
+        LAND: 4,
+        CONDO_OP: 5,
     },
     
     maintenanceFeePer: {
