@@ -2,9 +2,17 @@ const CaseService = require('../db/case/case.service');
 const UserService = require('../db/user/user.service');
 const PremisesService = require('../db/premises/premises.service');
 const ClientService = require('../db/client/client.service');
+const StageService = require('../db/stage/stage.service');
+const StageController = require('./stage');
 const Types = require("../db/types");
 
 class CaseController {
+
+    constructor () {
+        this.createCase = this.createCase.bind(this);
+        this.updateCase = this.updateCase.bind(this);
+        this.deleteCase = this.deleteCase.bind(this);
+    }
 
     async readCase(req, res) {
         const {caseId} = req.params;
@@ -221,6 +229,18 @@ class CaseController {
                 createAt: new Date().toISOString()
             });
             if (c !== null) {
+
+                // Create the stage
+                var stageObj;
+                const stageRet = await StageController.createStageByCaseIdAndStageType(c.CaseId, c.Stage);
+                if (stageRet.status === "success") {
+                    console.log(`[CaseController][createCase] Stage created successfully`);
+                    stageObj = stageRet.data[0];
+                } else {
+                    await CaseService.deleteCase(c.CaseId);
+                    return res.status(400).json(stageRet);
+                }
+
                 res.status(200).json({
                     status: "success",
                     data: [{
@@ -228,6 +248,7 @@ class CaseController {
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
+                        "stageId": stageObj.stageId,
                         "clientType": c.ClientType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
@@ -243,10 +264,11 @@ class CaseController {
                 });
             }
         } catch (error) {
+            await CaseService.deleteCase(caseId);
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[CaseController][createCase] Internal server error'
+                message: `[CaseController][createCase] Internal server error: ${error}`
             });
         }
         res.end();
@@ -310,6 +332,28 @@ class CaseController {
                 message: '[CaseController][updateCase] Invalid stage'
             });
         }
+        // Update the stage
+        var stageObj;
+        if (stage !== existingCase.Stage) {
+            const stageRet = await StageController.createStageByCaseIdAndStageType(existingCase.CaseId, stage);
+            if (stageRet.status === "success") {
+                console.log(`[CaseController][createCase] Stage created successfully`);
+                stageObj = stageRet.data[0];
+            } else {
+                return res.status(400).json(stageRet);
+            }
+        } else {
+            const stages = await StageService.getStagesByCaseIdAndStageType(existingCase.CaseId, stage);
+            if (stages === null || stages.length === 0) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[CaseController][updateCase] Stage does not exist'
+                });
+            } else {
+                stageObj = stages[0];
+            }
+        }
 
         var newPremisesId = premisesId;
         if (newPremisesId === undefined) {
@@ -326,13 +370,14 @@ class CaseController {
                 closingDate: new Date(closingDate).toISOString()
             });
             if (c !== null) {
-                res.status(200).json({
+                return res.status(200).json({
                     status: "success",
                     data: [{
                         "caseId": c.CaseId,
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
+                        "stageId": stageObj.stageId,
                         "clientType": c.ClientType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
@@ -342,7 +387,7 @@ class CaseController {
                     message: '[CaseController][updateCase] Case updated successfully'
                 });
             } else {
-                res.status(400).json({
+                return res.status(400).json({
                     status: "failed",
                     data: [],
                     message: '[CaseController][updateCase] Case update failed'
@@ -350,10 +395,10 @@ class CaseController {
             }
         } catch (error) {
             console.error(error);
-            res.status(500).json({
+            return res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[CaseController][updateCase] Internal server error'
+                message: `[CaseController][updateCase] Internal server error: ${error}`
             });
         }
     }
@@ -374,20 +419,21 @@ class CaseController {
                 });
             }
             await CaseService.deleteCase(caseId);
-            res.status(200).json({
+            // Delete all stages in the case
+            await StageController.deleteStagesByCaseId(caseId);
+            return res.status(200).json({
                 status: "success",
                 data: [],
                 message: '[CaseController][deleteCase] Case deleted successfully'
             });
         } catch (error) {
             console.error(error);
-            res.status(500).json({
+            return res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[CaseController][deleteCase] Internal server error'
+                message: `[CaseController][deleteCase] Internal server error: ${error}`
             });
         }
-        res.end();
     }
 }
 

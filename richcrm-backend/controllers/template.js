@@ -136,6 +136,26 @@ class TemplateController {
             });
         }
     }
+
+    // Check if templates exists
+    async validateTemplates(templates) {
+        var templateTitles = [];
+        if (templates !== undefined && templates.length > 0) {
+            for (let i = 0; i < templates.length; i++) {
+                const templateTitle = templates[i].templateTitle;
+                    
+                const template = await TemplateService.getTemplateByTitle(templateTitle);
+                if (template !== null) {
+                    if (!templateTitles.includes(templateTitle)) {
+                        templateTitles.push(templateTitle);
+                    }
+                } else {
+                    console.log(`[TaskController][createTask] Template not found: ${templateTitle}`);
+                }
+            }
+        }
+        return templateTitles;
+    }
 }
 
 module.exports = new TemplateController();

@@ -86,6 +86,7 @@ router.post(
  * @api {post} v1/case/create Create a new case
  * @apiName CreateCase
  * @apiGroup Case
+ * @apiDescription Create a new case, **the stage object will be created accordingly, its stageId will be returned**!
  *
  * @apiBody {String} premisesId Premises ID.
  * @apiBody {String} creatorId Creator ID.
@@ -101,6 +102,7 @@ router.post(
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.  
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {String} stageId Stage ID created by input stage.
  * @apiSuccess {String} createAt Creation date of the case.
  * 
  * @apiSuccessExample Example data on success:
@@ -109,6 +111,7 @@ router.post(
  *  "creatorId": "test1@gmail.com",
  *  "premisesId": 123456,
  *  "stage": 0,
+ *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "clientType": 0,
  *  "buyerId": 98765,
  *  "createAt": "2024-07-18T19:52:16.672Z",
@@ -137,6 +140,7 @@ router.post(
  * @api {post} v1/case/update Update a case
  * @apiName UpdateCase
  * @apiGroup Case
+ * @apiDescription Update a case by ID, **if the stage is updated, the new stage will be created and the stageId will be returned**!
  *
  * @apiBody {String} caseId Case ID.
  * @apiBody {String} creatorId Creator ID.
@@ -146,6 +150,7 @@ router.post(
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {String} stageId new Stage ID created or old Stage ID if the stage remain unchanged.
  * @apiSuccess {String} status Status of the case (0-Confirming, 1-Setup, 2-Go Over, 3-Signing, 4-Clear).
  * @apiSuccess {String} closingDate Closing date of the case.
  * 
@@ -154,6 +159,7 @@ router.post(
  *  "caseId": "0-98765-123456",
  *  "creatorId": "test1@gmail.com",
  *  "stage": 0,
+ *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "closingDate": "2024-07-18T19:52:16.672Z",
  * }
  */
@@ -170,6 +176,7 @@ router.post(
  * @api {post} v1/case/delete Delete a case
  * @apiName DeleteCase
  * @apiGroup Case
+ * @apiDescription Delete a case by ID. **Note that all stages and tasks related to the case will be deleted as well**!
  *
  * @apiBody {String} caseId Case ID.
  * 

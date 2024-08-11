@@ -21,7 +21,7 @@ POST http://localhost:3001/v1/task/update
 content-type: application/json
 
 {
-    "taskId": "e29e020b-9735-40a4-a494-2b6df1949c1b",
+    "taskId": "54ed26b0-bc16-4753-85d7-9a49d4d2a4a9",
     "status": 2,
     "templates": [
         {"templateTitle": "Test Email Template 1"},
@@ -35,5 +35,5 @@ POST http://localhost:3001/v1/task/delete
 content-type: application/json
 
 {
-    "taskId": "e29e020b-9735-40a4-a494-2b6df1949c1b"
+    "taskId": "54ed26b0-bc16-4753-85d7-9a49d4d2a4a9"
 }

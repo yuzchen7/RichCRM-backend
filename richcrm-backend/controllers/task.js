@@ -1,6 +1,5 @@
 const TaskService = require('../db/task/task.service');
-const TemplateService = require('../db/template/template.service');
-const UtilsController = require('./utils');
+const TemplateController = require('./template');
 
 const Types = require('../db/types');
 const { v4: uuidv4 } = require('uuid');
@@ -62,7 +61,7 @@ class TaskController {
             }
 
             // Check if the templates exist
-            const templateTitles = await UtilsController.validateTemplates(templates);
+            const templateTitles = await TemplateController.validateTemplates(templates);
 
             const taskId = uuidv4();
             const taskObj = {
@@ -136,7 +135,7 @@ class TaskController {
             }
 
             if (templates !== undefined) {
-                taskObj.templates = await UtilsController.validateTemplates(templates);
+                taskObj.templates = await TemplateController.validateTemplates(templates);
             }
             
             if (fileURL !== undefined) {

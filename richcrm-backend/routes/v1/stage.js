@@ -153,4 +153,29 @@ router.post(
     StageController.deleteStage
 )
 
+
+/**
+ * @api {post} v1/stage/delete/all Delete all stages in a case
+ * @apiName DeleteAllStagesInCase
+ * @apiGroup Stage
+ * 
+ * @apiBody {String} caseId Case ID.
+ * 
+ * @apiSuccessExample Example data on success:
+ * {
+ *  "status": "success",
+ *  "data": [],
+ *  "message": "[StageController][deleteStagesByCaseId] Stages deleted"
+ * }
+ */
+router.post(
+    "/delete/all",
+    check("caseId")
+        .notEmpty()
+        .withMessage("Case ID is required"),
+    validate,
+    StageController.deleteAllStagesInCase
+)
+
+
 module.exports = router;

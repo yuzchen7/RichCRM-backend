@@ -3,11 +3,12 @@ POST http://localhost:3001/v1/case/create
 content-type: application/json
 
 {
-    "premisesId": "b394ec2a-24c0-4913-b065-09bcaecbeb9a",
-    "creatorId": "test1@gmail.com",
+    "premisesId": "afa4ed13-f510-4edb-905b-ce9c12280ccc",
+    "creatorId": "eden.wu@richtechailab.com",
     "stage": 0,
     "clientType": 0,
-    "buyerId": "f3117eaa-e3a7-4b3e-88fb-37a8741a181e"
+    "sellerId": "",
+    "buyerId": "e9a51f4a-ea7c-443d-9d66-e9d62bc41308"
 }
 
 
@@ -30,8 +31,8 @@ POST http://localhost:3001/v1/case/update
 content-type: application/json
 
 {
-    "caseId": "0_f3117eaa-e3a7-4b3e-88fb-37a8741a181e_b394ec2a-24c0-4913-b065-09bcaecbeb9a",
-    "creatorId": "test1@gmail.com",
+    "caseId": "0_e9a51f4a-ea7c-443d-9d66-e9d62bc41308_afa4ed13-f510-4edb-905b-ce9c12280ccc",
+    "creatorId": "eden.wu@richtechailab.com",
     "stage": 3,
     "closingDate": "2024-07-20T20:24:24.740Z"
 }
@@ -42,5 +43,5 @@ POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "0_f3117eaa-e3a7-4b3e-88fb-37a8741a181e_b394ec2a-24c0-4913-b065-09bcaecbeb9a"
+    "caseId": "0_e9a51f4a-ea7c-443d-9d66-e9d62bc41308_afa4ed13-f510-4edb-905b-ce9c12280ccc"
 }

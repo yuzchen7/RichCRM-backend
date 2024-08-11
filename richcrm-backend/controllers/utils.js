@@ -143,41 +143,6 @@ class UtilsController {
         res.end();
     }
 
-    // Check if templates exists
-    async validateTemplates(templates) {
-        var templateTitles = [];
-        if (templates !== undefined && templates.length > 0) {
-            for (let i = 0; i < templates.length; i++) {
-                const templateTitle = templates[i].templateTitle;
-                    
-                const template = await TemplateService.getTemplateByTitle(templateTitle);
-                if (template !== null) {
-                    if (!templateTitles.includes(templateTitle)) {
-                        templateTitles.push(templateTitle);
-                    }
-                } else {
-                    console.log(`[TaskController][createTask] Template not found: ${templateTitle}`);
-                }
-            }
-        }
-        return templateTitles;
-    }
-
-    // Update new task to task list
-    async updateTaskList(tasks, newTask) {
-        if (newTask !== undefined) {
-            if (!tasks.includes(newTask)) {
-                // validate if task exists
-                const task = await TaskService.getTaskById(newTask);
-                if (task === null) {
-                    console.log(`[StageController][updateStage] Task not found: ${newTask}`);
-                    return tasks;
-                }
-                tasks.push(newTask);
-            }
-        }
-        return tasks;
-    }
 }
 
 module.exports = new UtilsController();

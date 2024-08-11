@@ -3,14 +3,14 @@ POST http://localhost:3001/v1/premises/register
 content-type: application/json
 
 {
-    "name": "RichCRM",
+    "name": "1600 AMPHITHEATRE PKWY #A001",
     "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US",
     "propertyType": 2
 }
 
 
 ### Read Premises by Id
-GET http://localhost:3001/v1/premises/7e4ea9b0-98dc-4617-9f9d-41201bbbbe33
+GET http://localhost:3001/v1/premises/0b214fbd-defa-4e2d-a10c-347fa0b85567
 
 
 ### Read Premises by AddressId

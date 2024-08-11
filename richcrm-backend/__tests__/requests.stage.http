@@ -4,12 +4,12 @@ Content-Type: application/json
 
 {
     "stageType": 2,
-    "caseId": "0_f3117eaa-e3a7-4b3e-88fb-37a8741a181e_b394ec2a-24c0-4913-b065-09bcaecbeb9a"
+    "caseId": "0_e9a51f4a-ea7c-443d-9d66-e9d62bc41308_afa4ed13-f510-4edb-905b-ce9c12280ccc"
 }
 
 
 ### Get Stage by Case ID and Stage Type
-GET http://localhost:3001/v1/stage/0_f3117eaa-e3a7-4b3e-88fb-37a8741a181e_b394ec2a-24c0-4913-b065-09bcaecbeb9a/2
+GET http://localhost:3001/v1/stage/0_e9a51f4a-ea7c-443d-9d66-e9d62bc41308_afa4ed13-f510-4edb-905b-ce9c12280ccc/0
 
 
 ### Update Stage by Stage ID
@@ -17,9 +17,9 @@ POST http://localhost:3001/v1/stage/update
 Content-Type: application/json
 
 {
-    "stageId": "85cfc172-d104-4b4b-8207-ab9a72a79737",
+    "stageId": "4d916e13-46ad-401d-b448-265053741e3a",
     "stageStatus": 1,
-    "newTask": "73323b4a-bbcb-4469-b92d-3b0ddc2c58c4"
+    "newTask": "f88d45df-b6f6-4d87-99e8-8ffc789e9834"
 }
 
 ### Delete Stage by Stage ID
@@ -27,5 +27,14 @@ POST http://localhost:3001/v1/stage/delete
 Content-Type: application/json
 
 {
-    "stageId": "85cfc172-d104-4b4b-8207-ab9a72a79737"
+    "stageId": "2762c001-057b-44e9-bfe9-177ded53e626"
+}
+
+
+### Delete All Stages by Case ID
+POST http://localhost:3001/v1/stage/delete/all
+Content-Type: application/json
+
+{
+    "caseId": "0_e9a51f4a-ea7c-443d-9d66-e9d62bc41308_afa4ed13-f510-4edb-905b-ce9c12280ccc"
 }

@@ -1,12 +1,19 @@
 const StageService = require('../db/stage/stage.service');
 const CaseService = require('../db/case/case.service');
 const TaskService = require('../db/task/task.service');
-const UtilsController = require('./utils');
+const TemplateController = require('./template');
 
 const Types = require('../db/types');
 const { v4: uuidv4 } = require('uuid');
 
 class StageController {
+
+    constructor () {
+        this.createStage = this.createStage.bind(this);
+        this.updateStage = this.updateStage.bind(this);
+        this.deleteStage = this.deleteStage.bind(this);
+        this.deleteAllStagesInCase = this.deleteAllStagesInCase.bind(this);
+    }
 
     async readStageByCaseIdAndStageType(req, res) {
         const { caseId } = req.params;
@@ -40,38 +47,44 @@ class StageController {
         }
     }
 
-    async createStage(req, res) {
-        const { caseId, stageType } = req.body;
+   
+    async createStageByCaseIdAndStageType(caseId, stageType) {
         
         try {
             // Check if the caseId is valid
             const caseObj = await CaseService.readCase(caseId);
             if (caseObj === null) {
-                return res.status(400).json({
+                return {
                     status: "failed",
                     data: [],
                     message: '[StageController][createStage] CaseId not found'
-                });
+                };
             }
 
             // Check if the stageType is valid
             const stageTypeEnum = Types.castIntToEnum(Types.stage, stageType);
             if (stageTypeEnum === null) {
-                return res.status(400).json({
+                return {
                     status: "failed",
                     data: [],
                     message: '[StageController][createStage] Invalid stageType'
-                });
+                };
             }
 
             // Check if the stage already exists
             const stages = await StageService.getStagesByCaseIdAndStageType(caseId, stageType);
             if (stages !== null && stages.length > 0) {
-                return res.status(400).json({
-                    status: "failed",
-                    data: [],
+                return {
+                    status: "success",
+                    data: [{
+                        stageId: stages[0].StageId,
+                        stageType: stages[0].StageType,
+                        caseId: stages[0].CaseId,
+                        tasks: stages[0].Tasks,
+                        stageStatus: stages[0].StageStatus
+                    }],
                     message: `[StageController][createStage] Stage already exists. CaseId: ${caseId}. StageType: ${stageTypeEnum}`
-                });
+                };
             }
 
             
@@ -84,7 +97,7 @@ class StageController {
                 const taskId = uuidv4();
                 const taskConfig = taskConfigs[i];
                 // Check if the templates exists
-                const templateTitles = await UtilsController.validateTemplates(taskConfig.templates);
+                const templateTitles = await TemplateController.validateTemplates(taskConfig.templates);
 
                 const taskObj = {
                     taskId: taskId,
@@ -107,7 +120,7 @@ class StageController {
 
             const s = await StageService.createStage(stage);
             if (s !== null) {
-                return res.status(200).json({
+                return {
                     status: "success",
                     data: [{
                         stageId: s.StageId,
@@ -117,21 +130,32 @@ class StageController {
                         stageStatus: s.StageStatus
                     }],
                     message: '[StageController][createStage] Stage created'
-                });
+                };
             } else {
-                return res.status(400).json({
+                return {
                     status: "failed",
                     data: [],
                     message: '[StageController][createStage] Stage not created'
-                });
+                };
             }
         } catch (error) {
-            return res.status(500).json({
+            return {
                 status: "failed",
                 data: [],
                 message: `[StageController][createStage] Internal server error: ${error}`
-            });
+            };
         }
+    }
+
+    async createStage(req, res) {
+        const { caseId, stageType } = req.body;
+
+        const ret = await this.createStageByCaseIdAndStageType(caseId, stageType);
+        if (ret.status === "success") {
+            return res.status(200).json(ret);
+        } else {
+            return res.status(400).json(ret);
+        };
     }
 
     async updateStage(req, res) {
@@ -176,7 +200,7 @@ class StageController {
             }
             
             if (newTask !== undefined) {
-                stageObj.tasks = await UtilsController.updateTaskList(stageObj.tasks, newTask);
+                stageObj.tasks = await this.updateTaskList(stageObj.tasks, newTask);
             }
 
             const s = await StageService.updateStage(stageObj);
@@ -253,6 +277,67 @@ class StageController {
                 message: `[StageController][deleteStage] Internal server error: ${error}`
             });
         }
+    }
+
+    async deleteAllStagesInCase(req, res) {
+        const { caseId } = req.body;
+
+        const ret = await this.deleteStagesByCaseId(caseId);
+        if (ret.status === "success") {
+            return res.status(200).json(ret);
+        } else {
+            return res.status(400).json(ret);
+        };
+    }
+
+    async deleteStagesByCaseId(caseId) {
+        try {
+            const stages = await StageService.getStagesByCaseId(caseId);
+            if (stages !== null) {
+                for (let i = 0; i < stages.length; i++) {
+                    const tasks = stages[i].Tasks;
+                    for (let i = 0; i < tasks.length; i++) {
+                        const t = await TaskService.deleteTask(tasks[i]);
+                        if (t === null) {
+                            console.log(`[StageController][deleteStagesByCaseId] Task not deleted. TaskId: ${tasks[i]}`);
+                            continue;
+                        }
+                    }
+                    const s = await StageService.deleteStage(stages[i].StageId);
+                    if (s === null) {
+                        console.log(`[StageController][deleteStagesByCaseId] Stage not deleted. StageId: ${stages[i].StageId}`);
+                        continue;
+                    }
+                }
+            }
+            return {
+                status: "success",
+                data: [],
+                message: '[StageController][deleteStagesByCaseId] Stages deleted'
+            };
+        } catch (error) {
+            return {
+                status: "failed",
+                data: [],
+                message: `[StageController][deleteStagesByCaseId] Internal server error: ${error}`
+            };
+        }
+    }
+
+    // Update new task to task list
+    async updateTaskList(tasks, newTask) {
+        if (newTask !== undefined) {
+            if (!tasks.includes(newTask)) {
+                // validate if task exists
+                const task = await TaskService.getTaskById(newTask);
+                if (task === null) {
+                    console.log(`[StageController][updateStage] Task not found: ${newTask}`);
+                    return tasks;
+                }
+                tasks.push(newTask);
+            }
+        }
+        return tasks;
     }
 }
 
