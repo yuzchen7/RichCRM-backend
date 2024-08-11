@@ -1,7 +1,8 @@
 # RichCRM Backend
 
 ## API Documentation
-Please refer to the [API Documentation](/API-doc/index.html) for more information.
+Please refer to the [API Documentation](/API-doc/index.html) for more information.  
+- Use this command to gen API docs: ```apidoc -i . -o ../apidoc```
 
 
 ## Deployment Locally
