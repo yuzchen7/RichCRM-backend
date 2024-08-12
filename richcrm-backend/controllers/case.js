@@ -63,19 +63,23 @@ class CaseController {
             var caseList = [];
             const cases = await CaseService.readAllCasesByCreatorId(creatorId);
             if (cases !== null) {
-                cases.forEach(c => {
+                for (let i = 0; i < cases.length; i++) {
+                    const c = cases[i];
+                    // Read current stage
+                    const stages = await StageService.getStagesByCaseIdAndStageType(c.CaseId, c.Stage);
                     caseList.push({
                         "caseId": c.CaseId,
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
+                        "stageId": stages[0].StageId,
                         "clientType": c.ClientType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
                         "createAt": c.CreateAt,
                         "closingDate": c.ClosingDate
                     });
-                });
+                }
             }
             res.status(200).json({
                 status: "success",

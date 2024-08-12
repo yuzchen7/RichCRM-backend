@@ -55,6 +55,7 @@ router.get(
  * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} premisesId Premises ID.
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} clientType Client Type (0-Buyer, 1-Seller).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.
@@ -66,6 +67,7 @@ router.get(
  * "caseId": "0-98765-123456",
  *  "premisesId": 123456,
  *  "stage": 1,
+ *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "clientType": 0,
  *  "buyerId": 98765,
  *  "createAt": "2024-07-18T19:52:16.672Z",
