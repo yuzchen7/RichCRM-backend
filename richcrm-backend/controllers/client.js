@@ -6,10 +6,17 @@ const e = require("express");
 
 class ClientController {
     async registerClient(req, res) {
-        const { title, firstName, lastName, gender, cellNumber, email, ssn, addressId } = req.body;
+        const { clientType, title, firstName, lastName, gender, cellNumber, email, ssn, addressId } = req.body;
 
         try {
-            // Check if client already exists
+            // Check if client type is valid
+            if (Types.castIntToEnum(Types.clientType, clientType) === undefined) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[ClientController][registerClient] Invalid client type'
+                });
+            }
 
             // Check if email exists
             if (email !== undefined) {
@@ -45,6 +52,7 @@ class ClientController {
                     });
                 }
             }
+
             // Check if title is valid
             var titleParsed = title;
             if (Types.castIntToEnum(Types.title, title) === undefined) {
@@ -59,6 +67,7 @@ class ClientController {
 
             const client = await ClientService.createClient({
                 clientId: uuidv4(),
+                clientType: clientType,
                 title: titleParsed,
                 firstName: firstName,
                 lastName: lastName,
@@ -73,6 +82,7 @@ class ClientController {
                     status: "success",
                     data: [{
                         clientId: client.ClientId,
+                        clientType: client.ClientType,
                         title: client.Title,
                         firstName: client.FirstName,
                         lastName: client.LastName,
@@ -101,7 +111,7 @@ class ClientController {
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[ClientController][registerClient] Internal server error'
+                message: `[ClientController][registerClient] Internal server error ${error}`
             });
         }
     }
@@ -115,6 +125,7 @@ class ClientController {
                 clients.forEach(client => {
                     clientList.push({
                         clientId: client.ClientId,
+                        clientType: client.ClientType,
                         title: client.Title,
                         firstName: client.FirstName,
                         lastName: client.LastName,
@@ -142,7 +153,48 @@ class ClientController {
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[ClientController][queryClient] Internal server error'
+                message: `[ClientController][queryClient] Internal server error ${error}`
+            });
+        }
+    }
+
+    async queryClientsByType(req, res) {
+        const { clientType } = req.body;
+        var clientList = [];
+        try {
+            const clients = await ClientService.readClientsByType(clientType);
+            if (clients !== null) {
+                clients.forEach(client => {
+                    clientList.push({
+                        clientId: client.ClientId,
+                        clientType: client.ClientType,
+                        title: client.Title,
+                        firstName: client.FirstName,
+                        lastName: client.LastName,
+                        gender: client.Gender,
+                        cellNumber: client.CellNumber,
+                        workNumber: client.WorkNumber,
+                        email: client.Email,
+                        wechatAccount: client.WechatAccount,
+                        ssn: client.SSN,
+                        dob: client.DOB,
+                        addressId: client.AddressId,
+                        attorneyId: client.AttorneyId,
+                        bankAttorneyId: client.BankAttorneyId,
+                    });
+                });
+            }
+            res.status(200).json({
+                status: "success",
+                data: clientList,
+                message: '[ClientController][queryClient] Clients retrieved successfully'
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: `[ClientController][queryClient] Internal server error ${error}`
             });
         }
     }
@@ -157,6 +209,7 @@ class ClientController {
                     status: "success",
                     data: [{
                         clientId: client.ClientId,
+                        clientType: client.ClientType,
                         title: client.Title,
                         firstName: client.FirstName,
                         lastName: client.LastName,
@@ -185,13 +238,13 @@ class ClientController {
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[ClientController][getClient] Internal server error'
+                message: `[ClientController][getClient] Internal server error ${error}`
             });
         }
     }
 
     async updateClient(req, res) {
-        const { clientId, title, firstName, lastName, gender, cellNumber, workNumber, email, wechatAccount, ssn, dob, attorneyId, bankAttorneyId, addressId } = req.body;
+        const { clientId, clientType, title, firstName, lastName, gender, cellNumber, workNumber, email, wechatAccount, ssn, dob, attorneyId, bankAttorneyId, addressId } = req.body;
 
         try {
             // Check if client exists
@@ -205,6 +258,7 @@ class ClientController {
             }
             var clientObj = {
                 clientId: clientId,
+                clientType: existingClient.ClientType,
                 title: existingClient.Title,
                 firstName: existingClient.FirstName,
                 lastName: existingClient.LastName,
@@ -219,6 +273,11 @@ class ClientController {
                 bankAttorneyId: existingClient.BankAttorneyId,
                 addressId: existingClient.AddressId
             };
+            // Check if client type is valid
+            if (Types.castIntToEnum(Types.clientType, clientType) !== undefined) {
+                clientObj.clientType = clientType;
+            }
+
             // Check if address exists
             const existingAddress = await AddressService.readAddress(addressId);
             if (existingAddress === null) {
@@ -229,18 +288,16 @@ class ClientController {
                 });
             }
             clientObj.addressId = addressId;
+
             // Check if title is valid
-            var titleParsed = title;
-            if (Types.castIntToEnum(Types.title, title) === undefined) {
-                titleParsed = Types.title.NA;
+            if (Types.castIntToEnum(Types.title, title) !== undefined) {
+                clientObj.title = title;
             }
-            clientObj.title = titleParsed;
+
             // Check if gender is valid
-            var genderParsed = gender;
-            if (Types.castIntToEnum(Types.gender, gender) === undefined) {
-                genderParsed = Types.gender.NA;
+            if (Types.castIntToEnum(Types.gender, gender) !== undefined) {
+                clientObj.gender = gender;
             }
-            clientObj.gender = genderParsed;
 
             // Check if ssn is valid
             if (ssn !== undefined) {
@@ -291,7 +348,7 @@ class ClientController {
             }
 
             // Check if email is valid
-            if (email !== undefined && email !== clientObj.cellNumber) {
+            if (email !== undefined && email !== clientObj.email) {
                 const existingClients = await ClientService.readClientByEmail(email);
                 if (existingClients !== null && existingClients.length > 0) {
                     return res.status(400).json({
@@ -315,6 +372,7 @@ class ClientController {
                     status: "success",
                     data: [{
                         clientId: client.ClientId,
+                        clientType: client.ClientType,
                         title: client.Title,
                         firstName: client.FirstName,
                         lastName: client.LastName,
@@ -343,7 +401,7 @@ class ClientController {
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[ClientController][updateClient] Internal server error'
+                message: `[ClientController][updateClient] Internal server error ${error}`
             });
         }
     }
@@ -370,7 +428,7 @@ class ClientController {
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[ClientController][deleteClient] Internal server error'
+                message: `[ClientController][deleteClient] Internal server error ${error}`
             });
         }
     }

@@ -12,10 +12,10 @@ const router = express.Router();
  * 
  * @apiBody {String} name Name of the Premises.
  * @apiBody {String} addressId Address ID of the Premises, created by the Address service.
- * @apiBody {Number} propertyType Property Type of the Premises (0-CONDO, 1-HOUSE, 2-CO_OP, 3-COMMERCIAL, 4-LAND, 5-CONDO_OP).
+ * @apiBody {Number} propertyType Property Type of the Premises (0-HOUSE_SINGLE, 1-HOUSE_MULTI, 2-CONDO, 3-COMMERCIAL, 4-LAND, 5-CO_OP, 6-CONDO_OP).
  * @apiSuccess {String} premisesId Premises ID.
  * @apiSuccess {String} name Name of the Premises.
- * @apiSuccess {Number} propertyType Property Type of the Premises (0-CONDO, 1-HOUSE, 2-CO_OP, 3-COMMERCIAL, 4-LAND, 5-CONDO_OP).
+ * @apiSuccess {Number} propertyType Property Type of the Premises (0-HOUSE_SINGLE, 1-HOUSE_MULTI, 2-CONDO, 3-COMMERCIAL, 4-LAND, 5-CO_OP, 6-CONDO_OP).
  * @apiSuccess {String} addressId Address ID of the Premises.
  * 
  * @apiSuccessExample Example data on success:
@@ -56,7 +56,7 @@ router.post(
  * @apiSuccess {Number} block Block of the Premises.
  * @apiSuccess {Number} lot Lot of the Premises.
  * @apiSuccess {Number} section Section of the Premises.
- * @apiSuccess {Number} propertyType Property Type of the Premises (0-CONDO, 1-HOUSE, 2-CO_OP, 3-COMMERCIAL, 4-LAND, 5-CONDO_OP).
+ * @apiSuccess {Number} propertyType Property Type of the Premises (0-HOUSE_SINGLE, 1-HOUSE_MULTI, 2-CONDO, 3-COMMERCIAL, 4-LAND, 5-CO_OP, 6-CONDO_OP).
  * @apiSuccess {Boolean} vacantAtClosing Vacant at Closing.
  * @apiSuccess {Boolean} subjectToTenancy Subject to Tenancy.
  * @apiSuccess {Boolean} hoa HOA.
@@ -110,13 +110,13 @@ router.get(
  * @apiBody {String} addressId Address ID of the Premises, created by the Address service.
  * 
  * @apiSuccess {String} premisesId Premises ID.
- * @apiSuccess {Number} propertyType Property Type of the Premises (0-CONDO, 1-HOUSE, 2-CO_OP, 3-COMMERCIAL, 4-LAND, 5-CONDO_OP).
+ * @apiSuccess {Number} propertyType Property Type of the Premises (0-HOUSE_SINGLE, 1-HOUSE_MULTI, 2-CONDO, 3-COMMERCIAL, 4-LAND, 5-CO_OP, 6-CONDO_OP).
  * @apiSuccess {String} addressId Address ID of the Premises.
  * @apiSuccess {String} name Name of the Premises.
  * @apiSuccess {Number} block Block of the Premises.
  * @apiSuccess {Number} lot Lot of the Premises.
  * @apiSuccess {Number} section Section of the Premises.
- * @apiSuccess {Number} propertyType Property Type of the Premises (0-CONDO, 1-HOUSE, 2-CO_OP, 3-COMMERCIAL, 4-LAND, 5-CONDO_OP).
+ * @apiSuccess {Number} propertyType Property Type of the Premises (0-HOUSE_SINGLE, 1-HOUSE_MULTI, 2-CONDO, 3-COMMERCIAL, 4-LAND, 5-CO_OP, 6-CONDO_OP).
  * @apiSuccess {Boolean} vacantAtClosing Vacant at Closing.
  * @apiSuccess {Boolean} subjectToTenancy Subject to Tenancy.
  * @apiSuccess {Boolean} hoa HOA.
@@ -173,7 +173,7 @@ router.post(
  * @apiBody {Number} block Block of the Premises.
  * @apiBody {Number} lot Lot of the Premises.
  * @apiBody {Number} section Section of the Premises.
- * @apiBody {Number} propertyType Property Type of the Premises (0-CONDO, 1-HOUSE, 2-CO_OP, 3-COMMERCIAL, 4-LAND, 5-CONDO_OP).
+ * @apiBody {Number} propertyType Property Type of the Premises (0-HOUSE_SINGLE, 1-HOUSE_MULTI, 2-CONDO, 3-COMMERCIAL, 4-LAND, 5-CO_OP, 6-CONDO_OP).
  * @apiBody {Boolean} vacantAtClosing Vacant at Closing.
  * @apiBody {Boolean} subjectToTenancy Subject to Tenancy.
  * @apiBody {Boolean} hoa HOA.
@@ -193,7 +193,7 @@ router.post(
  * @apiSuccess {Number} block Block of the Premises.
  * @apiSuccess {Number} lot Lot of the Premises.
  * @apiSuccess {Number} section Section of the Premises.
- * @apiSuccess {Number} propertyType Property Type of the Premises (0-CONDO, 1-HOUSE, 2-CO_OP, 3-COMMERCIAL, 4-LAND, 5-CONDO_OP).
+ * @apiSuccess {Number} propertyType Property Type of the Premises (0-HOUSE_SINGLE, 1-HOUSE_MULTI, 2-CONDO, 3-COMMERCIAL, 4-LAND, 5-CO_OP, 6-CONDO_OP).
  * @apiSuccess {Boolean} vacantAtClosing Vacant at Closing.
  * @apiSuccess {Boolean} subjectToTenancy Subject to Tenancy.
  * @apiSuccess {Boolean} hoa HOA.

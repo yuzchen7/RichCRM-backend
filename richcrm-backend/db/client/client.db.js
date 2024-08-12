@@ -5,6 +5,7 @@
  * 
  * @typedef {object} Client
  * @property {string} ClientId - Client ID
+ * @property {clientType} ClientType - Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST)
  * @property {title} Title - Client's title
  * @property {string} FirstName - Client's first name
  * @property {string} LastName - Client's last name
@@ -21,7 +22,7 @@
  */
 
 const db = require('../dynamodb');
-const { title, gender } = require('../types');
+const { title, gender, clientType } = require('../types');
 
 class Client {
     constructor() {
@@ -36,6 +37,18 @@ class Client {
             },
         };
         const data = await db.get(params).promise();
+        return data;
+    }
+
+    async getClientsByType(clientType) {
+        const params = {
+            TableName: this.table,
+            FilterExpression: 'ClientType = :t',
+            ExpressionAttributeValues: {
+                ':t': clientType,
+            },
+        };
+        const data = await db.scan(params).promise();
         return data;
     }
 
@@ -63,7 +76,7 @@ class Client {
         return data;
     }
 
-    async getClientByKeyword(keyword) {
+    async getClientsByKeyword(keyword) {
         const params = {
             TableName: this.table,
             FilterExpression: 'contains(FirstName, :k) or contains(LastName, :k) or contains(Email, :k) or contains(CellNumber, :k)',
@@ -81,6 +94,7 @@ class Client {
             TableName: this.table,
             Item: {
                 ClientId: client.clientId,
+                ClientType: client.clientType,
                 Title: client.title,
                 FirstName: client.firstName,
                 LastName: client.lastName,
@@ -105,8 +119,9 @@ class Client {
             Key: {
                 ClientId: client.clientId,
             },
-            UpdateExpression: 'set Title = :t, FirstName = :f, LastName = :l, Gender = :g, CellNumber = :c, Email = :e',
+            UpdateExpression: 'set ClientType = :ct, Title = :t, FirstName = :f, LastName = :l, Gender = :g, CellNumber = :c, Email = :e',
             ExpressionAttributeValues: {
+                ':ct': client.clientType,
                 ':t': client.title,
                 ':f': client.firstName,
                 ':l': client.lastName,

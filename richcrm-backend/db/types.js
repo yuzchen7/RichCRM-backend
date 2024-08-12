@@ -39,12 +39,13 @@ module.exports = {
 
     // [DB] PREMISES
     propertyType: {
-        CONDO: 0,
-        HOUSE: 1,
-        CO_OP: 2,
+        HOUSE_SINGLE: 0,
+        HOUSE_MULTI: 1,
+        CONDO: 2,
         COMMERCIAL: 3,
         LAND: 4,
-        CONDO_OP: 5,
+        CO_OP: 5,
+        CONDO_OP: 6,
     },
     
     maintenanceFeePer: {
@@ -66,6 +67,12 @@ module.exports = {
         NA: 0,
         MALE: 1,
         FEMALE: 2,
+    },
+
+    clientType: {
+        INDIVIDUAL: 0,
+        COMPANY: 1,
+        TRUST: 2,
     },
 
     // [DB] STAGE

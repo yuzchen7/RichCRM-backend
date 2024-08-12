@@ -11,12 +11,22 @@ class ClientService {
         return null;
     }
 
+    async readClientsByType(clientType) {
+        const data = await Client.getClientsByType(clientType);
+
+        if (data.Items !== undefined) {
+            return data.Items;
+        }
+
+        return null;
+    }
+
     async readClientByKeyWord(keyword) {
         if (keyword === undefined || keyword === "") {
             console.log("[ClientService][readClientByKeyWord] Invalid keyword");
             return null;
         }
-        const data = await Client.getClientByKeyword(keyword);
+        const data = await Client.getClientsByKeyword(keyword);
 
         if (data.Items !== undefined) {
             return data.Items;
