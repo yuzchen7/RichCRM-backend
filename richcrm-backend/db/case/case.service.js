@@ -57,7 +57,7 @@ class CaseService {
             c.caseId === undefined ||
             c.premisesId === undefined ||
             c.stage === undefined ||
-            c.clientType === undefined) {
+            c.caseType === undefined) {
             console.log("[CASE-Create] Invalid case object");
             return null;
         }

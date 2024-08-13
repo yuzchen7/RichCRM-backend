@@ -16,7 +16,7 @@ const router = express.Router();
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} premisesId Premises ID.
- * @apiSuccess {Number} clientType Client Type (0-Buyer, 1-Seller).
+ * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.  
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
@@ -29,7 +29,7 @@ const router = express.Router();
  *  "creatorId": "test1@gmail.com",
  *  "premisesId": 123456,
  *  "stage": 1,
- *  "clientType": 0,
+ *  "caseType": 0,
  *  "buyerId": 98765,
  *  "createAt": "2024-07-18T19:52:16.672Z",
  *  "closingDate": "2024-07-20T20:04:24.740Z"
@@ -56,7 +56,7 @@ router.get(
  * @apiSuccess {Number} premisesId Premises ID.
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} stageId current Stage ID of this case.
- * @apiSuccess {Number} clientType Client Type (0-Buyer, 1-Seller).
+ * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.
  * @apiSuccess {String} createAt Creation date of the case.
@@ -68,7 +68,7 @@ router.get(
  *  "premisesId": 123456,
  *  "stage": 1,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
- *  "clientType": 0,
+ *  "caseType": 0,
  *  "buyerId": 98765,
  *  "createAt": "2024-07-18T19:52:16.672Z",
  *  "closingDate": "2024-07-20T20:04:24.740Z"
@@ -92,7 +92,7 @@ router.post(
  *
  * @apiBody {String} premisesId Premises ID.
  * @apiBody {String} creatorId Creator ID.
- * @apiBody {Number} clientType Client Type (0-Buyer, 1-Seller).
+ * @apiBody {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiBody {String} buyerId Buyer ID.
  * @apiBody {String} sellerId Seller ID.
  * @apiBody {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
@@ -100,7 +100,7 @@ router.post(
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} premisesId Premises ID.
- * @apiSuccess {Number} clientType Client Type (0-Buyer, 1-Seller).
+ * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.  
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
@@ -114,7 +114,7 @@ router.post(
  *  "premisesId": 123456,
  *  "stage": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
- *  "clientType": 0,
+ *  "caseType": 0,
  *  "buyerId": 98765,
  *  "createAt": "2024-07-18T19:52:16.672Z",
  * }
@@ -127,7 +127,7 @@ router.post(
     check("creatorId")
         .notEmpty()
         .withMessage("Creator ID is required"),
-    check("clientType")
+    check("caseType")
         .notEmpty()
         .withMessage("Client Type is required"),
     check("stage")

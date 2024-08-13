@@ -3,12 +3,12 @@ POST http://localhost:3001/v1/case/create
 content-type: application/json
 
 {
-    "premisesId": "afa4ed13-f510-4edb-905b-ce9c12280ccc",
+    "premisesId": "7a42576c-ecee-4828-bc56-fc7ed49488ed",
     "creatorId": "eden.wu@richtechailab.com",
     "stage": 0,
-    "clientType": 1,
-    "sellerId": "e9a51f4a-ea7c-443d-9d66-e9d62bc41308",
-    "buyerId": "e9a51f4a-ea7c-443d-9d66-e9d62bc41308"
+    "caseType": 1,
+    "sellerId": "123-45-6789",
+    "buyerId": ""
 }
 
 

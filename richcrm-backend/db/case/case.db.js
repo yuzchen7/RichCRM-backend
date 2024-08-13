@@ -7,7 +7,7 @@
  * @property {string} CaseId - Case ID
  * @property {string} CreatorId - Foreign key to User who created this case
  * @property {string} PremisesId - Foreign key to Premises
- * @property {clientType} ClientType - Is this case for buyside or sellside clients?
+ * @property {caseType} CaseType - Is this case for buyside or sellside clients? (0-PURCHASING, 1-SELLING)
  * @property {string} BuyerId - Foreign key to Buyers
  * @property {string} SellerId - Foreign key to Sellers
  * @property {Date} CreateAt - When this case was created
@@ -17,7 +17,7 @@
  */
 
 const db = require("../dynamodb");
-const { stage, clientType } = require("../types");
+const { stage, caseType } = require("../types");
 
 class Case {
     constructor() {
@@ -88,7 +88,7 @@ class Case {
                 CaseId: c.caseId,
                 CreatorId: c.creatorId,
                 PremisesId: c.premisesId,
-                ClientType: c.clientType,
+                CaseType: c.caseType,
                 BuyerId: c.buyerId,
                 SellerId: c.sellerId,
                 CreateAt: c.createAt,

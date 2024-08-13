@@ -3,7 +3,7 @@ POST http://localhost:3001/v1/client/register
 content-type: application/json
 
 {
-    "clientType": 1,
+    "clientType": 0,
     "firstName": "John",
     "lastName": "Doe",
     "cellNumber": "1234567891",

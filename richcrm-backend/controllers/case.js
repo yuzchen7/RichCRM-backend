@@ -32,7 +32,7 @@ class CaseController {
                         "caseId": c.CaseId,
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
-                        "clientType": c.ClientType,
+                        "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
                         "createAt": c.CreateAt,
@@ -73,7 +73,7 @@ class CaseController {
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
                         "stageId": stages[0].StageId,
-                        "clientType": c.ClientType,
+                        "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
                         "createAt": c.CreateAt,
@@ -99,7 +99,7 @@ class CaseController {
 
     
     async createCase(req, res) {
-        const {creatorId, premisesId, clientType, buyerId, sellerId, stage} = req.body;
+        const {creatorId, premisesId, caseType, buyerId, sellerId, stage} = req.body;
 
         // Check if the creator id is valid
         if (creatorId === undefined) {
@@ -157,8 +157,8 @@ class CaseController {
         }
 
         // Check if the client type is valid
-        const clientTypeEnum = Types.castIntToEnum(Types.clientType, clientType);
-        if (clientTypeEnum === undefined) {
+        const caseTypeEnum = Types.castIntToEnum(Types.caseType, caseType);
+        if (caseTypeEnum === undefined) {
             return res.status(400).json({
                 status: "failed",
                 data: [],
@@ -169,8 +169,8 @@ class CaseController {
         // Check if the buyerId / SellerId is valid -> Generate caseId
         var caseId;
         try {
-            switch (clientType) {
-                case Types.clientType.BUYER:
+            switch (caseType) {
+                case Types.caseType.PURCHASING:
                     const buyer = await ClientService.readClient(buyerId);
                     if (buyerId === undefined || buyer === null) {
                         return res.status(400).json({
@@ -179,11 +179,11 @@ class CaseController {
                             message: '[CaseController][createCase] Invalid buyer id'
                         });
                     } else {
-                        caseId = generateCaseId(clientType, buyerId, premisesId);
+                        caseId = generateCaseId(caseType, buyerId, premisesId);
                         console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
                     }
                     break;
-                case Types.clientType.SELLER:
+                case Types.caseType.SELLING:
                     const seller = await ClientService.readClient(sellerId);
                     if (sellerId === undefined || seller === null) {
                         return res.status(400).json({
@@ -192,7 +192,7 @@ class CaseController {
                             message: '[CaseController][createCase] Invalid seller id'
                         });
                     } else {
-                        caseId = generateCaseId(clientType, sellerId, premisesId);
+                        caseId = generateCaseId(caseType, sellerId, premisesId);
                         console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
                     }
                     break;
@@ -204,10 +204,11 @@ class CaseController {
                     });
             }
         } catch (error) {
+            console.log(error);
             return res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[CaseController][createCase] readClient internal server error'
+                message: `[CaseController][createCase] readClient internal server error: ${error}`
             });
         }
         
@@ -227,7 +228,7 @@ class CaseController {
                 caseId,
                 premisesId,
                 stage,
-                clientType,
+                caseType,
                 buyerId,
                 sellerId,
                 createAt: new Date().toISOString()
@@ -253,7 +254,7 @@ class CaseController {
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
                         "stageId": stageObj.stageId,
-                        "clientType": c.ClientType,
+                        "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
                         "createAt": c.CreateAt
@@ -382,7 +383,7 @@ class CaseController {
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
                         "stageId": stageObj.stageId,
-                        "clientType": c.ClientType,
+                        "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
                         "createAt": c.CreateAt,
@@ -441,9 +442,9 @@ class CaseController {
     }
 }
 
-const generateCaseId = (clientType, clientId, premisesId) => {
-    console.log(`[CaseController][generateCaseId] Generating case id for client type: ${clientType}, client id: ${clientId}, premises id: ${premisesId}`);
-    return `${clientType}_${clientId}_${premisesId}`;
+const generateCaseId = (caseType, clientId, premisesId) => {
+    console.log(`[CaseController][generateCaseId] Generating case id for client type: ${caseType}, client id: ${clientId}, premises id: ${premisesId}`);
+    return `${caseType}_${clientId}_${premisesId}`;
 }
 
 module.exports = new CaseController();

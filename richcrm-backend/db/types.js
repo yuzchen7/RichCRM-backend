@@ -32,9 +32,9 @@ module.exports = {
         CLOSING: 4,
     },
 
-    clientType: {
-        BUYER: 0,
-        SELLER: 1,
+    caseType: {
+        PURCHASING: 0,
+        SELLING: 1,
     },
 
     // [DB] PREMISES
