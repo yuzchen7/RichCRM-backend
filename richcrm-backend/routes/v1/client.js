@@ -10,6 +10,7 @@ const router = express.Router();
  * @apiName RegisterClient
  * @apiGroup Client
  * 
+ * @apiBody {Number} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
  * @apiBody {String} firstName First Name of the Client.
  * @apiBody {String} lastName Last Name of the Client.
  * @apiBody {String} cellNumber [Optional] Cell Number of the Client.
@@ -37,6 +38,9 @@ const router = express.Router();
  */
 router.post(
     "/register",
+    check("clientType")
+        .notEmpty()
+        .withMessage("Client Type is required"),
     check("firstName")
         .notEmpty()
         .withMessage("First Name is required"),
@@ -169,6 +173,7 @@ router.post(
  * @apiParam {String} clientId Client ID.
  * 
  * @apiBody {String} clientId Client ID.
+ * @apiBody {Number} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
  * @apiBody {Number} title Title of the Client (0-NA, 1-MR, 2-MRS, 3-MS, 4-DR).
  * @apiBody {String} firstName First Name of the Client.
  * @apiBody {String} lastName Last Name of the Client.
@@ -218,6 +223,7 @@ router.get(
  * @apiGroup Client
  * 
  * @apiBody {String} clientId Client ID.
+ * @apiBody {Number} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
  * @apiBody {Number} title Title of the Client (0-NA, 1-MR, 2-MRS, 3-MS, 4-DR).
  * @apiBody {String} firstName First Name of the Client.
  * @apiBody {String} lastName Last Name of the Client.
