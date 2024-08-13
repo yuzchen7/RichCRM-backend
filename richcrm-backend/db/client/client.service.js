@@ -60,7 +60,7 @@ class ClientService {
         if (client.clientId === undefined ||
             client.firstName === undefined ||
             client.lastName === undefined) {
-            console.log('[CLIENT-Create] Invalid client object');
+            console.log('[ClientService][createClient] Invalid client object');
             return null;
         }
 
@@ -71,7 +71,7 @@ class ClientService {
     async updateClient(client) {
         // Check if the client object is valid
         if (client.clientId === undefined) {
-            console.log('[CLIENT-Update] Invalid client object');
+            console.log('[ClientService][updateClient] Invalid client object');
             return null;
         }
 

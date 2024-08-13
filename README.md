@@ -172,6 +172,14 @@ aws dynamodb create-table \
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
     --table-class STANDARD
 
+# Contact
+aws dynamodb create-table \
+    --table-name Contact \
+    --attribute-definitions \
+        AttributeName=ContactId,AttributeType=S \
+    --key-schema AttributeName=ContactId,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --table-class STANDARD
 
 ```
 ### 2. Delete table

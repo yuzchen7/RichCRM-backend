@@ -275,5 +275,15 @@ module.exports = {
         PENDING: 1,
         FINISHED: 2,
         OVERDUE: 3,
+    },
+
+    // [DB] CONTACT
+    contactType: {
+        BROKER: 0,
+        ATTORNEY: 1,
+        TITLE: 2,
+        LENDER: 3,
+        CLIENT: 4,
+        OTHER: 5,
     }
 };

@@ -2,9 +2,14 @@ var ClientService = require("../db/client/client.service");
 var AddressService = require("../db/address/address.service");
 const { v4: uuidv4 } = require('uuid');
 const Types = require("../db/types");
-const e = require("express");
 
 class ClientController {
+    constructor () {
+        this.registerClient = this.registerClient.bind(this);
+        this.updateClient = this.updateClient.bind(this);
+        this.deleteClient = this.deleteClient.bind(this);
+    }
+
     async registerClient(req, res) {
         const { clientType, title, firstName, lastName, gender, cellNumber, email, ssn, addressId } = req.body;
 

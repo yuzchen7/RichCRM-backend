@@ -1,0 +1,61 @@
+### Register a new contact
+POST http://localhost:3001/v1/contact/register
+content-type: application/json
+
+{
+    "contactType": 0,
+    "firstName": "Lawson",
+    "lastName": "Wu",
+    "company": "RichTech",
+    "position": "CTO",
+    "email": "test@gmail.com",
+    "cellNumber": "0912345678",
+    "mailingAddress": "Framingham MA 01701-4607",
+    "wechatAccount": "lawsonwu",
+    "note": "This is a test contact."
+}
+
+
+### Query contact by keyword
+POST http://localhost:3001/v1/contact/query
+content-type: application/json
+
+{
+    "keyword": "RichTech"
+}
+
+
+### Query contact by contactType
+POST http://localhost:3001/v1/contact/query/type
+content-type: application/json
+
+{
+    "contactType": 0
+}
+
+
+### Update a contact
+POST http://localhost:3001/v1/contact/update
+content-type: application/json
+
+{
+    "contactId": "ef59b861-2130-4065-967b-314b5405be82",
+    "contactType": 1,
+    "firstName": "Larry",
+    "lastName": "Woooo",
+    "company": "RichTech",
+    "position": "Intern",
+    "email": "otter@gmail.com",
+    "cellNumber": "0912345678",
+    "mailingAddress": "Framingham MA 01701-4607",
+    "wechatAccount": "lawsonwu",
+    "note": "This is a test contact."
+}
+
+### Delete a contact
+POST http://localhost:3001/v1/contact/delete
+content-type: application/json
+
+{
+    "contactId": "ef59b861-2130-4065-967b-314b5405be82"
+}
