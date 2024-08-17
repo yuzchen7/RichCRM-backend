@@ -29,7 +29,7 @@ content-type: application/json
 
 
 ### Get Client
-GET http://localhost:3001/v1/client/40c34a24-706a-4abb-98b2-b844f29cef1e
+GET http://localhost:3001/v1/client/00b28e14-a48b-4015-89ba-ae251a6ffd34
 
 
 ### Update Client

@@ -31,10 +31,12 @@ POST http://localhost:3001/v1/case/update
 content-type: application/json
 
 {
-    "caseId": "1_e9a51f4a-ea7c-443d-9d66-e9d62bc41308_afa4ed13-f510-4edb-905b-ce9c12280ccc",
+    "caseId": "1_123-45-6789_7a42576c-ecee-4828-bc56-fc7ed49488ed",
     "creatorId": "eden.wu@richtechailab.com",
     "stage": 4,
-    "closingDate": "2024-07-20T20:24:24.740Z"
+    "closeAt": "2024-07-20T20:24:24.740Z",
+    "closingDate": "2024-07-20T20:24:24.740Z",
+    "mortgageContingencyDate": "2024-07-20T20:24:24.740Z"
 }
 
 
@@ -43,5 +45,5 @@ POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "1_e9a51f4a-ea7c-443d-9d66-e9d62bc41308_afa4ed13-f510-4edb-905b-ce9c12280ccc"
+    "caseId": "1_123-45-6789_7a42576c-ecee-4828-bc56-fc7ed49488ed"
 }

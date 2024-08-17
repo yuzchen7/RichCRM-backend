@@ -2,6 +2,7 @@ var ClientService = require("../db/client/client.service");
 var AddressService = require("../db/address/address.service");
 const { v4: uuidv4 } = require('uuid');
 const Types = require("../db/types");
+const { sprintf } = require('sprintf-js');
 
 class ClientController {
     constructor () {
@@ -209,6 +210,17 @@ class ClientController {
         const { clientId } = req.params;
         try {
             const client = await ClientService.readClient(clientId);
+
+            const mockPremises = {
+                PremisesId: "1",
+                PremisesType: 1,
+                PremisesName: "Test Premises",
+            }
+
+            const agg = {
+                client: client,
+                premises: mockPremises
+            }
             if (client !== null) {
                 res.status(200).json({
                     status: "success",
@@ -229,7 +241,7 @@ class ClientController {
                         attorneyId: client.AttorneyId,
                         bankAttorneyId: client.BankAttorneyId,
                     }],
-                    message: '[ClientController][getClient] Client retrieved successfully'
+                    message: sprintf("Hello %(client.FirstName)s, %(client.CellNumber)d welcome!\nPremises: %(premises.PremisesName)s", agg)
                 });
             } else {
                 res.status(400).json({

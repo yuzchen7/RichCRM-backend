@@ -36,7 +36,9 @@ class CaseController {
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
                         "createAt": c.CreateAt,
-                        "closingDate": c.ClosingDate
+                        "closeAt": c.CloseAt,
+                        "closingDate": c.ClosingDate,
+                        "mortgageContingencyDate": c.MortgageContingencyDate,
                     }],
                     message: '[CaseController][readCase] Case retrieved successfully'
                 });
@@ -77,7 +79,9 @@ class CaseController {
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
                         "createAt": c.CreateAt,
-                        "closingDate": c.ClosingDate
+                        "closeAt": c.CloseAt,
+                        "closingDate": c.ClosingDate,
+                        "mortgageContingencyDate": c.MortgageContingencyDate,
                     });
                 }
             }
@@ -162,7 +166,7 @@ class CaseController {
             return res.status(400).json({
                 status: "failed",
                 data: [],
-                message: '[CaseController][createCase] Invalid client type'
+                message: '[CaseController][createCase] Invalid case type'
             });
         }
 
@@ -200,7 +204,7 @@ class CaseController {
                     return res.status(400).json({
                         status: "failed",
                         data: [],
-                        message: '[CaseController][createCase] Invalid client type'
+                        message: '[CaseController][createCase] Invalid case type'
                     });
             }
         } catch (error) {
@@ -257,7 +261,7 @@ class CaseController {
                         "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
-                        "createAt": c.CreateAt
+                        "createAt": c.CreateAt,
                     }],
                     message: '[CaseController][createCase] Case created successfully'
                 });
@@ -280,7 +284,7 @@ class CaseController {
     }
 
     async updateCase(req, res) {
-        const {caseId, creatorId, stage, premisesId, closingDate} = req.body;
+        const {caseId, creatorId, stage, premisesId, closeAt, closingDate, mortgageContingencyDate} = req.body;
 
         // Check if the case id is valid
         if (caseId === undefined) {
@@ -290,16 +294,15 @@ class CaseController {
                 message: '[CaseController][updateCase] Invalid case id'
             });
         }
-
-        // Check if the creator id is valid
-        if (creatorId === undefined) {
-            return res.status(400).json({
-                status: "failed",
-                data: [],
-                message: '[CaseController][updateCase] Invalid creator id'
-            });
-        } else {
-            try {
+        try {
+            // Check if the creator id is valid
+            if (creatorId === undefined) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[CaseController][updateCase] Invalid creator id'
+                });
+            } else {
                 const creator = await UserService.readUser(creatorId);
                 if (creator === null) {
                     return res.status(400).json({
@@ -308,72 +311,95 @@ class CaseController {
                         message: '[CaseController][updateCase] Creator does not exist'
                     });
                 }
-            } catch (error) {
-                console.error(error);
-                return res.status(500).json({
-                    status: "failed",
-                    data: [],
-                    message: '[CaseController][updateCase] Internal server error'
-                });
             }
-        }
 
-        // Get the existing case
-        const existingCase = await CaseService.readCase(caseId);
-        if (existingCase === null) {
-            return res.status(400).json({
-                status: "failed",
-                data: [],
-                message: '[CaseController][updateCase] Case does not exist'
-            });
-        }
-
-        // Check if the stage is valid
-        const stageEnum = Types.castIntToEnum(Types.stage, stage);
-        if (stageEnum === undefined) {
-            return res.status(400).json({
-                status: "failed",
-                data: [],
-                message: '[CaseController][updateCase] Invalid stage'
-            });
-        }
-        // Update the stage
-        var stageObj;
-        if (stage !== existingCase.Stage) {
-            const stageRet = await StageController.createStageByCaseIdAndStageType(existingCase.CaseId, stage);
-            if (stageRet.status === "success") {
-                console.log(`[CaseController][createCase] Stage created successfully`);
-                stageObj = stageRet.data[0];
-            } else {
-                return res.status(400).json(stageRet);
-            }
-        } else {
-            const stages = await StageService.getStagesByCaseIdAndStageType(existingCase.CaseId, stage);
-            if (stages === null || stages.length === 0) {
+            // Get the existing case
+            const existingCase = await CaseService.readCase(caseId);
+            if (existingCase === null) {
                 return res.status(400).json({
                     status: "failed",
                     data: [],
-                    message: '[CaseController][updateCase] Stage does not exist'
+                    message: '[CaseController][updateCase] Case does not exist'
                 });
-            } else {
-                stageObj = stages[0];
             }
-        }
 
-        var newPremisesId = premisesId;
-        if (newPremisesId === undefined) {
-            newPremisesId = existingCase.PremisesId;
-        }
-
-        // Update the case
-        try {
-            const c = await CaseService.updateCase({
+            const caseObj = {
                 caseId: caseId,
                 creatorId: creatorId,
-                premisesId: newPremisesId,
-                stage: stage,
-                closingDate: new Date(closingDate).toISOString()
-            });
+                premisesId: existingCase.PremisesId,
+                stage: existingCase.Stage,
+                closingDate: existingCase.ClosingDate,
+                closeAt: existingCase.CloseAt,
+                mortgageContingencyDate: existingCase.MortgageContingencyDate,
+            }
+
+            // Check if the stage is valid
+            var stageObj;
+            if (stage !== undefined) {
+                const stageEnum = Types.castIntToEnum(Types.stage, stage);
+                if (stageEnum === undefined) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[CaseController][updateCase] Invalid stage'
+                    });
+                }
+
+                // Update the stage
+                if (stage !== existingCase.Stage) {
+                    const stageRet = await StageController.createStageByCaseIdAndStageType(existingCase.CaseId, stage);
+                    if (stageRet.status === "success") {
+                        console.log(`[CaseController][createCase] Stage created successfully`);
+                        stageObj = stageRet.data[0];
+                    } else {
+                        return res.status(400).json(stageRet);
+                    }
+                } else {
+                    const stages = await StageService.getStagesByCaseIdAndStageType(existingCase.CaseId, stage);
+                    if (stages === null || stages.length === 0) {
+                        return res.status(400).json({
+                            status: "failed",
+                            data: [],
+                            message: '[CaseController][updateCase] Stage does not exist'
+                        });
+                    } else {
+                        stageObj = stages[0];
+                    }
+                }
+                caseObj.stage = stage;
+            }
+
+            // Check if the premises id is valid
+            if (premisesId !== undefined) {
+                const premises = await PremisesService.readPremises(premisesId);
+                if (premises === null) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[CaseController][updateCase] Premises does not exist'
+                    });
+                }
+                caseObj.premisesId = premisesId;
+            }
+
+            // Check if the closing date is valid
+            if (closingDate !== undefined) {
+                caseObj.closingDate = new Date(closingDate).toISOString();
+            }
+
+            // Check if the close at date is valid
+            if (closeAt !== undefined) {
+                caseObj.closeAt = new Date(closeAt).toISOString();
+            }
+
+            // Check if the mortgage contingency date is valid
+            if (mortgageContingencyDate !== undefined) {
+                caseObj.mortgageContingencyDate = new Date(mortgageContingencyDate).toISOString();
+            }
+
+
+            // Update the case
+            const c = await CaseService.updateCase(caseObj);
             if (c !== null) {
                 return res.status(200).json({
                     status: "success",
@@ -387,7 +413,9 @@ class CaseController {
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
                         "createAt": c.CreateAt,
-                        "closingDate": c.ClosingDate
+                        "closeAt": c.CloseAt,
+                        "closingDate": c.ClosingDate,
+                        "mortgageContingencyDate": c.MortgageContingencyDate,
                     }],
                     message: '[CaseController][updateCase] Case updated successfully'
                 });

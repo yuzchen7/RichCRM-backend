@@ -21,7 +21,9 @@ const router = express.Router();
  * @apiSuccess {String} sellerId Seller ID.  
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} createAt Creation date of the case.
+ * @apiSuccess {String} closeAt Date when the case was closed.
  * @apiSuccess {String} closingDate Closing date of the case.
+ * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -32,7 +34,9 @@ const router = express.Router();
  *  "caseType": 0,
  *  "buyerId": 98765,
  *  "createAt": "2024-07-18T19:52:16.672Z",
- *  "closingDate": "2024-07-20T20:04:24.740Z"
+ *  "closeAt": "2024-07-18T19:52:16.672Z",
+ *  "closingDate": "2024-07-20T20:04:24.740Z",
+ *  "mortgageContingencyDate": "2024-07-20T20:04:24.740Z",
  * }
  */
 router.get(
@@ -60,7 +64,9 @@ router.get(
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.
  * @apiSuccess {String} createAt Creation date of the case.
+ * @apiSuccess {String} closeAt Date when the case was closed.
  * @apiSuccess {String} closingDate Closing date of the case.
+ * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * 
  * @apiSuccessExample Example data on success:
  * [{
@@ -71,7 +77,9 @@ router.get(
  *  "caseType": 0,
  *  "buyerId": 98765,
  *  "createAt": "2024-07-18T19:52:16.672Z",
- *  "closingDate": "2024-07-20T20:04:24.740Z"
+ *  "closeAt": "2024-07-18T19:52:16.672Z",
+ *  "closingDate": "2024-07-20T20:04:24.740Z",
+ *  "mortgageContingencyDate": "2024-07-20T20:04:24.740Z",
  * }]
  * 
  */
@@ -147,14 +155,19 @@ router.post(
  * @apiBody {String} caseId Case ID.
  * @apiBody {String} creatorId Creator ID.
  * @apiBody {Number} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiBody {String} closeAt Date when the case was closed.
  * @apiBody {String} closingDate Closing date of the case.
+ * @apiBody {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
+ * 
  *
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} stageId new Stage ID created or old Stage ID if the stage remain unchanged.
  * @apiSuccess {String} status Status of the case (0-Confirming, 1-Setup, 2-Go Over, 3-Signing, 4-Clear).
+ * @apiSuccess {String} closeAt Date when the case was closed.
  * @apiSuccess {String} closingDate Closing date of the case.
+ * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -162,7 +175,10 @@ router.post(
  *  "creatorId": "test1@gmail.com",
  *  "stage": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
+ *  "status": 0,
+ *  "closeAt": "2024-07-18T19:52:16.672Z",
  *  "closingDate": "2024-07-18T19:52:16.672Z",
+ *  "mortgageContingencyDate": "2024-07-18T19:52:16.672Z",
  * }
  */
 router.post(
