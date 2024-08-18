@@ -117,4 +117,35 @@ router.post(
     TemplateController.deleteTemplate
 );
 
+
+/**
+ * @api {post} v1/template/fill Fill a template with data
+ * @apiName FillTemplate
+ * @apiGroup Template
+ * 
+ * @apiBody {String} templateTitle Template Title.
+ * @apiBody {Object} data Data to fill the template (Should be in the format of layered JSON file).
+ * 
+ * @apiSuccess {String} templateTitle Template Title.
+ * @apiSuccess {String} templateContent Template Content.
+ * 
+ * @apiSuccessExample Example data on success:
+ * {
+ * "templateTitle": "[Notice] Your account has been created",
+ * "templateContent": "Dear John \n\nYour account has been created successfully.\n\nBest Regards,\nRichCRM Team"
+ * }
+ * 
+ */
+router.post(
+    "/fill",
+    check("templateTitle")
+        .notEmpty()
+        .withMessage("Template Title is required"),
+    check("data")
+        .notEmpty()
+        .withMessage("Data is required"),
+    validate,
+    TemplateController.fillTemplate
+)
+
 module.exports = router;

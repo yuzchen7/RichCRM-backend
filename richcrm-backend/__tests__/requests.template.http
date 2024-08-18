@@ -3,8 +3,8 @@ POST http://localhost:3001/v1/template/create
 content-type: application/json
 
 {
-    "templateTitle": "[Notice] Your account has been created",
-    "templateContent": "Dear %(firstName) \n\nYour account has been created successfully.\n\nBest Regards,\nRichCRM Team"
+    "templateTitle": "[IMPORTANT] FEK Notice to Purchaser",
+    "templateContent": "Hi %(clientObj.FirstName)s, \n\n\nAttached is a copy of the fully executed contract that we received from the seller’s attorney.\n\nPLEASE KEEP THESE IMPORTANT DATES IN MIND: \n\nCLOSING DATE: The closing date in the contract is **ON OR ABOUT %(caseObj.ClosingDate)s**.  This means the closing can be anytime between **%(caseObj.ClosingDate)s TO %(caseObj.ClosingDate)s** if all parties agree.\n\nMORTGAGE CONTINGENCY DATE:  The mortgage commitment must be obtained by **%(caseObj.MortgageContingencyDate)s**. If you cannot obtain the commitment by **%(caseObj.MortgageContingencyDate)s** please let me know immediately so I can request an extension of this date.\n\nRATE LOCKS:  If the client decides to \"lock-in\" an interest rate PLEASE MAKE SURE THE RATE LOCK IS GOOD THROUGH **%(caseObj.ClosingDate)s**.\n\n\nPlease let me know if anything else is needed.\n\nThank you!\n\n\nSincerely,\n\nMG Law Group"
 }
 
 
@@ -13,7 +13,7 @@ POST http://localhost:3001/v1/template/read
 content-type: application/json
 
 {
-    "templateTitle": "[Notice] Your account has been created"
+    "templateTitle": "[IMPORTANT] FEK Notice to Purchaser"
 }
 
 
@@ -22,8 +22,8 @@ POST http://localhost:3001/v1/template/update
 content-type: application/json
 
 {
-    "templateTitle": "[Notice] Your account has been created",
-    "templateContent": "Hi %(firstName) \n\nYour account has been created successfully.\n\nBest Regards,\nRichCRM Team"
+    "templateTitle": "[IMPORTANT] FEK Notice to Purchaser",
+    "templateContent": "Hi %(clientObj.FirstName)s, \n\n\nAttached is a copy of the fully executed contract that we received from the seller’s attorney.\n\nPLEASE KEEP THESE IMPORTANT DATES IN MIND: \n\nCLOSING DATE: The closing date in the contract is **ON OR ABOUT %(caseObj.ClosingDate)s**.  This means the closing can be anytime between **%(caseObj.ClosingDate)s TO %(caseObj.ClosingDate)s** if all parties agree.\n\nMORTGAGE CONTINGENCY DATE:  The mortgage commitment must be obtained by **%(caseObj.MortgageContingencyDate)s**. If you cannot obtain the commitment by **%(caseObj.MortgageContingencyDate)s** please let me know immediately so I can request an extension of this date.\n\nRATE LOCKS:  If the client decides to \"lock-in\" an interest rate PLEASE MAKE SURE THE RATE LOCK IS GOOD THROUGH **%(caseObj.ClosingDate)s**.\n\n\nPlease let me know if anything else is needed.\n\nThank you!\n\n\nSincerely,\n\nMG Law Group"
 }
 
 
@@ -33,4 +33,22 @@ content-type: application/json
 
 {
     "templateTitle": "[Notice] Your account has been created"
+}
+
+
+### Fill template with data
+POST http://localhost:3001/v1/template/fill
+content-type: application/json
+
+{
+    "templateTitle": "[IMPORTANT] FEK Notice to Purchaser",
+    "data": {
+        "clientObj": {
+            "FirstName": "John"
+        },
+        "caseObj": {
+            "ClosingDate": "2024-07-20T20:24:24.740Z",
+            "MortgageContingencyDate": "2024-07-20T20:24:24.740Z"
+        }
+    }
 }

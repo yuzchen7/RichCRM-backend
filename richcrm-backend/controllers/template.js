@@ -1,4 +1,5 @@
 const TemplateService = require('../db/template/template.service');
+const { sprintf } = require("sprintf-js");
 
 
 class TemplateController {
@@ -155,6 +156,57 @@ class TemplateController {
             }
         }
         return templateTitles;
+    }
+
+
+    // Fill templates with data
+    async fillTemplate(req, res) {
+        const { templateTitle, data } = req.body;
+        try {
+            // Check if the templateTitle is valid
+            const template = await TemplateService.getTemplateByTitle(templateTitle);
+            if (template === null) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[TemplateController][fillTemplate] Template not found'
+                });
+            }
+
+            var templateObj = {
+                templateTitle: template.TemplateTitle,
+                templateContent: template.TemplateContent
+            }
+
+            // Check if the data is valid
+            if (data === undefined) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[TemplateController][fillTemplate] Invalid data'
+                });
+            }
+
+            // Replace the placeholders in the template content
+            const templateContent = sprintf(templateObj.templateContent, data);
+            console.log(templateContent);
+            console.log(templateObj.templateContent);
+
+            return res.status(200).json({
+                status: "success",
+                data: [{
+                    templateTitle: template.TemplateTitle,
+                    templateContent: templateContent
+                }],
+                message: '[TemplateController][fillTemplate] Template filled'
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: "failed",
+                data: [],
+                message: `[TemplateController][fillTemplate] Internal server error: ${error}`
+            });
+        }
     }
 }
 
