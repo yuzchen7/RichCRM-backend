@@ -54,6 +54,7 @@ router.get(
  * @apiGroup Case
  * 
  * @apiBody {String} creatorId Creator ID.
+ * @apiBody {Boolean} closed Show closed cases or not (default: false).
  * 
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
@@ -88,6 +89,8 @@ router.post(
     check("creatorId")
         .notEmpty()
         .withMessage("Creator ID is required"),
+    check("closed")
+        .default(false),
     validate,
     CaseController.readAllCasesByCreatorId
 );

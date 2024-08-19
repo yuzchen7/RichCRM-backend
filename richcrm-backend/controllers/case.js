@@ -60,10 +60,10 @@ class CaseController {
     }
 
     async readAllCasesByCreatorId(req, res) {
-        const { creatorId } = req.body;
+        const { creatorId, closed } = req.body;
         try {
             var caseList = [];
-            const cases = await CaseService.readAllCasesByCreatorId(creatorId);
+            const cases = await CaseService.readAllCasesByCreatorId(creatorId, closed);
             if (cases !== null) {
                 for (let i = 0; i < cases.length; i++) {
                     const c = cases[i];

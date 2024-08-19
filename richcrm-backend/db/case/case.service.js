@@ -31,8 +31,8 @@ class CaseService {
         return null;
     }
 
-    async readAllCasesByCreatorId(creatorId) {
-        const data = await Case.getAllCasesByCreatorId(creatorId);
+    async readAllCasesByCreatorId(creatorId, closed) {
+        const data = await Case.getAllCasesByCreatorId(creatorId, closed);
 
         if (data.Items !== undefined) {
             return data.Items;

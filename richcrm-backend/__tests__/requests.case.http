@@ -21,7 +21,8 @@ POST http://localhost:3001/v1/case/all
 content-type: application/json
 
 {
-    "creatorId": "eden.wu@richtechailab.com"
+    "creatorId": "eden.wu@richtechailab.com",
+    "closed": false
 }
 
 

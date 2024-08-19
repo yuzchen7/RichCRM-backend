@@ -37,7 +37,8 @@ class Case {
         return data;
     }
 
-    async getAllCasesByCreatorId(creatorId) {
+    async getAllCasesByCreatorId(creatorId, closed) {
+        console.log(closed);
         const params = {
             TableName: this.table,
             FilterExpression: "CreatorId = :c",
@@ -45,6 +46,10 @@ class Case {
                 ":c": creatorId,
             },
         };
+
+        if (closed === true) {
+            params.FilterExpression += " AND attribute_exists(CloseAt)";
+        }
         const data = await db.scan(params).promise();
         return data;
     }

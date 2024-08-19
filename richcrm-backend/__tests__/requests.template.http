@@ -37,7 +37,7 @@ content-type: application/json
 
 
 ### Fill template with data
-POST http://localhost:3001/v1/template/fill
+POST http://richcrm-backend-dev.us-east-2.elasticbeanstalk.com/v1/template/fill
 content-type: application/json
 
 {
