@@ -211,16 +211,6 @@ class ClientController {
         try {
             const client = await ClientService.readClient(clientId);
 
-            const mockPremises = {
-                PremisesId: "1",
-                PremisesType: 1,
-                PremisesName: "Test Premises",
-            }
-
-            const agg = {
-                client: client,
-                premises: mockPremises
-            }
             if (client !== null) {
                 res.status(200).json({
                     status: "success",
@@ -241,7 +231,7 @@ class ClientController {
                         attorneyId: client.AttorneyId,
                         bankAttorneyId: client.BankAttorneyId,
                     }],
-                    message: sprintf("Hello %(client.FirstName)s, %(client.CellNumber)d welcome!\nPremises: %(premises.PremisesName)s", agg)
+                    message: '[ClientController][getClient] Client found'
                 });
             } else {
                 res.status(400).json({
