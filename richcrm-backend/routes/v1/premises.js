@@ -45,11 +45,11 @@ router.post(
 
 
 /**
- * @api {get} v1/premises/:premisesId Read a premises by ID
+ * @api {post} v1/premises/query/id Query premises by Premises ID
  * @apiName ReadPremises
  * @apiGroup Premises
  * 
- * @apiParam {String} premisesId Premises ID.
+ * @apiBody {String} premisesId Premises ID.
  * 
  * @apiSuccess {String} premisesId Premises ID.
  * @apiSuccess {String} name Name of the Premises.
