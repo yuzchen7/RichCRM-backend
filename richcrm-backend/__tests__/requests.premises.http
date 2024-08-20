@@ -18,6 +18,10 @@ content-type: application/json
 }
 
 
+### Get Premises by Id
+GET http://localhost:3001/v1/premises/8e5ac210-7c07-4dde-8ed2-f0d2b9f23699
+
+
 ### Read Premises by AddressId
 POST http://localhost:3001/v1/premises/query/address
 content-type: application/json

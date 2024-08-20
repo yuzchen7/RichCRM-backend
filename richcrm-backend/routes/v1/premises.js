@@ -98,8 +98,66 @@ router.post(
         .notEmpty()
         .withMessage("Premises ID is required"),
     validate,
-    PremisesController.readPremises
+    PremisesController.getPremises
 );
+
+
+/**
+ * @api {get} v1/premises/:premisesId Get a premises by Premises ID
+ * @apiName GetPremises
+ * @apiGroup Premises
+ * 
+ * @apiParam {String} premisesId Premises ID.
+ * 
+ * @apiSuccess {String} premisesId Premises ID.
+ * @apiSuccess {String} name Name of the Premises.
+ * @apiSuccess {Number} block Block of the Premises.
+ * @apiSuccess {Number} lot Lot of the Premises.
+ * @apiSuccess {Number} section Section of the Premises.
+ * @apiSuccess {Number} propertyType Property Type of the Premises (0-HOUSE_SINGLE, 1-HOUSE_MULTI, 2-CONDO, 3-COMMERCIAL, 4-LAND, 5-CO_OP, 6-CONDO_OP).
+ * @apiSuccess {Boolean} vacantAtClosing Vacant at Closing.
+ * @apiSuccess {Boolean} subjectToTenancy Subject to Tenancy.
+ * @apiSuccess {Boolean} hoa HOA.
+ * @apiSuccess {Number} parkingSpaces Number of Parking Spaces.
+ * @apiSuccess {Number} maintenanceFee Maintenance Fee.
+ * @apiSuccess {Number} maintenanceFeePer Maintenance Fee Per (0-Month, 1-Quarter, 2-Year).
+ * @apiSuccess {Number} assessments Assessments.
+ * @apiSuccess {String} assessmentsPaidById Assessments Paid By ID.
+ * @apiSuccess {String} managingCompany Managing Company.
+ * @apiSuccess {Boolean} isTwoFamily Is Two Family.
+ * 
+ * 
+ * @apiSuccessExample Example data on success:
+ * {
+ *  "premisesId":"1820 NW 21st St #6A COMMERCIAL",
+ *  "propertyType": 0,
+ *  "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US",
+ *  "name": "Test Premises #1",
+ *  "block": 1,
+ *  "lot": 1,
+ *  "section": 1,
+ *  "propertyType": 2,
+ *  "vacantAtClosing": true,
+ *  "subjectToTenancy": false,
+ *  "hoa": true,
+ *  "parkingSpaces": 2,
+ *  "maintenanceFee": 100,
+ *  "maintenanceFeePer": 1,
+ *  "assessments": 100,
+ *  "assessmentsPaidById": "123456",
+ *  "managingCompany": "RichCRM",
+ *  "isTwoFamily": false
+ * }
+ * 
+ */
+router.get(
+    "/:premisesId",
+    check("premisesId")
+        .notEmpty()
+        .withMessage("Premises ID is required"),
+    validate,
+    PremisesController.getPremises
+)
 
 
 /**

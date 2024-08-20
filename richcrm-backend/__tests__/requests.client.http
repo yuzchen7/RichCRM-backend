@@ -28,8 +28,17 @@ content-type: application/json
 }
 
 
+### Query Clients by Id
+POST http://localhost:3001/v1/client/query/id
+content-type: application/json
+
+{
+    "clientId": "738ffc97-299b-423a-b759-2116a402b18d"
+}
+
+
 ### Get Client
-GET http://richcrm-backend-dev.us-east-2.elasticbeanstalk.com/v1/client/4d2615e7-41c2-489b-bd4f-f546aedecb10
+GET http://localhost:3001/v1/client/738ffc97-299b-423a-b759-2116a402b18d
 
 
 ### Update Client

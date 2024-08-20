@@ -206,7 +206,13 @@ class ClientController {
 
 
     async getClient(req, res) {
-        const { clientId } = req.body;
+        var clientId;
+        if (!req.params.clientId) {
+            clientId = req.body.clientId;
+        } else {
+            clientId = req.params.clientId;
+        }
+        
         try {
             const client = await ClientService.readClient(clientId);
 

@@ -73,6 +73,8 @@ class CaseController {
                     if (stages === null || stages.length === 0) {
                         console.log(`[CaseController][readAllCasesByCreatorId] Stage does not exist for case: ${c.CaseId}`);
                     }
+
+                    // Read client
                     var clientId = c.BuyerId;
                     if (c.BuyerId === undefined || c.BuyerId === null) {
                         clientId = c.SellerId;
@@ -81,10 +83,18 @@ class CaseController {
                     if (client === null) {
                         console.log(`[CaseController][readAllCasesByCreatorId] Client does not exist for case: ${c.CaseId}`);
                     }
+
+                    // Read premises
+                    const premises = await PremisesService.readPremises(c.PremisesId);
+                    if (premises === null) {
+                        console.log(`[CaseController][readAllCasesByCreatorId] Premises does not exist for case: ${c.CaseId}`);
+                    }
+
                     caseList.push({
                         "caseId": c.CaseId,
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
+                        "premisesName": premises.Name,
                         "stage": c.Stage,
                         "caseStatus": stages[0].StageStatus,
                         "stageId": stages[0].StageId,

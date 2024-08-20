@@ -52,15 +52,22 @@ class PremisesController {
         }
     }
 
-    async readPremises(req, res) {
-        const { premisesId } = req.body;
+
+    async getPremises(req, res) {
+        var premisesId;
+        if (!req.params.premisesId) {
+            premisesId = req.body.premisesId;
+        } else {
+            premisesId = req.params.premisesId;
+        }
+        
         try {
             const premises = await PremisesService.readPremises(premisesId);
             if (premises === null) {
                 return res.status(400).json({
                     status: "failed",
                     data: [],
-                    message: '[PremisesController][readPremises] Premises not found',
+                    message: '[PremisesController][getPremises] Premises not found',
                 });
             }
             res.status(200).json({
@@ -86,14 +93,14 @@ class PremisesController {
                     twoFamilyFirstFloorTenantId: premises.TwoFamilyFirstFloorTenantId,
                     twoFamilySecondFloorTenantId: premises.TwoFamilySecondFloorTenantId,
                 }],
-                message: '[PremisesController][readPremises] Successfully retrieved premises',
+                message: '[PremisesController][getPremises] Successfully retrieved premises',
             });
         } catch (error) {
             console.error(error);
             res.status(500).json({
                 status: "failed",
                 data: [],
-                message: '[PremisesController][readPremises] Internal server error',
+                message: '[PremisesController][getPremises] Internal server error',
             });
         }
     }
@@ -131,11 +138,11 @@ class PremisesController {
             if (addressLine2 === undefined) {
                 addressLine2 = '';
             }
-            const premisesId = `${address.AddressLine1} ${propertyTypeEnum}`;
+            const premisesName = `${address.AddressLine1} ${propertyTypeEnum}`;
 
             const premises = {
-                premisesId: premisesId,
-                name: premisesId,
+                premisesId: uuidv4(),
+                name: premisesName,
                 addressId: addressId,
                 propertyType: propertyType,
             };

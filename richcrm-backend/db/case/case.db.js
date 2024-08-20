@@ -38,7 +38,6 @@ class Case {
     }
 
     async getAllCasesByCreatorId(creatorId, closed) {
-        console.log(closed);
         const params = {
             TableName: this.table,
             FilterExpression: "CreatorId = :c",
@@ -118,7 +117,6 @@ class Case {
                 Stage: c.stage
             },
         };
-        console.log(params);
         await db.put(params).promise();
         return params.Item;
     }
