@@ -222,7 +222,7 @@ router.post(
  * @apiName GetClient
  * @apiGroup Client
  * 
- * @apiBody {String} clientId Client ID.
+ * @apiParam {String} clientId Client ID.
  * 
  * @apiBody {String} clientId Client ID.
  * @apiBody {Number} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
