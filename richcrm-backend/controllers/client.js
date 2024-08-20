@@ -2,7 +2,6 @@ var ClientService = require("../db/client/client.service");
 var AddressService = require("../db/address/address.service");
 const { v4: uuidv4 } = require('uuid');
 const Types = require("../db/types");
-const { sprintf } = require('sprintf-js');
 
 class ClientController {
     constructor () {

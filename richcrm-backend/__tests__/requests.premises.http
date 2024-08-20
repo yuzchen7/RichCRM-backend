@@ -3,14 +3,19 @@ POST http://localhost:3001/v1/premises/register
 content-type: application/json
 
 {
-    "name": "1600 AMPHITHEATRE PKWY #A001",
-    "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US",
-    "propertyType": 2
+    "name": "Test Premises #1",
+    "addressId": "Pompano Beach FL 33069-1300",
+    "propertyType": 3
 }
 
 
 ### Read Premises by Id
-GET http://localhost:3001/v1/premises/0b214fbd-defa-4e2d-a10c-347fa0b85567
+POST http://localhost:3001/v1/premises/query/id
+content-type: application/json
+
+{
+    "premisesId": "1820 NW 21st St #undefined CONDO"
+}
 
 
 ### Read Premises by AddressId
@@ -26,7 +31,7 @@ POST http://localhost:3001/v1/premises/update
 content-type: application/json
 
 {
-    "premisesId": "7e4ea9b0-98dc-4617-9f9d-41201bbbbe33",
+    "premisesId": "1820 NW 21st St # COMMERCIAL",
     "name": "Test Premises #1",
     "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US",
     "block": 1,
@@ -50,5 +55,5 @@ POST http://localhost:3001/v1/premises/delete
 content-type: application/json
 
 {
-    "premisesId": "7e4ea9b0-98dc-4617-9f9d-41201bbbbe33"
+    "premisesId": "1820 NW 21st St # COMMERCIAL"
 }

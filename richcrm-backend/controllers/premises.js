@@ -53,7 +53,7 @@ class PremisesController {
     }
 
     async readPremises(req, res) {
-        const { premisesId } = req.params;
+        const { premisesId } = req.body;
         try {
             const premises = await PremisesService.readPremises(premisesId);
             if (premises === null) {
@@ -126,10 +126,16 @@ class PremisesController {
                 });
             }
 
-            const premisesId = uuidv4();
+            // Parse premises ID and name
+            var addressLine2 = address.AddressLine2;
+            if (addressLine2 === undefined) {
+                addressLine2 = '';
+            }
+            const premisesId = `${address.AddressLine1} #${addressLine2} ${propertyTypeEnum}`;
+
             const premises = {
                 premisesId: premisesId,
-                name: name,
+                name: premisesId,
                 addressId: addressId,
                 propertyType: propertyType,
             };

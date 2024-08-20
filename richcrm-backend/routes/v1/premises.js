@@ -20,7 +20,7 @@ const router = express.Router();
  * 
  * @apiSuccessExample Example data on success:
  * {
- *  "premisesId": "e8218a59-f565-4860-8bb3-23121151d3b9",
+ *  "premisesId": "1820 NW 21st St #6A COMMERCIAL",
  *  "name": "RichCRM",
  *  "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US",
  *  "propertyType": 2
@@ -71,7 +71,7 @@ router.post(
  * 
  * @apiSuccessExample Example data on success:
  * {
- *  "premisesId":"2ff1e12c-d65a-4bfb-86b8-2db1a562421f",
+ *  "premisesId":"1820 NW 21st St #6A COMMERCIAL",
  *  "propertyType": 0,
  *  "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US",
  *  "name": "Test Premises #1",
@@ -92,8 +92,8 @@ router.post(
  * }
  * 
  */
-router.get(
-    "/:premisesId",
+router.post(
+    "/query/id",
     check("premisesId")
         .notEmpty()
         .withMessage("Premises ID is required"),
@@ -131,7 +131,7 @@ router.get(
  * 
  * @apiSuccessExample Example data on success:
  * {
- *  "premisesId":"2ff1e12c-d65a-4bfb-86b8-2db1a562421f",
+ *  "premisesId":"1820 NW 21st St #6A COMMERCIAL",
  *  "propertyType": 0,
  *  "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US",
  *  "name": "Test Premises #1",
@@ -208,7 +208,7 @@ router.post(
  * 
  * @apiSuccessExample Example data on success:
  * {
- *  "premisesId":"2ff1e12c-d65a-4bfb-86b8-2db1a562421f",
+ *  "premisesId":"1820 NW 21st St #6A COMMERCIAL",
  *  "propertyType": 0,
  *  "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US",
  *  "name": "Test Premises #1",
