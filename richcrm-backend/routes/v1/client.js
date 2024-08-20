@@ -166,8 +166,8 @@ router.post(
 )
 
 /**
- * @api {get} v1/client/:clientId Get a client
- * @apiName GetClient
+ * @api {post} v1/client/query/id Query client by ID
+ * @apiName QueryClientById
  * @apiGroup Client
  * 
  * @apiParam {String} clientId Client ID.
@@ -208,8 +208,8 @@ router.post(
  * }
  * 
  */
-router.get(
-    "/:clientId",
+router.post(
+    "/query/id",
     check("clientId")
         .notEmpty()
         .withMessage("Client ID is required"),

@@ -206,7 +206,7 @@ class ClientController {
 
 
     async getClient(req, res) {
-        const { clientId } = req.params;
+        const { clientId } = req.body;
         try {
             const client = await ClientService.readClient(clientId);
 

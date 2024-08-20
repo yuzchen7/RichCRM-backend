@@ -4,7 +4,7 @@ content-type: application/json
 
 {
     "name": "Test Premises #1",
-    "addressId": "Pompano Beach FL 33069-1300",
+    "addressId": "New York NY 10012-1296",
     "propertyType": 3
 }
 

@@ -131,7 +131,7 @@ class PremisesController {
             if (addressLine2 === undefined) {
                 addressLine2 = '';
             }
-            const premisesId = `${address.AddressLine1} #${addressLine2} ${propertyTypeEnum}`;
+            const premisesId = `${address.AddressLine1} ${propertyTypeEnum}`;
 
             const premises = {
                 premisesId: premisesId,

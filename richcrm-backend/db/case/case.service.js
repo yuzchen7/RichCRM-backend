@@ -41,6 +41,16 @@ class CaseService {
         return null;
     }
 
+    async readCaseByPresmisesIdAndClientId(premisesId, clientId) {
+        const data = await Case.getCaseByPremisesIdAndClientId(premisesId, clientId);
+
+        if (data.Items !== undefined) {
+            return data.Items;
+        }
+
+        return null;
+    }
+
     async readAllCases() {
         const data = await Case.getAllCases();
 

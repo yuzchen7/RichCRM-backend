@@ -29,7 +29,7 @@ const router = express.Router();
  * {
  *  "caseId": "0-98765-123456",
  *  "creatorId": "test1@gmail.com",
- *  "premisesId": 123456,
+ *  "premisesId": "1820 NW 21st St #6A COMMERCIAL",
  *  "stage": 1,
  *  "caseType": 0,
  *  "buyerId": 98765,
@@ -71,12 +71,14 @@ router.get(
  * 
  * @apiSuccessExample Example data on success:
  * [{
- * "caseId": "0-98765-123456",
- *  "premisesId": 123456,
+ * "caseId": "badc8b89-1165-406b-7cds-f3d00d22ea74",
+ *  "premisesId": "1820 NW 21st St #6A COMMERCIAL",
  *  "stage": 1,
+ *  "caseStatus": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "caseType": 0,
- *  "buyerId": 98765,
+ *  "buyerId": "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *  "clientName": "Doe, John",
  *  "createAt": "2024-07-18T19:52:16.672Z",
  *  "closeAt": "2024-07-18T19:52:16.672Z",
  *  "closingDate": "2024-07-20T20:04:24.740Z",
@@ -122,7 +124,7 @@ router.post(
  * {
  *  "caseId": "0-98765-123456",
  *  "creatorId": "test1@gmail.com",
- *  "premisesId": 123456,
+ *  "premisesId": "1820 NW 21st St #6A COMMERCIAL",
  *  "stage": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "caseType": 0,

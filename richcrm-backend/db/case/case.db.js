@@ -80,6 +80,19 @@ class Case {
         return data;
     }
 
+    async getCaseByPremisesIdAndClientId(premisesId, clientId) {
+        const params = {
+            TableName: this.table,
+            FilterExpression: "PremisesId = :p AND (BuyerId = :c OR SellerId = :c)",
+            ExpressionAttributeValues: {
+                ":p": premisesId,
+                ":c": clientId,
+            },
+        };
+        const data = await db.scan(params).promise();
+        return data;
+    }
+
     async getAllCases() {
         const params = {
             TableName: this.table,

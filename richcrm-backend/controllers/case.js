@@ -5,6 +5,7 @@ const ClientService = require('../db/client/client.service');
 const StageService = require('../db/stage/stage.service');
 const StageController = require('./stage');
 const Types = require("../db/types");
+const { v4: uuidv4 } = require('uuid');
 
 class CaseController {
 
@@ -69,15 +70,28 @@ class CaseController {
                     const c = cases[i];
                     // Read current stage
                     const stages = await StageService.getStagesByCaseIdAndStageType(c.CaseId, c.Stage);
+                    if (stages === null || stages.length === 0) {
+                        console.log(`[CaseController][readAllCasesByCreatorId] Stage does not exist for case: ${c.CaseId}`);
+                    }
+                    var clientId = c.BuyerId;
+                    if (c.BuyerId === undefined || c.BuyerId === null) {
+                        clientId = c.SellerId;
+                    }
+                    const client = await ClientService.readClient(clientId);
+                    if (client === null) {
+                        console.log(`[CaseController][readAllCasesByCreatorId] Client does not exist for case: ${c.CaseId}`);
+                    }
                     caseList.push({
                         "caseId": c.CaseId,
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
                         "stage": c.Stage,
+                        "caseStatus": stages[0].StageStatus,
                         "stageId": stages[0].StageId,
                         "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
+                        "clientName": client.LastName + ", " + client.FirstName,
                         "createAt": c.CreateAt,
                         "closeAt": c.CloseAt,
                         "closingDate": c.ClosingDate,
@@ -172,6 +186,7 @@ class CaseController {
 
         // Check if the buyerId / SellerId is valid -> Generate caseId
         var caseId;
+        var clientId = buyerId;
         try {
             switch (caseType) {
                 case Types.caseType.PURCHASING:
@@ -196,6 +211,7 @@ class CaseController {
                             message: '[CaseController][createCase] Invalid seller id'
                         });
                     } else {
+                        clientId = sellerId;
                         caseId = generateCaseId(caseType, sellerId, premisesId);
                         console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
                     }
@@ -219,11 +235,13 @@ class CaseController {
         
 
         try {
-            const existingCase = await CaseService.readCase(caseId);
-            if (existingCase !== null) {
+            const existingCase = await CaseService.readCaseByPresmisesIdAndClientId(premisesId, clientId);
+            if (existingCase !== null && existingCase.length > 0) {
                 return res.status(400).json({
                     status: "failed",
-                    data: [],
+                    data: [{
+                        caseId: existingCase[0].CaseId,
+                    }],
                     message: '[CaseController][createCase] Case already exists'
                 });
             }
@@ -472,7 +490,8 @@ class CaseController {
 
 const generateCaseId = (caseType, clientId, premisesId) => {
     console.log(`[CaseController][generateCaseId] Generating case id for client type: ${caseType}, client id: ${clientId}, premises id: ${premisesId}`);
-    return `${caseType}_${clientId}_${premisesId}`;
+    // return `${caseType}_${clientId}_${premisesId}`;
+    return uuidv4();
 }
 
 module.exports = new CaseController();

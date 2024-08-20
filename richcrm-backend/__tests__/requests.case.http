@@ -3,17 +3,17 @@ POST http://localhost:3001/v1/case/create
 content-type: application/json
 
 {
-    "premisesId": "7a42576c-ecee-4828-bc56-fc7ed49488ed",
+    "premisesId": "130 W 3rd St # 1203 COMMERCIAL",
     "creatorId": "eden.wu@richtechailab.com",
     "stage": 0,
-    "caseType": 1,
-    "sellerId": "123-45-6789",
-    "buyerId": ""
+    "caseType": 0,
+    "sellerId": "",
+    "buyerId": "738ffc97-299b-423a-b759-2116a402b18d"
 }
 
 
 ### Read Case
-GET http://localhost:3001/v1/case/0_f3117eaa-e3a7-4b3e-88fb-37a8741a181e_b394ec2a-24c0-4913-b065-09bcaecbeb9a
+GET http://localhost:3001/v1/case/37133c20-8e37-42e6-98cd-d2422df2eefd
 
 
 ### Read All Cases by Creator
@@ -21,7 +21,7 @@ POST http://localhost:3001/v1/case/all
 content-type: application/json
 
 {
-    "creatorId": "eden.wu@richtechailab.com",
+    "creatorId": "test1@gmail.com",
     "closed": false
 }
 
