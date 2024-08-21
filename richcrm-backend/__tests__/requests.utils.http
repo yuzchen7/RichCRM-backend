@@ -34,3 +34,12 @@ content-type: application/json
 ### Get All Address
 GET http://localhost:3001/v1/utils/address/all
 
+
+### Get Address by Id
+POST http://localhost:3001/v1/utils/address/query/id
+content-type: application/json
+
+{
+    "addressId": "New York NY 10012-1296"
+}
+

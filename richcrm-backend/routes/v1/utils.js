@@ -110,4 +110,39 @@ router.get(
     UtilsController.getAllAddresses
 )
 
+
+/**
+ * @api {post} v1/utils/address/query/id Get an address by ID
+ * @apiName GetAddress
+ * @apiGroup Utils
+ * 
+ * @apiBody {String} addressId Address ID.
+ * 
+ * @apiSuccess {String} addressId Address ID.
+ * @apiSuccess {String} addressLine1 Address Line 1.
+ * @apiSuccess {String} addressLine2 Address Line 2.
+ * @apiSuccess {String} city City.
+ * @apiSuccess {String} state State.
+ * @apiSuccess {String} zipCode Zip Code.
+ * @apiSuccess {String} plus4 Plus 4.
+ * 
+ * @apiSuccessExample Example data on success:
+ * {
+ *    "addressId": "New York NY 10012-1296",
+ *    "addressLine1": "130 W 3RD ST",
+ *    "city": "NEW YORK",
+ *    "state": "NEW YORK",
+ *    "zipCode": "10012",
+ *    "plus4": "1296"
+ * }
+ */
+router.post(
+    "/address/query/id",
+    check("addressId")
+        .notEmpty()
+        .withMessage("Address ID is required"),
+    validate,
+    UtilsController.getAddress
+)
+
 module.exports = router;

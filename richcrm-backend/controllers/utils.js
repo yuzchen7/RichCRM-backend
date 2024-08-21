@@ -107,6 +107,42 @@ class UtilsController {
         res.end();
     }
 
+    async getAddress(req, res) {
+        const { addressId } = req.body;
+        try {
+            const address = await AddressService.readAddress(addressId);
+            if (address !== null) {
+                res.status(200).json({
+                    status: "success",
+                    data: [{
+                        addressId: address.AddressId,
+                        addressLine1: address.AddressLine1,
+                        addressLine2: address.AddressLine2,
+                        city: address.City,
+                        state: address.State,
+                        zipCode: address.ZipCode,
+                        plus4: address.Plus4
+                    }],
+                    message: 'Address retrieved successfully'
+                });
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: 'Address not found'
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: `Internal server error ${error}`
+            });
+        }
+        res.end();
+    }
+
     async deleteAddress(req, res) {
         const { addressId } = req.body;
         try {
