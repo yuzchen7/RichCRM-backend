@@ -14,6 +14,7 @@ class TaskService {
     async createTask(task) {
         // Check if the task object is valid
         if (task.taskId === undefined ||
+            task.stageId === undefined ||
             task.taskType === undefined ||
             task.name === undefined ||
             task.status === undefined) {

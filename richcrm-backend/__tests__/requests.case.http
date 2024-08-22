@@ -8,12 +8,13 @@ content-type: application/json
     "stage": 0,
     "caseType": 1,
     "sellerId": "738ffc97-299b-423a-b759-2116a402b18d",
-    "buyerId": ""
+    "buyerId": "",
+    "additionalClients": ["7c377ce8-d6d5-4823-b60f-92ce5603d53f", "03c290cf-1758-4edc-95d5-be61f2339fd6"]
 }
 
 
 ### Read Case
-GET http://localhost:3001/v1/case/8f84c1e4-c3ee-405d-a4d7-fc54ec3ce503
+GET http://localhost:3001/v1/case/5821f822-2e99-493c-9122-c32db1fdb6bd
 
 
 ### Read All Cases by Creator
@@ -32,12 +33,13 @@ POST http://localhost:3001/v1/case/update
 content-type: application/json
 
 {
-    "caseId": "1_123-45-6789_7a42576c-ecee-4828-bc56-fc7ed49488ed",
-    "creatorId": "eden.wu@richtechailab.com",
-    "stage": 4,
+    "caseId": "5debf678-7b96-49ff-a700-f8f8d6b9edec",
+    "creatorId": "test1@gmail.com",
+    "stage": 0,
     "closeAt": "2024-07-20T20:24:24.740Z",
     "closingDate": "2024-07-20T20:24:24.740Z",
-    "mortgageContingencyDate": "2024-07-20T20:24:24.740Z"
+    "mortgageContingencyDate": "2024-07-20T20:24:24.740Z",
+    "additionalClients": ["b4e53724-6e7b-4070-be8a-d6c78d961ade"]
 }
 
 
@@ -46,5 +48,5 @@ POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "1_123-45-6789_7a42576c-ecee-4828-bc56-fc7ed49488ed"
+    "caseId": "cc2cda49-4a09-4535-8bc1-a928922062f3"
 }

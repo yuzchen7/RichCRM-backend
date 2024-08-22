@@ -40,6 +40,7 @@ class CaseController {
                         "closeAt": c.CloseAt,
                         "closingDate": c.ClosingDate,
                         "mortgageContingencyDate": c.MortgageContingencyDate,
+                        "additionalClients": c.AdditionalClients,
                     }],
                     message: '[CaseController][readCase] Case retrieved successfully'
                 });
@@ -106,6 +107,7 @@ class CaseController {
                         "closeAt": c.CloseAt,
                         "closingDate": c.ClosingDate,
                         "mortgageContingencyDate": c.MortgageContingencyDate,
+                        "additionalClients": c.AdditionalClients,
                     });
                 }
             }
@@ -127,7 +129,7 @@ class CaseController {
 
     
     async createCase(req, res) {
-        const {creatorId, premisesId, caseType, buyerId, sellerId, stage} = req.body;
+        const {creatorId, premisesId, caseType, buyerId, sellerId, stage, additionalClients} = req.body;
 
         // Check if the creator id is valid
         if (creatorId === undefined) {
@@ -197,6 +199,7 @@ class CaseController {
         // Check if the buyerId / SellerId is valid -> Generate caseId
         var caseId;
         var clientId = buyerId;
+        var additionalClientIds = [];
         try {
             switch (caseType) {
                 case Types.caseType.PURCHASING:
@@ -233,6 +236,21 @@ class CaseController {
                         message: '[CaseController][createCase] Invalid case type'
                     });
             }
+
+            // Check additional clients
+            if (additionalClients !== undefined) {
+                for (let i = 0; i < additionalClients.length; i++) {
+                    if (additionalClients[i] === clientId) {
+                        console.log(`[CaseController][createCase] Client id ${additionalClients[i]} is the same as the buyer/seller id`);
+                        continue;
+                    }
+                    const client = await ClientService.readClient(additionalClients[i]);
+                    if (client === null) {
+                        console.log(`[CaseController][createCase] Invalid additional client id ${additionalClients[i]}`);
+                    }
+                    additionalClientIds.push(additionalClients[i]);
+                }
+            }
         } catch (error) {
             console.log(error);
             return res.status(500).json({
@@ -256,14 +274,15 @@ class CaseController {
                 });
             }
             const c = await CaseService.createCase({
-                creatorId,
-                caseId,
-                premisesId,
-                stage,
-                caseType,
-                buyerId,
-                sellerId,
-                createAt: new Date().toISOString()
+                creatorId: creatorId,
+                caseId: caseId,
+                premisesId: premisesId,
+                stage: stage,
+                caseType: caseType,
+                buyerId: buyerId,
+                sellerId: sellerId,
+                createAt: new Date().toISOString(),
+                additionalClients: additionalClientIds
             });
             if (c !== null) {
 
@@ -290,6 +309,10 @@ class CaseController {
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
                         "createAt": c.CreateAt,
+                        "closeAt": c.CloseAt,
+                        "closingDate": c.ClosingDate,
+                        "mortgageContingencyDate": c.MortgageContingencyDate,
+                        "additionalClients": c.AdditionalClients,
                     }],
                     message: '[CaseController][createCase] Case created successfully'
                 });
@@ -312,7 +335,7 @@ class CaseController {
     }
 
     async updateCase(req, res) {
-        const {caseId, creatorId, stage, premisesId, closeAt, closingDate, mortgageContingencyDate} = req.body;
+        const {caseId, creatorId, stage, premisesId, closeAt, closingDate, mortgageContingencyDate, additionalClients} = req.body;
 
         // Check if the case id is valid
         if (caseId === undefined) {
@@ -351,7 +374,7 @@ class CaseController {
                 });
             }
 
-            const caseObj = {
+            var caseObj = {
                 caseId: caseId,
                 creatorId: creatorId,
                 premisesId: existingCase.PremisesId,
@@ -359,6 +382,7 @@ class CaseController {
                 closingDate: existingCase.ClosingDate,
                 closeAt: existingCase.CloseAt,
                 mortgageContingencyDate: existingCase.MortgageContingencyDate,
+                additionalClients: existingCase.AdditionalClients
             }
 
             // Check if the stage is valid
@@ -425,6 +449,11 @@ class CaseController {
                 caseObj.mortgageContingencyDate = new Date(mortgageContingencyDate).toISOString();
             }
 
+            // Update additional clients list 
+            if (additionalClients !== undefined) {
+                caseObj.additionalClients = await this.updateAdditionalClients(caseObj.additionalClients, additionalClients);
+            }
+
 
             // Update the case
             const c = await CaseService.updateCase(caseObj);
@@ -444,6 +473,7 @@ class CaseController {
                         "closeAt": c.CloseAt,
                         "closingDate": c.ClosingDate,
                         "mortgageContingencyDate": c.MortgageContingencyDate,
+                        "additionalClients": c.AdditionalClients,
                     }],
                     message: '[CaseController][updateCase] Case updated successfully'
                 });
@@ -495,6 +525,21 @@ class CaseController {
                 message: `[CaseController][deleteCase] Internal server error: ${error}`
             });
         }
+    }
+
+    // Update additional clients list
+    async updateAdditionalClients(additionalClients, additionalClientsNew) {
+        for (let i = 0; i < additionalClientsNew.length; i++) {
+            if (!additionalClients.includes(additionalClientsNew[i])) {
+                const client = await ClientService.readClient(additionalClientsNew[i]);
+                if (client === null) {
+                    console.log(`[CaseController][updateAdditionalClients] Invalid additional client id ${additionalClientsNew[i]}`);
+                    continue;
+                }
+                additionalClients.push(additionalClientsNew[i]);
+            }
+        }
+        return additionalClients;
     }
 }
 

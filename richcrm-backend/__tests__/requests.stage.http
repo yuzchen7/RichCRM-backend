@@ -4,12 +4,12 @@ Content-Type: application/json
 
 {
     "stageType": 2,
-    "caseId": "0_e9a51f4a-ea7c-443d-9d66-e9d62bc41308_afa4ed13-f510-4edb-905b-ce9c12280ccc"
+    "caseId": "5debf678-7b96-49ff-a700-f8f8d6b9edec"
 }
 
 
 ### Get Stage by Case ID and Stage Type
-GET http://localhost:3001/v1/stage/0_e9a51f4a-ea7c-443d-9d66-e9d62bc41308_afa4ed13-f510-4edb-905b-ce9c12280ccc/0
+GET http://localhost:3001/v1/stage/5debf678-7b96-49ff-a700-f8f8d6b9edec/2
 
 
 ### Update Stage by Stage ID

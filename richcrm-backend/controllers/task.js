@@ -1,4 +1,5 @@
 const TaskService = require('../db/task/task.service');
+const StageService = require('../db/stage/stage.service');
 const TemplateController = require('./template');
 
 const Types = require('../db/types');
@@ -20,6 +21,7 @@ class TaskController {
                 status: "success",
                 data: [{
                     taskId: task.TaskId,
+                    stageId: task.StageId,
                     taskType: task.TaskType,
                     name: task.Name,
                     status: task.Status,
@@ -38,7 +40,7 @@ class TaskController {
     }
 
     async createTask(req, res) {
-        const { taskType, name, status, templates, fileURL } = req.body;
+        const { taskType, stageId, name, status, templates, fileURL } = req.body;
         try {
             // Check if the taskType is valid
             const taskTypeEnum = Types.castIntToEnum(Types.taskType, taskType);
@@ -47,6 +49,15 @@ class TaskController {
                     status: "failed",
                     data: [],
                     message: '[TaskController][createTask] Invalid taskType'
+                });
+            }
+
+            // Check if the stageId is valid
+            if (stageId === null) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: `[TaskController][createTask] Invalid stageId: ${stageId}`
                 });
             }
 
@@ -66,6 +77,7 @@ class TaskController {
             const taskId = uuidv4();
             const taskObj = {
                 taskId: taskId,
+                stageId: stageId,
                 taskType: taskType,
                 name: name,
                 status: status,
@@ -77,6 +89,7 @@ class TaskController {
                 status: "success",
                 data: [{
                     taskId: data.TaskId,
+                    stageId: data.StageId,
                     taskType: data.TaskType,
                     name: data.Name,
                     status: data.Status,
@@ -109,6 +122,7 @@ class TaskController {
 
             var taskObj = {
                 taskId: taskId,
+                stageId: task.StageId,
                 taskType: task.TaskType,
                 name: task.Name,
                 status: task.Status,
@@ -128,6 +142,20 @@ class TaskController {
                 }
 
                 taskObj.status = status;
+
+                // Update stage in case of status change
+                const stage = await StageService.getStageById(task.StageId);
+                if (stage === null) {
+                    console.log(`[TaskController][updateTask] Stage not found for taskId: ${taskId}`);
+                } else {
+                    const stage = await StageService.updateStage({
+                        stageId: task.StageId,
+                        stageStatus: status,
+                    });
+                    if (stage === null) {
+                        console.log(`[TaskController][updateTask] Stage not updated for taskId: ${taskId}`);
+                    }
+                }
             }
 
             if (name !== undefined) {

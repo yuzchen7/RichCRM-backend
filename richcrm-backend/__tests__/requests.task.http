@@ -3,6 +3,7 @@ POST http://localhost:3001/v1/task/create
 content-type: application/json
 
 {
+    "stageId": "ab4c7c67-66c7-483d-a34f-d3afdbe17086",
     "taskType": 1,
     "name": "Customized Taskkkk",
     "status": 1,
@@ -13,7 +14,7 @@ content-type: application/json
 }
 
 ### Get Task by Task ID
-GET http://localhost:3001/v1/task/9ae8ee7c-a4b9-447b-8775-633cd507de0d
+GET http://localhost:3001/v1/task/a3b6cd76-301d-4a8a-b968-86982e4a8a6e
 
 
 ### Update Task by Task ID
@@ -21,8 +22,8 @@ POST http://localhost:3001/v1/task/update
 content-type: application/json
 
 {
-    "taskId": "54ed26b0-bc16-4753-85d7-9a49d4d2a4a9",
-    "status": 2,
+    "taskId": "a3b6cd76-301d-4a8a-b968-86982e4a8a6e",
+    "status": 3,
     "templates": [
         {"templateTitle": "Test Email Template 1"},
         {"templateTitle": "Test Email Template 3"},

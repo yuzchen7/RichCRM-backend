@@ -101,6 +101,7 @@ class StageController {
 
                 const taskObj = {
                     taskId: taskId,
+                    stageId: stageId,
                     taskType: taskConfig.taskType,
                     name: taskConfig.name,
                     status: taskConfig.status,

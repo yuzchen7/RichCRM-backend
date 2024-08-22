@@ -5,6 +5,7 @@
  * 
  * @typedef {object} Task
  * @property {UUID} TaskId - Task ID
+ * @property {string} StageId - Stage ID
  * @property {taskType} TaskType - Type of task (0-ACTION, 1-CONTACT, 2-UPLOAD)
  * @property {string} Name - Task name
  * @property {status} Status - Status of task (0-NOT_STARTED, 1-PENDING, 2-FINISHED, 3-OVERDUE)
@@ -31,11 +32,25 @@ class Task {
         return data;
     }
 
+    async getTasksByStageId(stageId) {
+        const params = {
+            TableName: this.table,
+            IndexName: 'StageIdIndex',
+            KeyConditionExpression: 'StageId = :s',
+            ExpressionAttributeValues: {
+                ':s': stageId,
+            },
+        };
+        const data = await db.query(params).promise();
+        return data;
+    }
+
     async createTask(task) {
         const params = {
             TableName: this.table,
             Item: {
                 TaskId: task.taskId,
+                StageId: task.stageId,
                 TaskType: task.taskType,
                 Name: task.name,
                 Status: task.status,
@@ -43,7 +58,6 @@ class Task {
                 FileURL: task.fileURL,
             },
         };
-        console.log(params);
         await db.put(params).promise();
         return params.Item;
     }

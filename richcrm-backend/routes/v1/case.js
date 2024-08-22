@@ -24,6 +24,7 @@ const router = express.Router();
  * @apiSuccess {String} closeAt Date when the case was closed.
  * @apiSuccess {String} closingDate Closing date of the case.
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
+ * @apiSuccess {Array} additionalClients Additional clients in this case.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -37,6 +38,11 @@ const router = express.Router();
  *  "closeAt": "2024-07-18T19:52:16.672Z",
  *  "closingDate": "2024-07-20T20:04:24.740Z",
  *  "mortgageContingencyDate": "2024-07-20T20:04:24.740Z",
+ *  "additionalClients": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ]
  * }
  */
 router.get(
@@ -68,6 +74,7 @@ router.get(
  * @apiSuccess {String} closeAt Date when the case was closed.
  * @apiSuccess {String} closingDate Closing date of the case.
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
+ * @apiSuccess {Array} additionalClients Additional clients in this case.
  * 
  * @apiSuccessExample Example data on success:
  * [{
@@ -83,6 +90,11 @@ router.get(
  *  "closeAt": "2024-07-18T19:52:16.672Z",
  *  "closingDate": "2024-07-20T20:04:24.740Z",
  *  "mortgageContingencyDate": "2024-07-20T20:04:24.740Z",
+ *  "additionalClients": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ]
  * }]
  * 
  */
@@ -109,6 +121,7 @@ router.post(
  * @apiBody {String} buyerId Buyer ID.
  * @apiBody {String} sellerId Seller ID.
  * @apiBody {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiBody {Array} additionalClients Additional clients in this case.
  *
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
@@ -119,6 +132,7 @@ router.post(
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} stageId Stage ID created by input stage.
  * @apiSuccess {String} createAt Creation date of the case.
+ * @apiSuccess {Array} additionalClients Additional clients in this case.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -130,6 +144,11 @@ router.post(
  *  "caseType": 0,
  *  "buyerId": 98765,
  *  "createAt": "2024-07-18T19:52:16.672Z",
+ *  "additionalClients": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ]
  * }
  */
 router.post(
@@ -146,6 +165,10 @@ router.post(
     check("stage")
         .notEmpty()
         .withMessage("Stage is required"),
+    check("additionalClients")
+        .optional()
+        .isArray()
+        .withMessage("Additional Clients should be an array"),
     validate,
     CaseController.createCase
 );
@@ -163,6 +186,7 @@ router.post(
  * @apiBody {String} closeAt Date when the case was closed.
  * @apiBody {String} closingDate Closing date of the case.
  * @apiBody {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
+ * @apiBody {Array} additionalClients Additional clients in this case.
  * 
  *
  * @apiSuccess {String} caseId Case ID.
@@ -173,6 +197,7 @@ router.post(
  * @apiSuccess {String} closeAt Date when the case was closed.
  * @apiSuccess {String} closingDate Closing date of the case.
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
+ * @apiSuccess {Array} additionalClients Additional clients in this case.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -184,6 +209,11 @@ router.post(
  *  "closeAt": "2024-07-18T19:52:16.672Z",
  *  "closingDate": "2024-07-18T19:52:16.672Z",
  *  "mortgageContingencyDate": "2024-07-18T19:52:16.672Z",
+ *  "additionalClients": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ]
  * }
  */
 router.post(
@@ -191,6 +221,10 @@ router.post(
     check("caseId")
         .notEmpty()
         .withMessage("Case ID is required"),
+    check("additionalClients")
+        .optional()
+        .isArray()
+        .withMessage("Additional Clients should be an array"),
     validate,
     CaseController.updateCase
 );

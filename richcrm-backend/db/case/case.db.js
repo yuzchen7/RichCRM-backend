@@ -15,6 +15,7 @@
  * @property {Date} ClosingDate - When this case should be closed
  * @property {Date} MortgageContingencyDate - When should the mortgage contingency be removed
  * @property {stage} Stage - The stage of this case(0-SETUP, 1-CONTRACT_PREPARING, 2-CONTRACT_SIGNING, 3-MORTGAGE, 4-CLOSING)
+ * @property {array} AdditionalClients - Additional clients in this case
  * 
  */
 
@@ -57,7 +58,7 @@ class Case {
         const params = {
             TableName: this.table,
             IndexName: "BuyerIdIndex",
-            KeyConditionExpression: "BuyerId = :b",
+            KeyConditionExpression: "BuyerId = :b OR contains(AdditionalClients, :b)",
             ExpressionAttributeValues: {
                 ":b": buyerId,
             },
@@ -70,7 +71,7 @@ class Case {
         const params = {
             TableName: this.table,
             IndexName: "SellerIdIndex",
-            KeyConditionExpression: "SellerId = :s",
+            KeyConditionExpression: "SellerId = :s OR contains(AdditionalClients, :s)",
             ExpressionAttributeValues: {
                 ":s": sellerId,
             },
@@ -114,7 +115,8 @@ class Case {
                 CloseAt: c.closeAt,
                 ClosingDate: c.closingDate,
                 MortgageContingencyDate: c.mortgageContingencyDate,
-                Stage: c.stage
+                Stage: c.stage,
+                AdditionalClients: c.additionalClients,
             },
         };
         await db.put(params).promise();
@@ -157,6 +159,11 @@ class Case {
         if (c.stage !== undefined) {
             params.ExpressionAttributeValues[':s'] = c.stage;
             params.UpdateExpression += ', #stg = :s';
+        }
+
+        if (c.additionalClients !== undefined) {
+            params.ExpressionAttributeValues[':ac'] = c.additionalClients;
+            params.UpdateExpression += ', AdditionalClients = :ac';
         }
 
         const data = await db.update(params).promise();
