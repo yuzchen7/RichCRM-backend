@@ -291,15 +291,18 @@ class ClientController {
             }
 
             // Check if address exists
-            const existingAddress = await AddressService.readAddress(addressId);
-            if (existingAddress === null) {
-                return res.status(400).json({
-                    status: "failed",
-                    data: [],
-                    message: '[ClientController][updateClient] Address does not exist'
-                });
+            if (addressId !== undefined && addressId !== "") {
+                const existingAddress = await AddressService.readAddress(addressId);
+                if (existingAddress === null) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[ClientController][updateClient] Address does not exist'
+                    });
+                }
+                clientObj.addressId = addressId;
             }
-            clientObj.addressId = addressId;
+
 
             // Check if title is valid
             if (Types.castIntToEnum(Types.title, title) !== undefined) {
@@ -312,42 +315,42 @@ class ClientController {
             }
 
             // Check if ssn is valid
-            if (ssn !== undefined) {
+            if (ssn !== undefined && ssn !== "") {
                 clientObj.ssn = ssn;
             }
 
             // Check if dob is valid
-            if (dob !== undefined) {
+            if (dob !== undefined && dob !== "") {
                 clientObj.dob = new Date(dob).toISOString();
             }
 
             // Check work number is valid
-            if (workNumber !== undefined) {
+            if (workNumber !== undefined && workNumber !== "") {
                 clientObj.workNumber = workNumber;
             }
 
             // Check if attorneyId is valid
-            if (attorneyId !== undefined) {
+            if (attorneyId !== undefined && attorneyId !== "") {
                 clientObj.attorneyId = attorneyId;
             }
 
             // Check if bankAttorneyId is valid
-            if (bankAttorneyId !== undefined) {
+            if (bankAttorneyId !== undefined && bankAttorneyId !== "") {
                 clientObj.bankAttorneyId = bankAttorneyId;
             }
 
             // Check if firstName is valid
-            if (firstName !== undefined) {
+            if (firstName !== undefined && firstName !== "") {
                 clientObj.firstName = firstName;
             }
 
             // Check if lastName is valid
-            if (lastName !== undefined) {
+            if (lastName !== undefined && lastName !== "") {
                 clientObj.lastName = lastName;
             }
 
             // Check if cellNumber is valid
-            if (cellNumber !== undefined && cellNumber !== clientObj.cellNumber) {
+            if (cellNumber !== undefined && cellNumber !== clientObj.cellNumber && cellNumber !== "") {
                 const existingClients = await ClientService.readClientByPhoneNumber(cellNumber);
                 if (existingClients !== null && existingClients.length > 0) {
                     return res.status(400).json({
@@ -360,7 +363,7 @@ class ClientController {
             }
 
             // Check if email is valid
-            if (email !== undefined && email !== clientObj.email) {
+            if (email !== undefined && email !== clientObj.email && email !== "") {
                 const existingClients = await ClientService.readClientByEmail(email);
                 if (existingClients !== null && existingClients.length > 0) {
                     return res.status(400).json({
@@ -373,7 +376,7 @@ class ClientController {
             }
 
             // Check if wechatAccount is valid
-            if (wechatAccount !== undefined) {
+            if (wechatAccount !== undefined && wechatAccount !== "") {
                 clientObj.wechatAccount = wechatAccount;
             }
 

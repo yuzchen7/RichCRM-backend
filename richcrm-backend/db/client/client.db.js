@@ -119,20 +119,26 @@ class Client {
             Key: {
                 ClientId: client.clientId,
             },
-            UpdateExpression: 'set ClientType = :ct, Title = :t, FirstName = :f, LastName = :l, Gender = :g, CellNumber = :c, Email = :e',
+            UpdateExpression: 'set ClientType = :ct, Title = :t, FirstName = :f, LastName = :l, Gender = :g',
             ExpressionAttributeValues: {
                 ':ct': client.clientType,
                 ':t': client.title,
                 ':f': client.firstName,
                 ':l': client.lastName,
                 ':g': client.gender,
-                ':c': client.cellNumber,
-                ':e': client.email,
             },
             ReturnValues: 'UPDATED_NEW',
         };
 
         // Optional fields
+        if (client.cellNumber !== undefined) {
+            params.ExpressionAttributeValues[':c'] = client.cellNumber;
+            params.UpdateExpression += ', CellNumber = :c';
+        }
+        if (client.email !== undefined) {
+            params.ExpressionAttributeValues[':e'] = client.email;
+            params.UpdateExpression += ', Email = :e';
+        }
         if (client.ssn !== undefined) {
             params.ExpressionAttributeValues[':ssn'] = client.ssn;
             params.UpdateExpression += ', SSN = :ssn';
