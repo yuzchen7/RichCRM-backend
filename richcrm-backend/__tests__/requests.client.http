@@ -46,13 +46,13 @@ POST http://localhost:3001/v1/client/update
 content-type: application/json
 
 {
-    "clientId": "40c34a24-706a-4abb-98b2-b844f29cef1e",
+    "clientId": "738ffc97-299b-423a-b759-2116a402b18d",
     "clientType": 3,
     "title": 1,
     "firstName": "Jean",
     "lastName": "Dean",
     "gender": 1,
-    "cellNumber": "1234567890",
+    "cellNumber": "1234567891",
     "workNumber": "1234567890",
     "email": "jean.dean@hotmail.com",
     "wechatAccount": "jean.dean", 
@@ -60,7 +60,7 @@ content-type: application/json
     "attorneyId": 1, 
     "bankAttorneyId": 1, 
     "ssn": "123-45-6789",
-    "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"
+    "addressId": "New York NY 10012-1296"
 }
 
 ### Delete Client

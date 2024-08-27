@@ -386,7 +386,7 @@ class ClientController {
                 res.status(200).json({
                     status: "success",
                     data: [{
-                        clientId: client.ClientId,
+                        clientId: clientId,
                         clientType: client.ClientType,
                         title: client.Title,
                         firstName: client.FirstName,
