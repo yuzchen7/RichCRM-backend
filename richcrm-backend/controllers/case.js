@@ -12,6 +12,7 @@ class CaseController {
     constructor () {
         this.createCase = this.createCase.bind(this);
         this.updateCase = this.updateCase.bind(this);
+        this.closeCase = this.closeCase.bind(this);
         this.deleteCase = this.deleteCase.bind(this);
     }
 
@@ -124,6 +125,61 @@ class CaseController {
                 message: '[CaseController][readAllCasesByCreatorId] Internal server error'
             });
         }
+    }
+
+    async readAllCasesByClientId(req, res) {
+        const { clientId, closed } = req.body;
+        try {
+            var caseList = [];
+            const cases = await CaseService.readAllCasesByClientId(clientId, closed);
+            if (cases !== null) {
+                for (let i = 0; i < cases.length; i++) {
+                    const c = cases[i];
+                    // Read current stage
+                    const stages = await StageService.getStagesByCaseIdAndStageType(c.CaseId, c.Stage);
+                    if (stages === null || stages.length === 0) {
+                        console.log(`[CaseController][readAllCasesByClientId] Stage does not exist for case: ${c.CaseId}`);
+                    }
+
+                    // Read premises
+                    const premises = await PremisesService.readPremises(c.PremisesId);
+                    if (premises === null) {
+                        console.log(`[CaseController][readAllCasesByClientId] Premises does not exist for case: ${c.CaseId}`);
+                    }
+
+                    caseList.push({
+                        "caseId": c.CaseId,
+                        "creatorId": c.CreatorId,
+                        "premisesId": c.PremisesId,
+                        "premisesName": premises.Name,
+                        "stage": c.Stage,
+                        "caseStatus": stages[0].StageStatus,
+                        "stageId": stages[0].StageId,
+                        "caseType": c.CaseType,
+                        "buyerId": c.BuyerId,
+                        "sellerId": c.SellerId,
+                        "createAt": c.CreateAt,
+                        "closeAt": c.CloseAt,
+                        "closingDate": c.ClosingDate,
+                        "mortgageContingencyDate": c.MortgageContingencyDate,
+                        "additionalClients": c.AdditionalClients,
+                    });
+                }
+            }
+            res.status(200).json({
+                status: "success",
+                data: caseList,
+                message: '[CaseController][readAllCasesByClientId] Cases retrieved successfully'
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][readAllCasesByClientId] Internal server error'
+            });
+        }
+
     }
 
 
@@ -422,7 +478,7 @@ class CaseController {
             }
 
             // Check if the premises id is valid
-            if (premisesId !== undefined) {
+            if (premisesId !== undefined && premisesId !== "") {
                 const premises = await PremisesService.readPremises(premisesId);
                 if (premises === null) {
                     return res.status(400).json({
@@ -435,22 +491,22 @@ class CaseController {
             }
 
             // Check if the closing date is valid
-            if (closingDate !== undefined) {
+            if (closingDate !== undefined && closingDate !== "") {
                 caseObj.closingDate = new Date(closingDate).toISOString();
             }
 
             // Check if the close at date is valid
-            if (closeAt !== undefined) {
+            if (closeAt !== undefined && closeAt !== "") {
                 caseObj.closeAt = new Date(closeAt).toISOString();
             }
 
             // Check if the mortgage contingency date is valid
-            if (mortgageContingencyDate !== undefined) {
+            if (mortgageContingencyDate !== undefined && mortgageContingencyDate !== "") {
                 caseObj.mortgageContingencyDate = new Date(mortgageContingencyDate).toISOString();
             }
 
             // Update additional clients list 
-            if (additionalClients !== undefined) {
+            if (additionalClients !== undefined && additionalClients.length > 0) {
                 caseObj.additionalClients = await this.updateAdditionalClients(caseObj.additionalClients, additionalClients);
             }
 
@@ -490,6 +546,62 @@ class CaseController {
                 status: "failed",
                 data: [],
                 message: `[CaseController][updateCase] Internal server error: ${error}`
+            });
+        }
+    }
+
+    async closeCase(req, res) {
+        const {caseId} = req.body;
+        if (caseId === undefined) {
+            console.log("[CaseController][closeCase] Invalid case id");
+            return null;
+        }
+        try {
+            const existingCase = await CaseService.readCase(caseId);
+            if (existingCase === null) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[CaseController][closeCase] Case does not exist'
+                });
+            }
+            const c = await CaseService.updateCase({
+                caseId: caseId,
+                creatorId: existingCase.CreatorId,
+                closeAt: new Date().toISOString()
+            });
+            if (c !== null) {
+                return res.status(200).json({
+                    status: "success",
+                    data: [{
+                        "caseId": caseId,
+                        "creatorId": existingCase.CreatorId,
+                        "premisesId": existingCase.PremisesId,
+                        "stage": existingCase.Stage,
+                        "caseType": existingCase.CaseType,
+                        "buyerId": existingCase.BuyerId,
+                        "sellerId": existingCase.SellerId,
+                        "createAt": existingCase.CreateAt,
+                        "closeAt": c.CloseAt,
+                        "closingDate": existingCase.ClosingDate,
+                        "mortgageContingencyDate": existingCase.MortgageContingencyDate,
+                        "additionalClients": existingCase.AdditionalClients,
+                    }],
+                    message: '[CaseController][closeCase] Case closed successfully'
+                });
+            } else {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[CaseController][closeCase] Case close failed'
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                status: "failed",
+                data: [],
+                message: `[CaseController][closeCase] Internal server error: ${error}`
             });
         }
     }

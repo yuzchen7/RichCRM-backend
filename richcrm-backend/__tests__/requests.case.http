@@ -9,7 +9,7 @@ content-type: application/json
     "caseType": 1,
     "sellerId": "738ffc97-299b-423a-b759-2116a402b18d",
     "buyerId": "",
-    "additionalClients": ["7c377ce8-d6d5-4823-b60f-92ce5603d53f", "03c290cf-1758-4edc-95d5-be61f2339fd6"]
+    "additionalClients": ["7c377ce8-d6d5-4823-b60f-92ce5603d53f", "ce91dcf1-73fe-4a6a-be9e-46c533a843c8"]
 }
 
 
@@ -23,9 +23,17 @@ content-type: application/json
 
 {
     "creatorId": "test1@gmail.com",
-    "closed": false
+    "closed": true
 }
 
+
+### Read All Cases by ClientId
+POST http://localhost:3001/v1/case/query/client
+content-type: application/json
+
+{
+    "clientId": "ce91dcf1-73fe-4a6a-be9e-46c533a843c8"
+}
 
 
 ### Update Case
@@ -33,13 +41,22 @@ POST http://localhost:3001/v1/case/update
 content-type: application/json
 
 {
-    "caseId": "5debf678-7b96-49ff-a700-f8f8d6b9edec",
+    "caseId": "f020888b-6b31-47f8-b328-6fca3c9d760e",
     "creatorId": "test1@gmail.com",
     "stage": 0,
     "closeAt": "2024-07-20T20:24:24.740Z",
     "closingDate": "2024-07-20T20:24:24.740Z",
     "mortgageContingencyDate": "2024-07-20T20:24:24.740Z",
     "additionalClients": ["b4e53724-6e7b-4070-be8a-d6c78d961ade"]
+}
+
+
+### Close Case
+POST http://localhost:3001/v1/case/close
+content-type: application/json
+
+{
+    "caseId": "f020888b-6b31-47f8-b328-6fca3c9d760e"
 }
 
 

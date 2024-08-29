@@ -49,6 +49,8 @@ class Case {
 
         if (closed === true) {
             params.FilterExpression += " AND attribute_exists(CloseAt)";
+        } else {
+            params.FilterExpression += " AND NOT attribute_exists(CloseAt)";
         }
         const data = await db.scan(params).promise();
         return data;
@@ -77,6 +79,24 @@ class Case {
             },
         };
         const data = await db.query(params).promise();
+        return data;
+    }
+
+    async getCasesByClientId(clientId, closed) {
+        const params = {
+            TableName: this.table,
+            FilterExpression: "(BuyerId = :c OR SellerId = :c OR contains(AdditionalClients, :c))",
+            ExpressionAttributeValues: {
+                ":c": clientId,
+            },
+        };
+
+        if (closed === true) {
+            params.FilterExpression += " AND attribute_exists(CloseAt)";
+        } else {
+            params.FilterExpression += " AND NOT attribute_exists(CloseAt)";
+        }
+        const data = await db.scan(params).promise();
         return data;
     }
 
@@ -129,18 +149,18 @@ class Case {
             Key: {
                 CaseId: c.caseId,
             },
-            UpdateExpression: "set CreatorId = :c, PremisesId = :p",
-            ExpressionAttributeNames: {
-                "#stg": "Stage",
-            },
+            UpdateExpression: "set CreatorId = :c",
             ExpressionAttributeValues: {
                 ":c": c.creatorId,
-                ":p": c.premisesId,
             },
             ReturnValues: "UPDATED_NEW",
         };
 
         // Optional fields
+        if (c.premisesId !== undefined) {
+            params.ExpressionAttributeValues[':p'] = c.premisesId;
+            params.UpdateExpression += ', PremisesId = :p';
+        }
         if (c.closeAt !== undefined) {
             params.ExpressionAttributeValues[':ca'] = c.closeAt;
             params.UpdateExpression += ', CloseAt = :ca';
@@ -159,6 +179,8 @@ class Case {
         if (c.stage !== undefined) {
             params.ExpressionAttributeValues[':s'] = c.stage;
             params.UpdateExpression += ', #stg = :s';
+
+            params.ExpressionAttributeNames = {'#stg': "Stage"};
         }
 
         if (c.additionalClients !== undefined) {
