@@ -121,6 +121,47 @@ class ClientController {
         }
     }
 
+    async getAllClients(req, res) {
+        var clientList = [];
+        try {
+            const clients = await ClientService.readAllClients();
+            if (clients !== null) {
+                clients.forEach(client => {
+                    clientList.push({
+                        clientId: client.ClientId,
+                        clientType: client.ClientType,
+                        title: client.Title,
+                        firstName: client.FirstName,
+                        lastName: client.LastName,
+                        gender: client.Gender,
+                        cellNumber: client.CellNumber,
+                        workNumber: client.WorkNumber,
+                        email: client.Email,
+                        wechatAccount: client.WechatAccount,
+                        ssn: client.SSN,
+                        dob: client.DOB,
+                        addressId: client.AddressId,
+                        attorneyId: client.AttorneyId,
+                        bankAttorneyId: client.BankAttorneyId,
+                    });
+                });
+            }
+            res.status(200).json({
+                status: "success",
+                data: clientList,
+                message: '[ClientController][queryClient] Clients retrieved successfully'
+            });           
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: `[ClientController][queryClient] Internal server error ${error}`
+            });
+        }
+    }
+
     async queryClients(req, res) {
         const { keyword } = req.body;
         var clientList = [];

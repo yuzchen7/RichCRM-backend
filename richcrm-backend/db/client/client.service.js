@@ -11,6 +11,16 @@ class ClientService {
         return null;
     }
 
+    async readAllClients() {
+        const data = await Client.getAllClients();
+
+        if (data.Items !== undefined) {
+            return data.Items;
+        }
+
+        return null;
+    }
+
     async readClientsByType(clientType) {
         const data = await Client.getClientsByType(clientType);
 

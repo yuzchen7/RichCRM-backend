@@ -10,6 +10,9 @@ content-type: application/json
     "email": "john.doe@hotmail.com"
 }
 
+### Get All Clients
+GET http://localhost:3001/v1/client/all
+
 ### Query Clients
 POST http://localhost:3001/v1/client/query
 content-type: application/json

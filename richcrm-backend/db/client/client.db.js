@@ -40,6 +40,14 @@ class Client {
         return data;
     }
 
+    async getAllClients() {
+        const params = {
+            TableName: this.table,
+        };
+        const data = await db.scan(params).promise();
+        return data;
+    }
+
     async getClientsByType(clientType) {
         const params = {
             TableName: this.table,
