@@ -2,6 +2,7 @@ const CaseService = require('../db/case/case.service');
 const UserService = require('../db/user/user.service');
 const PremisesService = require('../db/premises/premises.service');
 const ClientService = require('../db/client/client.service');
+const ContactService = require('../db/contact/contact.service');
 const StageService = require('../db/stage/stage.service');
 const StageController = require('./stage');
 const Types = require("../db/types");
@@ -182,10 +183,64 @@ class CaseController {
 
     }
 
+    async readAllCasesByContactId(req, res) {
+        const { contactId, closed } = req.body;
+        try {
+            var caseList = [];
+            const cases = await CaseService.readAllCasesByContactId(contactId, closed);
+            if (cases !== null) {
+                for (let i = 0; i < cases.length; i++) {
+                    const c = cases[i];
+                    // Read current stage
+                    const stages = await StageService.getStagesByCaseIdAndStageType(c.CaseId, c.Stage);
+                    if (stages === null || stages.length === 0) {
+                        console.log(`[CaseController][readAllCasesByContactId] Stage does not exist for case: ${c.CaseId}`);
+                    }
 
+                    // Read premises
+                    const premises = await PremisesService.readPremises(c.PremisesId);
+                    if (premises === null) {
+                        console.log(`[CaseController][readAllCasesByContactId] Premises does not exist for case: ${c.CaseId}`);
+                    }
+
+                    caseList.push({
+                        "caseId": c.CaseId,
+                        "creatorId": c.CreatorId,
+                        "premisesId": c.PremisesId,
+                        "premisesName": premises.Name,
+                        "stage": c.Stage,
+                        "caseStatus": stages[0].StageStatus,
+                        "stageId": stages[0].StageId,
+                        "caseType": c.CaseType,
+                        "buyerId": c.BuyerId,
+                        "sellerId": c.SellerId,
+                        "createAt": c.CreateAt,
+                        "closeAt": c.CloseAt,
+                        "closingDate": c.ClosingDate,
+                        "mortgageContingencyDate": c.MortgageContingencyDate,
+                        "additionalClients": c.AdditionalClients,
+                        "contacts": c.Contacts,
+                    });
+                }
+            }
+            res.status(200).json({
+                status: "success",
+                data: caseList,
+                message: '[CaseController][readAllCasesByContactId] Cases retrieved successfully'
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][readAllCasesByContactId] Internal server error'
+            });
+        }
+
+    }
     
     async createCase(req, res) {
-        const {creatorId, premisesId, caseType, buyerId, sellerId, stage, additionalClients} = req.body;
+        const {creatorId, premisesId, caseType, buyerId, sellerId, stage, additionalClients, contacts} = req.body;
 
         // Check if the creator id is valid
         if (creatorId === undefined) {
@@ -256,6 +311,7 @@ class CaseController {
         var caseId;
         var clientId = buyerId;
         var additionalClientIds = [];
+        var contactIds = [];
         try {
             switch (caseType) {
                 case Types.caseType.PURCHASING:
@@ -307,6 +363,17 @@ class CaseController {
                     additionalClientIds.push(additionalClients[i]);
                 }
             }
+
+            // Check contacts
+            if (contacts !== undefined) {
+                for (let i = 0; i < contacts.length; i++) {
+                    const contact = await ContactService.readContact(contacts[i]);
+                    if (contact === null) {
+                        console.log(`[CaseController][createCase] Invalid contact id ${contacts[i]}`);
+                    }
+                    contactIds.push(contacts[i]);
+                }
+            }
         } catch (error) {
             console.log(error);
             return res.status(500).json({
@@ -338,7 +405,8 @@ class CaseController {
                 buyerId: buyerId,
                 sellerId: sellerId,
                 createAt: new Date().toISOString(),
-                additionalClients: additionalClientIds
+                additionalClients: additionalClientIds,
+                contacts: contactIds,
             });
             if (c !== null) {
 
@@ -369,6 +437,7 @@ class CaseController {
                         "closingDate": c.ClosingDate,
                         "mortgageContingencyDate": c.MortgageContingencyDate,
                         "additionalClients": c.AdditionalClients,
+                        "contacts": c.Contacts,
                     }],
                     message: '[CaseController][createCase] Case created successfully'
                 });
@@ -391,7 +460,7 @@ class CaseController {
     }
 
     async updateCase(req, res) {
-        const {caseId, creatorId, stage, premisesId, closeAt, closingDate, mortgageContingencyDate, additionalClients} = req.body;
+        const {caseId, creatorId, stage, premisesId, closeAt, closingDate, mortgageContingencyDate, additionalClients, contacts} = req.body;
 
         // Check if the case id is valid
         if (caseId === undefined) {
@@ -438,7 +507,8 @@ class CaseController {
                 closingDate: existingCase.ClosingDate,
                 closeAt: existingCase.CloseAt,
                 mortgageContingencyDate: existingCase.MortgageContingencyDate,
-                additionalClients: existingCase.AdditionalClients
+                additionalClients: existingCase.AdditionalClients,
+                contacts: existingCase.Contacts,
             }
 
             // Check if the stage is valid
@@ -510,6 +580,10 @@ class CaseController {
                 caseObj.additionalClients = await this.updateAdditionalClients(caseObj.additionalClients, additionalClients);
             }
 
+            // Update contacts list
+            if (contacts !== undefined && contacts.length > 0) {
+                caseObj.contacts = await this.updateAdditionalContacts(caseObj.contacts, contacts);
+            }
 
             // Update the case
             const c = await CaseService.updateCase(caseObj);
@@ -530,6 +604,7 @@ class CaseController {
                         "closingDate": c.ClosingDate,
                         "mortgageContingencyDate": c.MortgageContingencyDate,
                         "additionalClients": c.AdditionalClients,
+                        "contacts": c.Contacts,
                     }],
                     message: '[CaseController][updateCase] Case updated successfully'
                 });
@@ -586,6 +661,7 @@ class CaseController {
                         "closingDate": existingCase.ClosingDate,
                         "mortgageContingencyDate": existingCase.MortgageContingencyDate,
                         "additionalClients": existingCase.AdditionalClients,
+                        "contacts": existingCase.Contacts,
                     }],
                     message: '[CaseController][closeCase] Case closed successfully'
                 });
@@ -652,6 +728,21 @@ class CaseController {
             }
         }
         return additionalClients;
+    }
+
+    // Update contacts list
+    async updateAdditionalContacts(contacts, contactsNew) {
+        for (let i = 0; i < contactsNew.length; i++) {
+            if (!contacts.includes(contactsNew[i])) {
+                const contact = await ContactService.readContact(contactsNew[i]);
+                if (contact === null) {
+                    console.log(`[CaseController][updateAdditionalContacts] Invalid contact id ${contactsNew[i]}`);
+                    continue;
+                }
+                contacts.push(contactsNew[i]);
+            }
+        }
+        return contacts;
     }
 }
 

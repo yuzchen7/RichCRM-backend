@@ -25,6 +25,7 @@ const router = express.Router();
  * @apiSuccess {String} closingDate Closing date of the case.
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * @apiSuccess {Array} additionalClients Additional clients in this case.
+ * @apiSuccess {Array} contacts Contacts in this case.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -42,6 +43,10 @@ const router = express.Router();
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ],
+ *  "contacts": [
+ *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
+ *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
  *   ]
  * }
  */
@@ -75,6 +80,7 @@ router.get(
  * @apiSuccess {String} closingDate Closing date of the case.
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * @apiSuccess {Array} additionalClients Additional clients in this case.
+ * @apiSuccess {Array} contacts Contacts in this case.
  * 
  * @apiSuccessExample Example data on success:
  * [{
@@ -94,6 +100,10 @@ router.get(
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ],
+ *  "contacts": [
+ *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
+ *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
  *   ]
  * }]
  * 
@@ -131,6 +141,7 @@ router.post(
  * @apiSuccess {String} closingDate Closing date of the case.
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * @apiSuccess {Array} additionalClients Additional clients in this case.
+ * @apiSuccess {Array} contacts Contacts in this case.
  * 
  * @apiSuccessExample Example data on success:
  * [{
@@ -150,6 +161,10 @@ router.post(
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ],
+ *  "contacts": [
+ *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
+ *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
  *   ]
  * }]
  * 
@@ -165,6 +180,69 @@ router.post(
     CaseController.readAllCasesByClientId
 )
 
+
+/**
+ * @api {post} v1/case/query/contact Get all cases by contact ID
+ * @apiName GetAllCasesByContactId
+ * @apiGroup Case
+ * 
+ * @apiBody {String} contactId Contact ID.
+ * @apiBody {Boolean} closed Show closed cases or not (default: false).
+ * 
+ * 
+ * @apiSuccess {String} caseId Case ID.
+ * @apiSuccess {Number} creatorId Creator ID.
+ * @apiSuccess {Number} premisesId Premises ID.
+ * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {String} stageId current Stage ID of this case.
+ * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
+ * @apiSuccess {String} buyerId Buyer ID.
+ * @apiSuccess {String} sellerId Seller ID.
+ * @apiSuccess {String} createAt Creation date of the case.
+ * @apiSuccess {String} closeAt Date when the case was closed.
+ * @apiSuccess {String} closingDate Closing date of the case.
+ * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
+ * @apiSuccess {Array} additionalClients Additional clients in this case.
+ * @apiSuccess {Array} contacts Contacts in this case.
+ * 
+ * @apiSuccessExample Example data on success:
+ * [{
+ * "caseId": "badc8b89-1165-406b-7cds-f3d00d22ea74",
+ *  "premisesId": "1820 NW 21st St #6A COMMERCIAL",
+ *  "stage": 1,
+ *  "caseStatus": 0,
+ *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
+ *  "caseType": 0,
+ *  "buyerId": "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *  "clientName": "Doe, John",
+ *  "createAt": "2024-07-18T19:52:16.672Z",
+ *  "closeAt": "2024-07-18T19:52:16.672Z",
+ *  "closingDate": "2024-07-20T20:04:24.740Z",
+ *  "mortgageContingencyDate": "2024-07-20T20:04:24.740Z",
+ *  "additionalClients": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ],
+ *  "contacts": [
+ *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
+ *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
+ *   ]
+ * }]
+ * 
+ */
+router.post(
+    "/query/contact",
+    check("contactId")
+        .notEmpty()
+        .withMessage("Contact ID is required"),
+    check("closed")
+        .default(false),
+    validate,
+    CaseController.readAllCasesByContactId
+)
+
+
 /**
  * @api {post} v1/case/create Create a new case
  * @apiName CreateCase
@@ -178,6 +256,7 @@ router.post(
  * @apiBody {String} sellerId Seller ID.
  * @apiBody {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiBody {Array} additionalClients Additional clients in this case.
+ * @apiBody {Array} contacts Contacts in this case.
  *
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
@@ -204,6 +283,10 @@ router.post(
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ],
+ *  "contacts": [
+ *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
+ *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
  *   ]
  * }
  */
@@ -225,6 +308,10 @@ router.post(
         .optional()
         .isArray()
         .withMessage("Additional Clients should be an array"),
+    check("contacts")
+        .optional()
+        .isArray()
+        .withMessage("Contacts should be an array"),
     validate,
     CaseController.createCase
 );
@@ -243,6 +330,7 @@ router.post(
  * @apiBody {String} closingDate Closing date of the case.
  * @apiBody {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * @apiBody {Array} additionalClients Additional clients in this case.
+ * @apiBody {Array} contacts Contacts in this case.
  * 
  *
  * @apiSuccess {String} caseId Case ID.
@@ -269,6 +357,10 @@ router.post(
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ],
+ *  "contacts": [
+ *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
+ *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
  *   ]
  * }
  */
@@ -281,6 +373,10 @@ router.post(
         .optional()
         .isArray()
         .withMessage("Additional Clients should be an array"),
+    check("contacts")
+        .optional()
+        .isArray()
+        .withMessage("Contacts should be an array"),
     validate,
     CaseController.updateCase
 );
@@ -307,6 +403,10 @@ router.post(
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ],
+ *  "contacts": [
+ *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
+ *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
  *   ]
  * }
  */

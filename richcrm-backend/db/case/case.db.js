@@ -16,6 +16,7 @@
  * @property {Date} MortgageContingencyDate - When should the mortgage contingency be removed
  * @property {stage} Stage - The stage of this case(0-SETUP, 1-CONTRACT_PREPARING, 2-CONTRACT_SIGNING, 3-MORTGAGE, 4-CLOSING)
  * @property {array} AdditionalClients - Additional clients in this case
+ * @property {array} Contacts - Contacts in this case (e.g. attorney, bank attorney)
  * 
  */
 
@@ -100,6 +101,24 @@ class Case {
         return data;
     }
 
+    async getCasesByContactId(contactId, closed) {
+        const params = {
+            TableName: this.table,
+            FilterExpression: "contains(Contacts, :c)",
+            ExpressionAttributeValues: {
+                ":c": contactId,
+            },
+        };
+
+        if (closed === true) {
+            params.FilterExpression += " AND attribute_exists(CloseAt)";
+        } else {
+            params.FilterExpression += " AND NOT attribute_exists(CloseAt)";
+        }
+        const data = await db.scan(params).promise();
+        return data;
+    }
+
     async getCaseByPremisesIdAndClientId(premisesId, clientId) {
         const params = {
             TableName: this.table,
@@ -137,6 +156,7 @@ class Case {
                 MortgageContingencyDate: c.mortgageContingencyDate,
                 Stage: c.stage,
                 AdditionalClients: c.additionalClients,
+                Contacts: c.contacts
             },
         };
         await db.put(params).promise();
@@ -186,6 +206,11 @@ class Case {
         if (c.additionalClients !== undefined) {
             params.ExpressionAttributeValues[':ac'] = c.additionalClients;
             params.UpdateExpression += ', AdditionalClients = :ac';
+        }
+
+        if (c.contacts !== undefined) {
+            params.ExpressionAttributeValues[':ct'] = c.contacts;
+            params.UpdateExpression += ', Contacts = :ct';
         }
 
         const data = await db.update(params).promise();
