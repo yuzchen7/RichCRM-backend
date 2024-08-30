@@ -30,7 +30,7 @@ POST http://localhost:3001/v1/contact/query/type
 content-type: application/json
 
 {
-    "contactType": 0
+    "contactType": 4
 }
 
 
@@ -39,15 +39,15 @@ POST http://localhost:3001/v1/contact/update
 content-type: application/json
 
 {
-    "contactId": "ef59b861-2130-4065-967b-314b5405be82",
-    "contactType": 1,
+    "contactId": "bffc41d3-4ef5-4cc8-8889-6524971e8299",
+    "contactType": 4,
     "firstName": "Larry",
     "lastName": "Woooo",
     "company": "RichTech",
     "position": "Intern",
     "email": "otter@gmail.com",
     "cellNumber": "0912345678",
-    "mailingAddress": "Framingham MA 01701-4607",
+    "mailingAddress": "Hanover PA 17331-1587",
     "wechatAccount": "lawsonwu",
     "note": "This is a test contact."
 }

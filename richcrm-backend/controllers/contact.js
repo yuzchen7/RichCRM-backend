@@ -1,4 +1,6 @@
 var ContactService = require("../db/contact/contact.service");
+var ClientService = require("../db/client/client.service");
+var ClientController = require("./client");
 var AddressService = require("../db/address/address.service");
 const { v4: uuidv4 } = require('uuid');
 const Types = require("../db/types");
@@ -104,6 +106,22 @@ class ContactController {
                     });
                 });
             }
+            const clients = await ClientService.readClientByKeyWord(keyword);
+            if (clients !== null) {
+                clients.forEach(client => {
+                    contactList.push({
+                        contactId: client.ClientId,
+                        contactType: Types.contactType.CLIENT,
+                        firstName: client.FirstName,
+                        lastName: client.LastName,
+                        cellNumber: client.CellNumber,
+                        workNumber: client.WorkNumber,
+                        email: client.Email,
+                        mailingAddress: client.addressId,
+                        wechatAccount: client.WechatAccount,
+                    });
+                });
+            }
             return res.status(200).json({
                 status: "success",
                 data: contactList,
@@ -123,29 +141,55 @@ class ContactController {
         const { contactType } = req.body;
         var contactList = [];
         try {
-            const contacts = await ContactService.readContactsByType(contactType);
-            if (contacts !== null) {
-                contacts.forEach(contact => {
-                    contactList.push({
-                        contactId: contact.ContactId,
-                        contactType: contact.ContactType,
-                        firstName: contact.FirstName,
-                        lastName: contact.LastName,
-                        company: contact.Company,
-                        position: contact.Position,
-                        cellNumber: contact.CellNumber,
-                        email: contact.Email,
-                        mailingAddress: contact.MailingAddress,
-                        wechatAccount: contact.WechatAccount,
-                        note: contact.Note,
+            if (Types.castIntToEnum(Types.contactType, contactType) === "CLIENT") {
+                const clients = await ClientService.readAllClients();
+                if (clients !== null) {
+                    clients.forEach(client => {
+                        contactList.push({
+                            contactId: client.ClientId,
+                            contactType: Types.contactType.CLIENT,
+                            firstName: client.FirstName,
+                            lastName: client.LastName,
+                            cellNumber: client.CellNumber,
+                            workNumber: client.WorkNumber,
+                            email: client.Email,
+                            mailingAddress: client.addressId,
+                            wechatAccount: client.WechatAccount,
+                        });
                     });
+                }
+                return res.status(200).json({
+                    status: "success",
+                    data: contactList,
+                    message: '[ContactController][queryContactsByType] Contacts queried successfully',
+                });
+            } else {
+                const contacts = await ContactService.readContactsByType(contactType);
+                if (contacts !== null) {
+                    contacts.forEach(contact => {
+                        contactList.push({
+                            contactId: contact.ContactId,
+                            contactType: contact.ContactType,
+                            firstName: contact.FirstName,
+                            lastName: contact.LastName,
+                            company: contact.Company,
+                            position: contact.Position,
+                            cellNumber: contact.CellNumber,
+                            email: contact.Email,
+                            mailingAddress: contact.MailingAddress,
+                            wechatAccount: contact.WechatAccount,
+                            note: contact.Note,
+                        });
+                    });
+                }
+                return res.status(200).json({
+                    status: "success",
+                    data: contactList,
+                    message: '[ContactController][queryContactsByType] Contacts queried successfully',
                 });
             }
-            return res.status(200).json({
-                status: "success",
-                data: contactList,
-                message: '[ContactController][queryContactsByType] Contacts queried successfully',
-            });
+            
+            
         } catch (error) {
             console.error(error);
             res.status(500).json({
@@ -159,6 +203,18 @@ class ContactController {
     async updateContact(req, res) {
         const { contactId, contactType, firstName, lastName, company, position, cellNumber, email, mailingAddress, wechatAccount, note } = req.body;
         try {
+            if (Types.castIntToEnum(Types.contactType, contactType) === "CLIENT") {
+                req.body.clientId = contactId;
+                req.body.firstName = firstName;
+                req.body.lastName = lastName;
+                req.body.cellNumber = cellNumber;
+                req.body.email = email;
+                req.body.addressId = mailingAddress;
+                req.body.wechatAccount = wechatAccount;
+                return ClientController.updateClient(req, res);
+            }
+
+            
             const contact = await ContactService.readContact(contactId);
             if (contact === null) {
                 return res.status(400).json({
