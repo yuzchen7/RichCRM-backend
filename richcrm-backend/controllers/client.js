@@ -11,9 +11,38 @@ class ClientController {
     }
 
     async registerClient(req, res) {
-        const { clientType, title, firstName, lastName, gender, cellNumber, email, ssn, addressId } = req.body;
+        const { clientId, clientType, title, firstName, lastName, gender, cellNumber, email, ssn, addressId } = req.body;
 
         try {
+            // Check if client ID exists
+            if (clientId !== undefined) {
+                const existingClient = await ClientService.readClient(clientId);
+                if (existingClient !== null) {
+                    res.status(200).json({
+                        status: "success",
+                        data: [{
+                            clientId: existingClient.ClientId,
+                            clientType: existingClient.ClientType,
+                            title: existingClient.Title,
+                            firstName: existingClient.FirstName,
+                            lastName: existingClient.LastName,
+                            gender: existingClient.Gender,
+                            cellNumber: existingClient.CellNumber,
+                            workNumber: existingClient.WorkNumber,
+                            email: existingClient.Email,
+                            wechatAccount: existingClient.WechatAccount,
+                            ssn: existingClient.SSN,
+                            dob: existingClient.DOB,
+                            addressId: existingClient.AddressId,
+                            attorneyId: existingClient.AttorneyId,
+                            bankAttorneyId: existingClient.BankAttorneyId,
+                        }],
+                        message: '[ClientController][registerClient] Client already exists'
+                    });
+                    return;
+                }
+            }
+                        
             // Check if client type is valid
             if (Types.castIntToEnum(Types.clientType, clientType) === undefined) {
                 return res.status(400).json({

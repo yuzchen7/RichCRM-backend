@@ -10,6 +10,7 @@ const router = express.Router();
  * @apiName RegisterClient
  * @apiGroup Client
  * 
+ * @apiBody {String} clientId [Optional] Existing Client ID (will return the an existing client).
  * @apiBody {Number} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
  * @apiBody {String} firstName First Name of the Client.
  * @apiBody {String} lastName Last Name of the Client.
@@ -38,6 +39,10 @@ const router = express.Router();
  */
 router.post(
     "/register",
+    check("clientId")
+        .optional()
+        .isUUID()
+        .withMessage("Client ID should be a valid UUID"),
     check("clientType")
         .notEmpty()
         .withMessage("Client Type is required"),

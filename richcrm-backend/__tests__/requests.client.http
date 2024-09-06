@@ -3,6 +3,7 @@ POST http://localhost:3001/v1/client/register
 content-type: application/json
 
 {
+    "clientId": "d5dbbca5-808c-4df8-b51b-b09b1cb595bd",
     "clientType": 0,
     "firstName": "John",
     "lastName": "Doe",
