@@ -1,5 +1,5 @@
 ### Register Client
-POST http://localhost:3001/v1/client/register
+POST https://api.richcrm.org/v1/client/register
 content-type: application/json
 
 {

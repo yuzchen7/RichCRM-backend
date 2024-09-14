@@ -34,10 +34,12 @@ class CaseController {
                     data: [{
                         "caseId": c.CaseId,
                         "premisesId": c.PremisesId,
+                        "premisesName": c.PremisesName,
                         "stage": c.Stage,
                         "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
+                        "clientName": c.ClientName,
                         "createAt": c.CreateAt,
                         "closeAt": c.CloseAt,
                         "closingDate": c.ClosingDate,
@@ -77,34 +79,18 @@ class CaseController {
                         console.log(`[CaseController][readAllCasesByCreatorId] Stage does not exist for case: ${c.CaseId}`);
                     }
 
-                    // Read client
-                    var clientId = c.BuyerId;
-                    if (c.BuyerId === undefined || c.BuyerId === null) {
-                        clientId = c.SellerId;
-                    }
-                    const client = await ClientService.readClient(clientId);
-                    if (client === null) {
-                        console.log(`[CaseController][readAllCasesByCreatorId] Client does not exist for case: ${c.CaseId}`);
-                    }
-
-                    // Read premises
-                    const premises = await PremisesService.readPremises(c.PremisesId);
-                    if (premises === null) {
-                        console.log(`[CaseController][readAllCasesByCreatorId] Premises does not exist for case: ${c.CaseId}`);
-                    }
-
                     caseList.push({
                         "caseId": c.CaseId,
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
-                        "premisesName": premises.Name,
+                        "premisesName": c.PremisesName,
                         "stage": c.Stage,
                         "caseStatus": stages[0].StageStatus,
                         "stageId": stages[0].StageId,
                         "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
-                        "clientName": client.LastName + ", " + client.FirstName,
+                        "clientName": c.ClientName,
                         "createAt": c.CreateAt,
                         "closeAt": c.CloseAt,
                         "closingDate": c.ClosingDate,
@@ -142,23 +128,18 @@ class CaseController {
                         console.log(`[CaseController][readAllCasesByClientId] Stage does not exist for case: ${c.CaseId}`);
                     }
 
-                    // Read premises
-                    const premises = await PremisesService.readPremises(c.PremisesId);
-                    if (premises === null) {
-                        console.log(`[CaseController][readAllCasesByClientId] Premises does not exist for case: ${c.CaseId}`);
-                    }
-
                     caseList.push({
                         "caseId": c.CaseId,
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
-                        "premisesName": premises.Name,
+                        "premisesName": c.PremisesName,
                         "stage": c.Stage,
                         "caseStatus": stages[0].StageStatus,
                         "stageId": stages[0].StageId,
                         "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
+                        "clientName": c.ClientName,
                         "createAt": c.CreateAt,
                         "closeAt": c.CloseAt,
                         "closingDate": c.ClosingDate,
@@ -197,23 +178,18 @@ class CaseController {
                         console.log(`[CaseController][readAllCasesByContactId] Stage does not exist for case: ${c.CaseId}`);
                     }
 
-                    // Read premises
-                    const premises = await PremisesService.readPremises(c.PremisesId);
-                    if (premises === null) {
-                        console.log(`[CaseController][readAllCasesByContactId] Premises does not exist for case: ${c.CaseId}`);
-                    }
-
                     caseList.push({
                         "caseId": c.CaseId,
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
-                        "premisesName": premises.Name,
+                        "premisesName": c.PremisesName,
                         "stage": c.Stage,
                         "caseStatus": stages[0].StageStatus,
                         "stageId": stages[0].StageId,
                         "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
+                        "clientName": c.ClientName,
                         "createAt": c.CreateAt,
                         "closeAt": c.CloseAt,
                         "closingDate": c.ClosingDate,
@@ -237,6 +213,57 @@ class CaseController {
             });
         }
 
+    }
+
+    async readAllCasesByKeyword(req, res) {
+        const { keyword, closed } = req.body;
+
+        try {
+            var caseList = [];
+            const cases = await CaseService.readAllCasesByKeyword(keyword, closed);
+            if (cases !== null) {
+                for (let i = 0; i < cases.length; i++) {
+                    const c = cases[i];
+                    // Read current stage
+                    const stages = await StageService.getStagesByCaseIdAndStageType(c.CaseId, c.Stage);
+                    if (stages === null || stages.length === 0) {
+                        console.log(`[CaseController][readAllCasesByKeyword] Stage does not exist for case: ${c.CaseId}`);
+                    }
+
+                    caseList.push({
+                        "caseId": c.CaseId,
+                        "creatorId": c.CreatorId,
+                        "premisesId": c.PremisesId,
+                        "premisesName": c.PremisesName,
+                        "stage": c.Stage,
+                        "caseStatus": stages[0].StageStatus,
+                        "stageId": stages[0].StageId,
+                        "caseType": c.CaseType,
+                        "buyerId": c.BuyerId,
+                        "clientName": c.ClientName,
+                        "sellerId": c.SellerId,
+                        "createAt": c.CreateAt,
+                        "closeAt": c.CloseAt,
+                        "closingDate": c.ClosingDate,
+                        "mortgageContingencyDate": c.MortgageContingencyDate,
+                        "additionalClients": c.AdditionalClients,
+                        "contacts": c.Contacts,
+                    });
+                }
+            }
+            res.status(200).json({
+                status: "success",
+                data: caseList,
+                message: '[CaseController][readAllCasesByContactId] Cases retrieved successfully'
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: '[CaseController][readAllCasesByContactId] Internal server error'
+            });
+        }
     }
     
     async createCase(req, res) {
@@ -270,6 +297,7 @@ class CaseController {
         }
 
         // Check if the premises id is valid
+        var premisesName;
         try {
             const premises = await PremisesService.readPremises(premisesId);
             if (premises === null) {
@@ -279,6 +307,7 @@ class CaseController {
                     message: '[CaseController][createCase] Premises does not exist'
                 });
             }
+            premisesName = premises.Name;
         } catch (error) {
             return res.status(500).json({
                 status: "failed",
@@ -310,6 +339,7 @@ class CaseController {
         // Check if the buyerId / SellerId is valid -> Generate caseId
         var caseId;
         var clientId = buyerId;
+        var clientName;
         var additionalClientIds = [];
         var contactIds = [];
         try {
@@ -323,6 +353,8 @@ class CaseController {
                             message: '[CaseController][createCase] Invalid buyer id'
                         });
                     } else {
+                        clientId = buyerId;
+                        clientName = buyer.LastName + ", " + buyer.FirstName;
                         caseId = generateCaseId(caseType, buyerId, premisesId);
                         console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
                     }
@@ -337,6 +369,7 @@ class CaseController {
                         });
                     } else {
                         clientId = sellerId;
+                        clientName = seller.LastName + ", " + seller.FirstName;
                         caseId = generateCaseId(caseType, sellerId, premisesId);
                         console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
                     }
@@ -400,10 +433,12 @@ class CaseController {
                 creatorId: creatorId,
                 caseId: caseId,
                 premisesId: premisesId,
+                premisesName: premisesName,
                 stage: stage,
                 caseType: caseType,
                 buyerId: buyerId,
                 sellerId: sellerId,
+                clientName: clientName,
                 createAt: new Date().toISOString(),
                 additionalClients: additionalClientIds,
                 contacts: contactIds,
@@ -427,11 +462,13 @@ class CaseController {
                         "caseId": c.CaseId,
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
+                        "premisesName": c.PremisesName,
                         "stage": c.Stage,
                         "stageId": stageObj.stageId,
                         "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
+                        "clientName": c.ClientName,
                         "createAt": c.CreateAt,
                         "closeAt": c.CloseAt,
                         "closingDate": c.ClosingDate,
@@ -558,6 +595,7 @@ class CaseController {
                     });
                 }
                 caseObj.premisesId = premisesId;
+                caseObj.premisesName = premises.Name;
             }
 
             // Check if the closing date is valid
@@ -594,11 +632,13 @@ class CaseController {
                         "caseId": c.CaseId,
                         "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
+                        "premisesName": c.PremisesName,
                         "stage": c.Stage,
                         "stageId": stageObj.stageId,
                         "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,
+                        "clientName": c.ClientName,
                         "createAt": c.CreateAt,
                         "closeAt": c.CloseAt,
                         "closingDate": c.ClosingDate,
@@ -652,10 +692,12 @@ class CaseController {
                         "caseId": caseId,
                         "creatorId": existingCase.CreatorId,
                         "premisesId": existingCase.PremisesId,
+                        "premisesName": existingCase.PremisesName,
                         "stage": existingCase.Stage,
                         "caseType": existingCase.CaseType,
                         "buyerId": existingCase.BuyerId,
                         "sellerId": existingCase.SellerId,
+                        "clientName": existingCase.ClientName,
                         "createAt": existingCase.CreateAt,
                         "closeAt": c.CloseAt,
                         "closingDate": existingCase.ClosingDate,

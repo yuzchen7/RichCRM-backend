@@ -10,7 +10,7 @@ content-type: application/json
 }
 
 ### Login
-POST http://localhost:3001/v1/auth/login
+POST https://api.richcrm.org/v1/auth/login
 content-type: application/json
 
 {

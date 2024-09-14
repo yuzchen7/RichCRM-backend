@@ -71,6 +71,16 @@ class CaseService {
         return null;
     }
 
+    async readAllCasesByKeyword(keyword, closed) {
+        const data = await Case.getCasesByKeyword(keyword, closed);
+
+        if (data.Items !== undefined) {
+            return data.Items;
+        }
+
+        return null;
+    }
+
     async readAllCases() {
         const data = await Case.getAllCases();
 

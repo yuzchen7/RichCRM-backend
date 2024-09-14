@@ -16,9 +16,11 @@ const router = express.Router();
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} premisesId Premises ID.
+ * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.  
+ * @apiSuccess {String} clientName Client Name (For display and search).
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} createAt Creation date of the case.
  * @apiSuccess {String} closeAt Date when the case was closed.
@@ -31,10 +33,12 @@ const router = express.Router();
  * {
  *  "caseId": "0-98765-123456",
  *  "creatorId": "test1@gmail.com",
- *  "premisesId": "1820 NW 21st St #6A COMMERCIAL",
+ *  "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+ *  "premisesName": "130 W 3rd St # 1203_New York NY 10012-1296",
  *  "stage": 1,
  *  "caseType": 0,
  *  "buyerId": 98765,
+ *  "clientName": "Woooo, Larry",
  *  "createAt": "2024-07-18T19:52:16.672Z",
  *  "closeAt": "2024-07-18T19:52:16.672Z",
  *  "closingDate": "2024-07-20T20:04:24.740Z",
@@ -70,11 +74,13 @@ router.get(
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} premisesId Premises ID.
+ * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.
+ * @apiSuccess {String} clientName Client Name (For display and search).
  * @apiSuccess {String} createAt Creation date of the case.
  * @apiSuccess {String} closeAt Date when the case was closed.
  * @apiSuccess {String} closingDate Closing date of the case.
@@ -85,7 +91,8 @@ router.get(
  * @apiSuccessExample Example data on success:
  * [{
  * "caseId": "badc8b89-1165-406b-7cds-f3d00d22ea74",
- *  "premisesId": "1820 NW 21st St #6A COMMERCIAL",
+ *  "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+ *  "premisesName": "130 W 3rd St # 1203_New York NY 10012-1296",
  *  "stage": 1,
  *  "caseStatus": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
@@ -131,11 +138,13 @@ router.post(
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} premisesId Premises ID.
+ * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.
+ * @apiSuccess {String} clientName Client Name (For display and search).
  * @apiSuccess {String} createAt Creation date of the case.
  * @apiSuccess {String} closeAt Date when the case was closed.
  * @apiSuccess {String} closingDate Closing date of the case.
@@ -146,7 +155,8 @@ router.post(
  * @apiSuccessExample Example data on success:
  * [{
  * "caseId": "badc8b89-1165-406b-7cds-f3d00d22ea74",
- *  "premisesId": "1820 NW 21st St #6A COMMERCIAL",
+ *  "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+ *  "premisesName": "130 W 3rd St # 1203_New York NY 10012-1296",
  *  "stage": 1,
  *  "caseStatus": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
@@ -193,11 +203,13 @@ router.post(
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} premisesId Premises ID.
+ * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.
+ * @apiSuccess {String} clientName Client Name (For display and search).
  * @apiSuccess {String} createAt Creation date of the case.
  * @apiSuccess {String} closeAt Date when the case was closed.
  * @apiSuccess {String} closingDate Closing date of the case.
@@ -208,7 +220,8 @@ router.post(
  * @apiSuccessExample Example data on success:
  * [{
  * "caseId": "badc8b89-1165-406b-7cds-f3d00d22ea74",
- *  "premisesId": "1820 NW 21st St #6A COMMERCIAL",
+ *  "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+ *  "premisesName": "130 W 3rd St # 1203_New York NY 10012-1296",
  *  "stage": 1,
  *  "caseStatus": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
@@ -244,6 +257,71 @@ router.post(
 
 
 /**
+ * @api {post} v1/case/query/keyword Get all cases by keyword (within ClientName and PremisesName)
+ * @apiName GetAllCasesByKeyword
+ * @apiGroup Case
+ * 
+ * @apiBody {String} keyword Keyword to search.
+ * @apiBody {Boolean} closed Show closed cases or not (default: false).
+ * 
+ * 
+ * @apiSuccess {String} caseId Case ID.
+ * @apiSuccess {Number} creatorId Creator ID.
+ * @apiSuccess {Number} premisesId Premises ID.
+ * @apiSuccess {String} premisesName Premises Name (For display and search).
+ * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {String} stageId current Stage ID of this case.
+ * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
+ * @apiSuccess {String} buyerId Buyer ID.
+ * @apiSuccess {String} sellerId Seller ID.
+ * @apiSuccess {String} clientName Client Name (For display and search).
+ * @apiSuccess {String} createAt Creation date of the case.
+ * @apiSuccess {String} closeAt Date when the case was closed.
+ * @apiSuccess {String} closingDate Closing date of the case.
+ * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
+ * @apiSuccess {Array} additionalClients Additional clients in this case.
+ * @apiSuccess {Array} contacts Contacts in this case.
+ * 
+ * @apiSuccessExample Example data on success:
+ * [{
+ * "caseId": "badc8b89-1165-406b-7cds-f3d00d22ea74",
+ *  "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+ *  "premisesName": "130 W 3rd St # 1203_New York NY 10012-1296",
+ *  "stage": 1,
+ *  "caseStatus": 0,
+ *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
+ *  "caseType": 0,
+ *  "buyerId": "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *  "clientName": "Doe, John",
+ *  "createAt": "2024-07-18T19:52:16.672Z",
+ *  "closeAt": "2024-07-18T19:52:16.672Z",
+ *  "closingDate": "2024-07-20T20:04:24.740Z",
+ *  "mortgageContingencyDate": "2024-07-20T20:04:24.740Z",
+ *  "additionalClients": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ],
+ *  "contacts": [
+ *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
+ *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
+ *   ]
+ * }]
+ * 
+ */
+router.post(
+    "/query/keyword",
+    check("keyword")
+        .notEmpty()
+        .withMessage("Keyword is required"),
+    check("closed")
+        .default(false),
+    validate,
+    CaseController.readAllCasesByKeyword
+)
+
+
+/**
  * @api {post} v1/case/create Create a new case
  * @apiName CreateCase
  * @apiGroup Case
@@ -261,9 +339,11 @@ router.post(
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
  * @apiSuccess {Number} premisesId Premises ID.
+ * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
  * @apiSuccess {String} sellerId Seller ID.  
+ * @apiSuccess {String} clientName Client Name (For display and search).
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} stageId Stage ID created by input stage.
  * @apiSuccess {String} createAt Creation date of the case.
@@ -273,11 +353,13 @@ router.post(
  * {
  *  "caseId": "0-98765-123456",
  *  "creatorId": "test1@gmail.com",
- *  "premisesId": "1820 NW 21st St #6A COMMERCIAL",
+ *  "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+ *  "premisesName": "130 W 3rd St # 1203_New York NY 10012-1296",
  *  "stage": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "caseType": 0,
  *  "buyerId": 98765,
+ *  "clientName": "Woooo, Larry",
  *  "createAt": "2024-07-18T19:52:16.672Z",
  *  "additionalClients": [
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
@@ -325,6 +407,7 @@ router.post(
  *
  * @apiBody {String} caseId Case ID.
  * @apiBody {String} creatorId Creator ID.
+ * @apiBody {String} premisesId Premises ID.
  * @apiBody {Number} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiBody {String} closeAt Date when the case was closed.
  * @apiBody {String} closingDate Closing date of the case.
@@ -335,6 +418,8 @@ router.post(
  *
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
+ * @apiSuccess {String} premisesId Premises ID.
+ * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {Number} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} stageId new Stage ID created or old Stage ID if the stage remain unchanged.
  * @apiSuccess {String} status Status of the case (0-Confirming, 1-Setup, 2-Go Over, 3-Signing, 4-Clear).
@@ -347,6 +432,8 @@ router.post(
  * {
  *  "caseId": "0-98765-123456",
  *  "creatorId": "test1@gmail.com",
+ *  "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+ *  "premisesName": "130 W 3rd St # 1203_New York NY 10012-1296",
  *  "stage": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "status": 0,
@@ -391,23 +478,28 @@ router.post(
  * 
  * @apiSuccessExample Example data on success:
  * {
- *  "caseId": "0-98765-123456",
- *  "creatorId": "test1@gmail.com",
- *  "stage": 0,
- *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
- *  "status": 0,
- *  "closeAt": "2024-07-18T19:52:16.672Z",
- *  "closingDate": "2024-07-18T19:52:16.672Z",
- *  "mortgageContingencyDate": "2024-07-18T19:52:16.672Z",
- *  "additionalClients": [
- *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
- *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
- *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
- *   ],
- *  "contacts": [
- *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
- *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
- *   ]
+ *     "caseId": "2443b04b-a4d8-43d1-843b-a31b0dd3c1a9",
+ *     "creatorId": "test1@gmail.com",
+ *     "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+ *     "premisesName": "130 W 3rd St # 1203_New York NY 10012-1296",
+ *     "stage": 0,
+ *     "caseType": 1,
+ *     "buyerId": null,
+ *     "sellerId": "bffc41d3-4ef5-4cc8-8889-6524971e8299",
+ *     "clientName": "Woooo, Larry",
+ *     "createAt": "2024-09-14T20:45:29.767Z",
+ *     "closeAt": "2024-09-14T21:15:41.199Z",
+ *     "closingDate": "2024-07-20T20:24:24.740Z",
+ *     "mortgageContingencyDate": "2024-07-20T20:24:24.740Z",
+ *     "additionalClients": [
+ *       "738ffc97-299b-423a-b759-2116a402b18d",
+ *       "86a6d1d3-9644-40cc-bec5-e2710567d882",
+ *       "26ea9b74-b431-4b08-88cd-436ba25486bb"
+ *     ],
+ *     "contacts": [
+ *       "8d587c04-0d59-4b70-8264-922d26bf6f00",
+ *       "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
+ *     ]
  * }
  */
 router.post(

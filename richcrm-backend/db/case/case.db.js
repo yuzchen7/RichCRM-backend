@@ -7,9 +7,11 @@
  * @property {string} CaseId - Case ID
  * @property {string} CreatorId - Foreign key to User who created this case
  * @property {string} PremisesId - Foreign key to Premises
+ * @property {string} PremisesName - Name of the premises (for searching purposes)
  * @property {caseType} CaseType - Is this case for buyside or sellside clients? (0-PURCHASING, 1-SELLING)
  * @property {string} BuyerId - Foreign key to Buyers
  * @property {string} SellerId - Foreign key to Sellers
+ * @property {string} ClientName - Name of the client (for searching purposes)
  * @property {Date} CreateAt - When this case was created
  * @property {Date} CloseAt - When this case was closed
  * @property {Date} ClosingDate - When this case should be closed
@@ -132,6 +134,24 @@ class Case {
         return data;
     }
 
+    async getCasesByKeyword(keyword, closed) {
+        const params = {
+            TableName: this.table,
+            FilterExpression: "(contains(ClientName, :k) OR contains(PremisesName, :k))",
+            ExpressionAttributeValues: {
+                ":k": keyword,
+            },
+        };
+
+        if (closed === true) {
+            params.FilterExpression += " AND attribute_exists(CloseAt)";
+        } else {
+            params.FilterExpression += " AND NOT attribute_exists(CloseAt)";
+        }
+        const data = await db.scan(params).promise();
+        return data;
+    }
+
     async getAllCases() {
         const params = {
             TableName: this.table,
@@ -147,9 +167,11 @@ class Case {
                 CaseId: c.caseId,
                 CreatorId: c.creatorId,
                 PremisesId: c.premisesId,
+                PremisesName: c.premisesName,
                 CaseType: c.caseType,
                 BuyerId: c.buyerId,
                 SellerId: c.sellerId,
+                ClientName: c.clientName,
                 CreateAt: c.createAt,
                 CloseAt: c.closeAt,
                 ClosingDate: c.closingDate,
@@ -181,6 +203,17 @@ class Case {
             params.ExpressionAttributeValues[':p'] = c.premisesId;
             params.UpdateExpression += ', PremisesId = :p';
         }
+
+        if (c.premisesName !== undefined) {
+            params.ExpressionAttributeValues[':pn'] = c.premisesName;
+            params.UpdateExpression += ', PremisesName = :pn';
+        }
+
+        if (c.ClientName !== undefined) {
+            params.ExpressionAttributeValues[':cn'] = c.clientName;
+            params.UpdateExpression += ', ClientName = :cn';
+        }
+
         if (c.closeAt !== undefined) {
             params.ExpressionAttributeValues[':ca'] = c.closeAt;
             params.UpdateExpression += ', CloseAt = :ca';

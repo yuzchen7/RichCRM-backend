@@ -15,7 +15,7 @@ content-type: application/json
 
 
 ### Read Case
-GET http://localhost:3001/v1/case/5821f822-2e99-493c-9122-c32db1fdb6bd
+GET http://localhost:3001/v1/case/2443b04b-a4d8-43d1-843b-a31b0dd3c1a9
 
 
 ### Read All Cases by Creator
@@ -24,7 +24,7 @@ content-type: application/json
 
 {
     "creatorId": "test1@gmail.com",
-    "closed": false
+    "closed": true
 }
 
 
@@ -33,8 +33,8 @@ POST http://localhost:3001/v1/case/query/client
 content-type: application/json
 
 {
-    "clientId": "ce91dcf1-73fe-4a6a-be9e-46c533a843c8",
-    "closed": true
+    "clientId": "bffc41d3-4ef5-4cc8-8889-6524971e8299",
+    "closed": false
 }
 
 
@@ -47,15 +47,25 @@ content-type: application/json
     "closed": true
 }
 
+### Read All Cases by Keyword
+POST http://localhost:3001/v1/case/query/keyword
+content-type: application/json
+
+{
+    "keyword": "Woo",
+    "closed": true
+}
+
 
 ### Update Case
 POST http://localhost:3001/v1/case/update
 content-type: application/json
 
 {
-    "caseId": "b64cd425-4844-4049-8923-41edb83f60b3",
+    "caseId": "2443b04b-a4d8-43d1-843b-a31b0dd3c1a9",
+    "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
     "creatorId": "test1@gmail.com",
-    "stage": 0,
+    "stage": 1,
     "closeAt": "2024-07-20T20:24:24.740Z",
     "closingDate": "2024-07-20T20:24:24.740Z",
     "mortgageContingencyDate": "2024-07-20T20:24:24.740Z",
@@ -69,7 +79,7 @@ POST http://localhost:3001/v1/case/close
 content-type: application/json
 
 {
-    "caseId": "f020888b-6b31-47f8-b328-6fca3c9d760e"
+    "caseId": "2443b04b-a4d8-43d1-843b-a31b0dd3c1a9"
 }
 
 
@@ -78,5 +88,5 @@ POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "9c9b3634-2fe2-4381-82ce-c912fba015f3"
+    "caseId": "2443b04b-a4d8-43d1-843b-a31b0dd3c1a9"
 }

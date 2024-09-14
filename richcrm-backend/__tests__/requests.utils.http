@@ -10,7 +10,7 @@ content-type: application/json
 
 
 ### Register Address
-POST http://localhost:3001/v1/utils/address/register
+POST https://api.richcrm.org/v1/utils/address/register
 content-type: application/json
 
 {
