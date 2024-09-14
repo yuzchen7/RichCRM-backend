@@ -153,7 +153,7 @@ class ContactController {
                             cellNumber: client.CellNumber,
                             workNumber: client.WorkNumber,
                             email: client.Email,
-                            mailingAddress: client.addressId,
+                            mailingAddress: client.AddressId,
                             wechatAccount: client.WechatAccount,
                         });
                     });
