@@ -2,6 +2,7 @@ var AddressService = require('../db/address/address.service');
 var TemplateService = require('../db/template/template.service');
 var TaskService = require('../db/task/task.service');
 var { standardizeAddress } = require('../middlewares/utils');
+var ses = require('../services/ses');
 
 
 class UtilsController {
@@ -166,6 +167,41 @@ class UtilsController {
                     status: "failed",
                     data: [],
                     message: 'Address deletion failed'
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: 'Internal server error'
+            });
+        }
+        res.end();
+    }
+
+
+    // Email Send SES
+    async sendEmail(req, res) {
+        const { toAddresses, ccAddresses, templateTitle, templateContent } = req.body;
+        try {
+            const data = await ses.sendEmail({
+                toAddresses: toAddresses,
+                ccAddresses: ccAddresses,
+                templateTitle: templateTitle,
+                templateContent: templateContent
+            });
+            if (data !== null) {
+                res.status(200).json({
+                    status: "success",
+                    data: [data],
+                    message: 'Email sent successfully'
+                });
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: 'Email sending failed'
                 });
             }
         } catch (error) {

@@ -145,4 +145,49 @@ router.post(
     UtilsController.getAddress
 )
 
+
+/**
+ * @api {post} v1/utils/email/send Send an email
+ * @apiName SendEmail
+ * @apiGroup Utils
+ * 
+ * @apiBody {Array} toAddresses Array of email addresses.
+ * @apiBody {Array} ccAddresses Array of email addresses.
+ * @apiBody {String} templateTitle Email title.
+ * @apiBody {String} templateContent Email content.
+ * 
+ * @apiSuccessExample Example data on success:
+ * {
+ *  "status": "success",
+ *  "data": [
+ *    {
+ *      "ResponseMetadata": {
+ *        "RequestId": "7139c14a-be13-420e-b6a3-5caa38e0bb14"
+ *      },
+ *      "MessageId": "010f0191f767354b-6b328197-8e2f-4529-94e9-c9bf1dda144a-000000"
+ *    }
+ *  ],
+ *  "message": "Email sent successfully"
+ * }
+ */
+router.post(
+    "/email/send",
+    check("toAddresses")
+        .notEmpty()
+        .isArray()
+        .withMessage("To Addresses are required"),
+    check("ccAddresses")
+        .optional()
+        .isArray()
+        .withMessage("CC Addresses are required"),
+    check("templateTitle")
+        .notEmpty()
+        .withMessage("Email Title is required"),
+    check("templateContent")
+        .notEmpty()
+        .withMessage("Email Content is required"),
+    validate,
+    UtilsController.sendEmail
+)
+
 module.exports = router;

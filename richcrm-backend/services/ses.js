@@ -16,8 +16,24 @@ if (process.env.NODE_ENV === 'local') {
     });
 }
 
+const SES = new AWS.SES({ apiVersion: "2010-12-01" });
 
 const ses = {
+
+    verifyEmailAddress: async (emails) => {
+        try {
+            const verificationPromises = emails.map(async email => {
+                const params = {
+                    EmailAddress: email,
+                }
+                return await SES.verifyEmailIdentity(params).promise();
+            })
+        } catch (err) {
+            console.log("Fail to verify emails: ", err, err.stack);
+            return false;
+        }
+    },
+
     sendEmail: async (data) => {
         var params = {
             Destination: {
@@ -31,12 +47,12 @@ const ses = {
                     /* required */
                     Text: {
                         Charset: "UTF-8",
-                        Data: data.emailContent,
+                        Data: data.templateContent,
                     },
                 },
                 Subject: {
                     Charset: "UTF-8",
-                    Data: data.emailTitle,
+                    Data: data.templateTitle,
                 },
             },
             Source: process.env.SES_SOURCE_EMAIL /* required */,
@@ -45,21 +61,13 @@ const ses = {
             ],
         }
 
-        // Create the promise and SES service object
-        var sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
-            .sendEmail(params)
-            .promise();
-
-        // Handle promise's fulfilled/rejected states
-        sendPromise
-            .then(function (data) {
-                console.log(data.MessageId);
-            })
-            .catch(function (err) {
-                console.error(err, err.stack);
-            });
-
-        return;
+        try {
+            const data = await SES.sendEmail(params).promise();
+            return data;
+        } catch (err) {
+            console.log("Fail to send email: ", err, err.stack);
+            return err;
+        }
     }
 };
 

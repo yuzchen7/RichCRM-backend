@@ -43,3 +43,14 @@ content-type: application/json
     "addressId": "New York NY 10012-1296"
 }
 
+
+### Send Email via SES
+POST http://localhost:3001/v1/utils/email/send
+content-type: application/json
+
+{
+    "toAddresses": ["yifanwu.nyc@gmail.com"],
+    "ccAddresses": [],
+    "templateTitle": "This is a test",
+    "templateContent": "test test test"
+}
