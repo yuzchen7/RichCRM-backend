@@ -33,6 +33,7 @@ class CaseController {
                     status: "success",
                     data: [{
                         "caseId": c.CaseId,
+                        "creatorId": c.CreatorId,
                         "premisesId": c.PremisesId,
                         "premisesName": c.PremisesName,
                         "stage": c.Stage,
@@ -45,6 +46,7 @@ class CaseController {
                         "closingDate": c.ClosingDate,
                         "mortgageContingencyDate": c.MortgageContingencyDate,
                         "additionalClients": c.AdditionalClients,
+                        "contacts": c.Contacts,
                     }],
                     message: '[CaseController][readCase] Case retrieved successfully'
                 });

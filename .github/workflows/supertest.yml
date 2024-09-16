@@ -1,0 +1,51 @@
+name: RUN SuperTest API Test CI
+env:
+    NODE_ENV: development
+    PORT: 3001
+    ACCESSKEYID: "${{ secrets.ACCESSKEYID }}"
+    SECRETACCESSKEY: "${{ secrets.SECRETACCESSKEY }}"
+    REGION: "${{ secrets.REGION }}"
+    SMARTY_AUTH_ID: "${{ secrets.SMARTY_AUTH_ID }}"
+    SMARTY_AUTH_TOKEN: "${{ secrets.SMARTY_AUTH_TOKEN }}"
+    SES_SOURCE_EMAIL: no-reply@richcrm.org
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  RUN-SuperTest-API-Test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 20.x ]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    defaults:
+        run:
+            working-directory: richcrm-backend
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache-dependency-path: richcrm-backend/package-lock.json
+        cache: 'npm'
+
+    - name: Installation of related packages
+      run: npm ci
+      
+    - name: RUN SuperTest API Testing
+      run: npm test
+      
+    - name: Archive SuperTest mochawesome test report
+      uses: actions/upload-artifact@v3
+      with:
+        name: SuperTest-mochawesome-test-report
+        path: Report
+    - name: Upload SuperTest mochawesome report to GitHub
+      uses: actions/upload-artifact@v3
+      with:
+        name: SuperTest-mochawesome-test-report
+        path: Report
