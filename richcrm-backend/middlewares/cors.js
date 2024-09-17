@@ -1,6 +1,6 @@
 const corsOptions = {
     origin: function (origin, callback) {
-      const allowedOrigins = ["*", 'http://localhost:3000', 'http://localhost:3001', 'https://rich-crm-frontend.vercel.app'];
+      const allowedOrigins = ["*", 'http://localhost:3000', 'http://localhost:3001', 'https://rich-crm-frontend.vercel.app', 'https://wapp.richcrm.org'];
       if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {

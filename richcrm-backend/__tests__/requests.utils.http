@@ -45,7 +45,7 @@ content-type: application/json
 
 
 ### Send Email via SES
-POST http://localhost:3001/v1/utils/email/send
+POST https://api.richcrm.org/v1/utils/email/send
 content-type: application/json
 
 {
