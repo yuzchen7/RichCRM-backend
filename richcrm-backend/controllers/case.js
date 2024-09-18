@@ -511,13 +511,7 @@ class CaseController {
         }
         try {
             // Check if the creator id is valid
-            if (creatorId === undefined) {
-                return res.status(400).json({
-                    status: "failed",
-                    data: [],
-                    message: '[CaseController][updateCase] Invalid creator id'
-                });
-            } else {
+            if (creatorId !== undefined) {
                 const creator = await UserService.readUser(creatorId);
                 if (creator === null) {
                     return res.status(400).json({
@@ -584,6 +578,17 @@ class CaseController {
                     }
                 }
                 caseObj.stage = stage;
+            } else {
+                stageObj = await StageService.getStagesByCaseIdAndStageType(existingCase.CaseId, existingCase.Stage);
+                if (stageObj === null || stageObj.length === 0) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[CaseController][updateCase] Stage does not exist'
+                    });
+                } else {
+                    stageObj = stageObj[0];
+                }
             }
 
             // Check if the premises id is valid

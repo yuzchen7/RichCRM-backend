@@ -191,59 +191,67 @@ class Case {
             Key: {
                 CaseId: c.caseId,
             },
-            UpdateExpression: "set CreatorId = :c",
-            ExpressionAttributeValues: {
-                ":c": c.creatorId,
-            },
+            UpdateExpression: "",
+            ExpressionAttributeValues: {},
             ReturnValues: "UPDATED_NEW",
         };
-
+        var updateExpressions = [];
         // Optional fields
+        if (c.creatorId !== undefined) {
+            params.ExpressionAttributeValues[':c'] = c.creatorId;
+            updateExpressions.push('CreatorId = :c');
+        }
+
         if (c.premisesId !== undefined) {
             params.ExpressionAttributeValues[':p'] = c.premisesId;
-            params.UpdateExpression += ', PremisesId = :p';
+            updateExpressions.push('PremisesId = :p');
         }
 
         if (c.premisesName !== undefined) {
             params.ExpressionAttributeValues[':pn'] = c.premisesName;
-            params.UpdateExpression += ', PremisesName = :pn';
+            updateExpressions.push('PremisesName = :pn');
         }
 
         if (c.ClientName !== undefined) {
             params.ExpressionAttributeValues[':cn'] = c.clientName;
-            params.UpdateExpression += ', ClientName = :cn';
+            updateExpressions.push('ClientName = :cn');
         }
 
         if (c.closeAt !== undefined) {
             params.ExpressionAttributeValues[':ca'] = c.closeAt;
-            params.UpdateExpression += ', CloseAt = :ca';
+            updateExpressions.push('CloseAt = :ca');
         }
 
         if (c.closingDate !== undefined) {
             params.ExpressionAttributeValues[':cd'] = c.closingDate;
-            params.UpdateExpression += ', ClosingDate = :cd';
+            updateExpressions.push('ClosingDate = :cd');
         }
 
         if (c.mortgageContingencyDate !== undefined) {
             params.ExpressionAttributeValues[':mc'] = c.mortgageContingencyDate;
-            params.UpdateExpression += ', MortgageContingencyDate = :mc';
+            updateExpressions.push('MortgageContingencyDate = :mc');
         }
 
         if (c.stage !== undefined) {
             params.ExpressionAttributeValues[':s'] = c.stage;
-            params.UpdateExpression += ', #stg = :s';
-
+            updateExpressions.push('#stg = :s');
             params.ExpressionAttributeNames = {'#stg': "Stage"};
         }
 
         if (c.additionalClients !== undefined) {
             params.ExpressionAttributeValues[':ac'] = c.additionalClients;
-            params.UpdateExpression += ', AdditionalClients = :ac';
+            updateExpressions.push('AdditionalClients = :ac');
         }
 
         if (c.contacts !== undefined) {
             params.ExpressionAttributeValues[':ct'] = c.contacts;
-            params.UpdateExpression += ', Contacts = :ct';
+            updateExpressions.push('Contacts = :ct');
+        }
+
+        if (updateExpressions.length > 0) {
+            params.UpdateExpression = "SET " + updateExpressions.join(", ");
+        } else {
+            return null;
         }
 
         const data = await db.update(params).promise();

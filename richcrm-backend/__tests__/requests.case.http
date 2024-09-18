@@ -61,7 +61,7 @@ POST http://localhost:3001/v1/case/update
 content-type: application/json
 
 {
-    "caseId": "2443b04b-a4d8-43d1-843b-a31b0dd3c1a9",
+    "caseId": "702cdcca-1b5c-4449-974b-26feb4edfeae",
     "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
     "creatorId": "test1@gmail.com",
     "stage": 1,
@@ -87,5 +87,5 @@ POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "4c8438b8-952a-4be1-8138-a024c8f39b17"
+    "caseId": "48748657-9c2d-4c36-8ae1-164e870906d7"
 }
