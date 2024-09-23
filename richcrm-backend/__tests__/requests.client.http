@@ -15,11 +15,11 @@ content-type: application/json
 GET http://localhost:3001/v1/client/all
 
 ### Query Clients
-POST http://localhost:3001/v1/client/query
+POST https://api.richcrm.org/v1/client/query
 content-type: application/json
 
 {
-    "keyword": "John"
+    "keyword": "john.doe"
 }
 
 
@@ -68,9 +68,9 @@ content-type: application/json
 }
 
 ### Delete Client
-POST http://localhost:3001/v1/client/delete
+POST https://api.richcrm.org/v1/client/delete
 content-type: application/json
 
 {
-    "clientId": "04230e7a-2c5d-426e-8d7f-a548892713e4"
+    "clientId": "02d49d26-ceb7-42d7-b934-bc3c412b0812"
 }
