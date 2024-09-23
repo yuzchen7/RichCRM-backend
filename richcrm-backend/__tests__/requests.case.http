@@ -52,7 +52,7 @@ content-type: application/json
 
 {
     "keyword": "Woo",
-    "closed": true
+    "closed": false
 }
 
 
@@ -87,5 +87,5 @@ POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "48748657-9c2d-4c36-8ae1-164e870906d7"
+    "caseId": "d2f03d22-dafa-4251-a165-1a2300a3ebfb"
 }

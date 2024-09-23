@@ -8,7 +8,7 @@
  * @property {stage} StageType - Type of stage (0-SETUP, 1-CONTRACT_PREPARING, 2-CONTRACT_SIGNING, 3-MORTGAGE, 4-CLOSING)
  * @property {UUID} CaseId - Foreign key to Case
  * @property {[UUID]} Tasks - List of foreign key to Task
- * @property {UUID} stageStatus - Status of stage (0-NOT_STARTED, 1-PENDING, 2-FINISHED, 3-OVERDUE)
+ * @property {UUID} stageStatus - Status of stage (0-WAITING, 1-FINISHED, 2-WARNING)
  */
 
 const db = require('../dynamodb');

@@ -76,6 +76,7 @@ router.get(
  * @apiSuccess {Number} premisesId Premises ID.
  * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {Number} caseStatus Status of the case (0-WAITING, 1-FINISHED, 2-WARNING).
  * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
@@ -140,6 +141,7 @@ router.post(
  * @apiSuccess {Number} premisesId Premises ID.
  * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {String} caseStatus Status of the case (0-WAITING, 1-FINISHED, 2-WARNING).
  * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
@@ -205,6 +207,7 @@ router.post(
  * @apiSuccess {Number} premisesId Premises ID.
  * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {String} caseStatus Status of the case (0-WAITING, 1-FINISHED, 2-WARNING).
  * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
@@ -270,6 +273,7 @@ router.post(
  * @apiSuccess {Number} premisesId Premises ID.
  * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
+ * @apiSuccess {String} caseStatus Status of the case (0-WAITING, 1-FINISHED, 2-WARNING).
  * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
  * @apiSuccess {String} buyerId Buyer ID.
