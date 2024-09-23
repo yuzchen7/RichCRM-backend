@@ -174,10 +174,10 @@ class TaskController {
             return res.status(200).json({
                 status: "success",
                 data: [{
-                    taskId: data.TaskId,
-                    taskType: data.TaskType,
-                    name: data.Name,
-                    status: data.Status,
+                    taskId: taskObj.taskId,
+                    taskType: taskObj.taskType,
+                    name: taskObj.name,
+                    status: taskObj.status,
                     templates: data.Templates,
                     fileURL: data.FileURL
                 }],
