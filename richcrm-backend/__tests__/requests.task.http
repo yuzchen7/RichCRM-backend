@@ -14,7 +14,7 @@ content-type: application/json
 }
 
 ### Get Task by Task ID
-GET http://localhost:3001/v1/task/a3b6cd76-301d-4a8a-b968-86982e4a8a6e
+GET http://localhost:3001/v1/task/c84bcf18-eba0-4f6b-9d78-76a856ed58e8
 
 
 ### Update Task by Task ID
@@ -22,8 +22,8 @@ POST http://localhost:3001/v1/task/update
 content-type: application/json
 
 {
-    "taskId": "a3b6cd76-301d-4a8a-b968-86982e4a8a6e",
-    "status": 3,
+    "taskId": "c84bcf18-eba0-4f6b-9d78-76a856ed58e8",
+    "status": 2,
     "templates": [
         {"templateTitle": "Test Email Template 1"},
         {"templateTitle": "Test Email Template 3"},
