@@ -9,7 +9,7 @@ Content-Type: application/json
 
 
 ### Get Stage by Case ID and Stage Type
-GET http://localhost:3001/v1/stage/5debf678-7b96-49ff-a700-f8f8d6b9edec/2
+GET http://localhost:3001/v1/stage/048c4235-183f-4061-8ff5-ab75d4dbc625/2
 
 
 ### Update Stage by Stage ID
@@ -17,7 +17,7 @@ POST http://localhost:3001/v1/stage/update
 Content-Type: application/json
 
 {
-    "stageId": "4d916e13-46ad-401d-b448-265053741e3a",
+    "stageId": "f75e0782-2515-4df3-8449-593a6e6dd726",
     "stageStatus": 1,
     "newTask": "f88d45df-b6f6-4d87-99e8-8ffc789e9834"
 }

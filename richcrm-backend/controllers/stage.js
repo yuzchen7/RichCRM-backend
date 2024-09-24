@@ -208,13 +208,7 @@ class StageController {
             if (s !== null) {
                 return res.status(200).json({
                     status: "success",
-                    data: [{
-                        stageId: s.StageId,
-                        stageType: s.StageType,
-                        caseId: s.CaseId,
-                        tasks: s.Tasks,
-                        stageStatus: s.StageStatus
-                    }],
+                    data: [stageObj],
                     message: '[StageController][updateStage] Stage updated'
                 });
             } else {
