@@ -3,9 +3,14 @@ POST http://localhost:3001/v1/template/create
 content-type: application/json
 
 {
-    "templateTitle": "[IMPORTANT] FEK Notice to Purchaser",
-    "templateContent": "Hi %(clientObj.FirstName)s, \n\n\nAttached is a copy of the fully executed contract that we received from the seller’s attorney.\n\nPLEASE KEEP THESE IMPORTANT DATES IN MIND: \n\nCLOSING DATE: The closing date in the contract is **ON OR ABOUT %(caseObj.ClosingDate)s**.  This means the closing can be anytime between **%(caseObj.ClosingDate)s TO %(caseObj.ClosingDate)s** if all parties agree.\n\nMORTGAGE CONTINGENCY DATE:  The mortgage commitment must be obtained by **%(caseObj.MortgageContingencyDate)s**. If you cannot obtain the commitment by **%(caseObj.MortgageContingencyDate)s** please let me know immediately so I can request an extension of this date.\n\nRATE LOCKS:  If the client decides to \"lock-in\" an interest rate PLEASE MAKE SURE THE RATE LOCK IS GOOD THROUGH **%(caseObj.ClosingDate)s**.\n\n\nPlease let me know if anything else is needed.\n\nThank you!\n\n\nSincerely,\n\nMG Law Group"
+    "templateTitle": "Default Template",
+    "templateContent": "Dear XXX,\n\n\n\n\nSincerely,\n\nMG Law Group"
 }
+
+# {
+#     "templateTitle": "[IMPORTANT] FEK Notice to Purchaser",
+#     "templateContent": "Hi %(clientObj.FirstName)s, \n\n\nAttached is a copy of the fully executed contract that we received from the seller’s attorney.\n\nPLEASE KEEP THESE IMPORTANT DATES IN MIND: \n\nCLOSING DATE: The closing date in the contract is **ON OR ABOUT %(caseObj.ClosingDate)s**.  This means the closing can be anytime between **%(caseObj.ClosingDate)s TO %(caseObj.ClosingDate)s** if all parties agree.\n\nMORTGAGE CONTINGENCY DATE:  The mortgage commitment must be obtained by **%(caseObj.MortgageContingencyDate)s**. If you cannot obtain the commitment by **%(caseObj.MortgageContingencyDate)s** please let me know immediately so I can request an extension of this date.\n\nRATE LOCKS:  If the client decides to \"lock-in\" an interest rate PLEASE MAKE SURE THE RATE LOCK IS GOOD THROUGH **%(caseObj.ClosingDate)s**.\n\n\nPlease let me know if anything else is needed.\n\nThank you!\n\n\nSincerely,\n\nMG Law Group"
+# }
 
 
 ### Get template by template Title
@@ -37,11 +42,11 @@ content-type: application/json
 
 
 ### Fill template with data
-POST http://richcrm-backend-dev.us-east-2.elasticbeanstalk.com/v1/template/fill
+POST http://localhost:3001/v1/template/fill
 content-type: application/json
 
 {
-    "templateTitle": "[IMPORTANT] FEK Notice to Purchaser",
+    "templateTitle": "[IMPORTANT] Closing Confirmation send to all parties",
     "data": {
         "clientObj": {
             "FirstName": "John"

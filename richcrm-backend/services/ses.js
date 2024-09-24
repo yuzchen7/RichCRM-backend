@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'local') {
     });
 }
 
-const SES = new AWS.SES({ apiVersion: "2010-12-01" });
+const SES = new AWS.SES();
 
 const ses = {
 
@@ -45,6 +45,10 @@ const ses = {
                 /* required */
                 Body: {
                     /* required */
+                    // Html: {
+                    //     Charset: "UTF-8",
+                    //     Data: data.templateContent,
+                    // },
                     Text: {
                         Charset: "UTF-8",
                         Data: data.templateContent,
@@ -68,7 +72,9 @@ const ses = {
             console.log("Fail to send email: ", err, err.stack);
             return err;
         }
-    }
+    },
+
+    // TODO: Create Template
 };
 
 
