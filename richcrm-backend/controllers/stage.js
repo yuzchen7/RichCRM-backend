@@ -15,6 +15,38 @@ class StageController {
         this.deleteAllStagesInCase = this.deleteAllStagesInCase.bind(this);
     }
 
+    async readStageById(req, res) {
+        const { stageId } = req.params;
+        try {
+            const stage = await StageService.getStageById(stageId);
+            if (stage === null) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[StageController][readStageById] Stage not found'
+                });
+            }
+            return res.status(200).json({
+                status: "success",
+                data: [{
+                    stageId: stage.StageId,
+                    stageType: stage.StageType,
+                    caseId: stage.CaseId,
+                    tasks: stage.Tasks,
+                    stageStatus: stage.StageStatus
+                }],
+                message: '[StageController][readStageById] Stage found'
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                status: "failed",
+                data: [],
+                message: `[StageController][readStageById] Internal server error: ${error}`
+            });
+        }
+    }
+
     async readStageByCaseIdAndStageType(req, res) {
         const { caseId } = req.params;
         const stageType = parseInt(req.params.stageType);

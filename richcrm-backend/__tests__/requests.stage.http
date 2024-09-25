@@ -7,6 +7,8 @@ Content-Type: application/json
     "caseId": "5debf678-7b96-49ff-a700-f8f8d6b9edec"
 }
 
+### Get Stage by Stage ID
+GET http://localhost:3001/v1/stage/59f4581b-4360-4f2a-be37-b516cfd330ff
 
 ### Get Stage by Case ID and Stage Type
 GET http://localhost:3001/v1/stage/048c4235-183f-4061-8ff5-ab75d4dbc625/2

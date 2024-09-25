@@ -62,6 +62,7 @@ router.post(
  * @apiParam {String} taskId Task ID.
  * 
  * @apiSuccess {String} taskId Task ID.
+ * @apiSuccess {String} stageId Stage ID.
  * @apiSuccess {String} taskType Task Type (0 - ACTION, 1 - CONTACT, 2 - UPLOAD).
  * @apiSuccess {String} name Task name.
  * @apiSuccess {String} status Task status (0 - NOT_STARTED, 1 - PENDING, 2 - FINISHED, 3 - OVERDUE).
@@ -103,6 +104,7 @@ router.get(
  * @apiBody {List} templates List of templates titles to be updated.
  * 
  * @apiSuccess {String} taskId Task ID.
+ * @apiSuccess {String} stageId Stage ID.
  * @apiSuccess {String} taskType Task Type (0 - ACTION, 1 - CONTACT, 2 - UPLOAD).
  * @apiSuccess {String} name Task name.
  * @apiSuccess {String} status Task status (0 - NOT_STARTED, 1 - PENDING, 2 - FINISHED, 3 - OVERDUE).
@@ -111,6 +113,7 @@ router.get(
  * @apiSuccessExample Example data on success:
  * {
  *  "taskId": "e29e020b-9735-40a4-a494-2b6df1949c1b",
+ *  "stageId": "a718bbd9-14b4-4470-9e11-0e0277cf3c8f",
  *  "taskType": 1,
  *  "name": "Customized Taskkkk",
  *  "status": 1,

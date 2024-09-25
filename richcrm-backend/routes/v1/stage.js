@@ -5,6 +5,45 @@ var StageController = require('../../controllers/stage');
 
 const router = express.Router();
 
+
+/**
+ * @api {get} v1/stage/:stageId Read a stage by stage ID
+ * @apiName ReadStageById
+ * @apiGroup Stage
+ * 
+ * @apiParam {String} stageId Stage ID.
+ * 
+ * @apiSuccess {String} stageId Stage ID.
+ * @apiSuccess {String} caseId Case ID.
+ * @apiSuccess {String} stageType Stage Type (0 - SETUP, 1 - CONTRACT_PREPARING, 2 - CONTRACT_SIGNING, 3 - MORTGAGE, 4 - CLOSING).
+ * @apiSuccess {String} stageStatus Stage Status (0 - NOT_STARTED, 1 - PENDING, 2 - FINISHED, 3 - OVERDUE).
+ * @apiSuccess {Array} tasks Tasks of the Stage.
+ * 
+ * @apiSuccessExample Example data on success:
+ * {
+ *  "stageId": "4812192a-1fe9-40f6-8ae3-892f9c33e0c7",
+ *  "stageType": 2,
+ *  "caseId": "0_f3117eaa-e3a7-4b3e-88fb-37a8741a181e_b394ec2a-24c0-4913-b065-09bcaecbeb9a",
+ *  "tasks": [
+ *   "21c12f23-03b6-497f-bc51-9868ad27292b",
+ *   "5e354caa-62e6-4174-a12f-a8925c506679",
+ *   "8c7bb9dd-852c-45af-8a9d-20c80c2e023e",
+ *   "261ffddb-8f87-4674-9edf-05ffe9ec0c53",
+ *   "73323b4a-bbcb-4469-b92d-3b0ddc2c58c4"
+ *  ],
+ *  "stageStatus": 0
+ * }
+ * 
+ */
+router.get(
+    "/:stageId",
+    check("stageId")
+        .notEmpty()
+        .withMessage("Stage ID is required"),
+    validate,
+    StageController.readStageById
+)
+
 /**
  * @api {get} v1/stage/:caseId/:stageType Read a stage by case ID and stage type
  * @apiName ReadStageByCaseIdAndStageType
