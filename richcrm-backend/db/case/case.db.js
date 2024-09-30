@@ -106,7 +106,7 @@ class Case {
     async getCasesByContactId(contactId, closed) {
         const params = {
             TableName: this.table,
-            FilterExpression: "contains(Contacts, :c)",
+            FilterExpression: "(contains(Contacts, :c) OR contains(AdditionalClients, :c) OR BuyerId = :c OR SellerId = :c)",
             ExpressionAttributeValues: {
                 ":c": contactId,
             },
