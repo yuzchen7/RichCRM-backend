@@ -97,11 +97,6 @@ class Premises {
             UpdateExpression: 'set #n = :n, AddressId = :a, PropertyType = :p',
             ExpressionAttributeNames: {
                 '#n': 'Name',
-                '#b': 'Block',
-                '#l': 'Lot',
-                '#s': 'Section',
-                '#h': 'HOA',
-                '#as': 'Assessments',
             },
             ExpressionAttributeValues: {
                 ':n': premises.name,
@@ -114,14 +109,17 @@ class Premises {
         // Optional fields
         if (premises.block !== undefined)  { 
             params.ExpressionAttributeValues[':b'] = premises.block;
+            params.ExpressionAttributeNames['#b'] = 'Block';
             params.UpdateExpression  += ", #b = :b"; 
         }
         if (premises.lot !== undefined)  { 
             params.ExpressionAttributeValues[':l'] = premises.lot;
+            params.ExpressionAttributeNames['#l'] = 'Lot';
             params.UpdateExpression  += ", #l = :l";
         }
         if (premises.section !== undefined)  {
             params.ExpressionAttributeValues[':s'] = premises.section;
+            params.ExpressionAttributeNames['#s'] = 'Section';
             params.UpdateExpression  += ", #s = :s";
         }
         if (premises.vacantAtClosing !== undefined)  {
@@ -134,6 +132,7 @@ class Premises {
         }
         if (premises.hoa !== undefined)  {
             params.ExpressionAttributeValues[':h'] = premises.hoa;
+            params.ExpressionAttributeNames['#h'] = 'HOA';
             params.UpdateExpression  += ", #h = :h";
         }
         if (premises.parkingSpaces !== undefined)  {
@@ -150,6 +149,7 @@ class Premises {
         }
         if (premises.assessments !== undefined)  {
             params.ExpressionAttributeValues[':as'] = premises.assessments;
+            params.ExpressionAttributeNames['#as'] = 'Assessments';
             params.UpdateExpression  += ", #as = :as";
         }
         if (premises.assessmentsPaidById !== undefined)  {
