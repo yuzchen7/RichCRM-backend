@@ -226,11 +226,11 @@ class CaseController {
 
         // Check Client Type
         const clientTypeEnum = Types.castIntToEnum(Types.clientType, clientType);
-        if (caseTypeEnum === undefined) {
+        if (clientTypeEnum === undefined) {
             return res.status(400).json({
                 status: "failed",
                 data: [],
-                message: '[CaseController][createCase] Invalid client type'
+                message: '[CaseController][createCase] Invalid client type [INDIVIDUAL, COMPANY, TRUST]'
             });
         }
 
@@ -262,12 +262,13 @@ class CaseController {
                         console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
                     }
                     break;
-                case Types.clientType.COMPANY || Types.clientType.TRUST:
+                case Types.clientType.COMPANY:
+                case Types.clientType.TRUST:
                     if (organizationId === undefined || organizationId === "") {
                         return res.status(400).json({
                             status: "failed",
                             data: [],
-                            message: '[CaseController][createCase] Organization id is required [COMPANY]'
+                            message: '[CaseController][createCase] Organization id is required [COMPANY, TRUST]'
                         });
                     }
                     const organization = await OrganizationService.readOrganization(organizationId);
@@ -275,7 +276,7 @@ class CaseController {
                         return res.status(400).json({
                             status: "failed",
                             data: [],
-                            message: '[CaseController][createCase] Invalid Organization id [COMPANY]'
+                            message: '[CaseController][createCase] Invalid Organization id [COMPANY, TRUST]'
                         });
                     } else {
                         clientName = organization.OrganizationName;

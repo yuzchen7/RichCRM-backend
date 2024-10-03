@@ -7,7 +7,7 @@ content-type: application/json
     "creatorId": "test1@gmail.com",
     "stage": 0,
     "caseType": 1,
-    "clientType": 0,
+    "clientType": 2,
     "clientId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
     "additionalClients": ["738ffc97-299b-423a-b759-2116a402b18d", "86a6d1d3-9644-40cc-bec5-e2710567d882"],
     "contacts": ["8d587c04-0d59-4b70-8264-922d26bf6f00", "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"]
