@@ -11,26 +11,6 @@ class CaseService {
         return null;
     }
 
-    async readAllCasesByBuyerId(buyerId) {
-        const data = await Case.getAllCasesByBuyerId(buyerId);
-
-        if (data.Items !== undefined) {
-            return data.Items;
-        }
-
-        return null;
-    }
-
-    async readAllCasesBySellerId(sellerId) {
-        const data = await Case.getAllCasesBySellerId(sellerId);
-
-        if (data.Items !== undefined) {
-            return data.Items;
-        }
-
-        return null;
-    }
-
     async readAllCasesByCreatorId(creatorId, closed) {
         const data = await Case.getAllCasesByCreatorId(creatorId, closed);
 
@@ -53,6 +33,16 @@ class CaseService {
 
     async readAllCasesByContactId(contactId, closed) {
         const data = await Case.getCasesByContactId(contactId, closed);
+
+        if (data.Items !== undefined) {
+            return data.Items;
+        }
+
+        return null;
+    }
+
+    async readAllCasesByOrganizationId(organizationId, closed) {
+        const data = await Case.getCasesByOrganizationId(organizationId, closed);
 
         if (data.Items !== undefined) {
             return data.Items;
@@ -97,7 +87,9 @@ class CaseService {
             c.caseId === undefined ||
             c.premisesId === undefined ||
             c.stage === undefined ||
-            c.caseType === undefined) {
+            c.caseType === undefined ||
+            c.clientType === undefined
+        ) {
             console.log("[CASE-Create] Invalid case object");
             return null;
         }

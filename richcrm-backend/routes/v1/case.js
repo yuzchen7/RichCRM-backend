@@ -18,8 +18,9 @@ const router = express.Router();
  * @apiSuccess {Number} premisesId Premises ID.
  * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
- * @apiSuccess {String} buyerId Buyer ID.
- * @apiSuccess {String} sellerId Seller ID.  
+ * @apiSuccess {String} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
+ * @apiSuccess {String} clientId Client ID for buyer or seller.
+ * @apiSuccess {String} organizationId Organization ID if type is COMPANY or TRUST.
  * @apiSuccess {String} clientName Client Name (For display and search).
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} createAt Creation date of the case.
@@ -79,8 +80,9 @@ router.get(
  * @apiSuccess {Number} caseStatus Status of the case (0-WAITING, 1-FINISHED, 2-WARNING).
  * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
- * @apiSuccess {String} buyerId Buyer ID.
- * @apiSuccess {String} sellerId Seller ID.
+ * @apiSuccess {Number} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
+ * @apiSuccess {String} clientId Client ID for buyer or seller.
+ * @apiSuccess {String} organizationId Organization ID if type is COMPANY or TRUST.
  * @apiSuccess {String} clientName Client Name (For display and search).
  * @apiSuccess {String} createAt Creation date of the case.
  * @apiSuccess {String} closeAt Date when the case was closed.
@@ -98,7 +100,8 @@ router.get(
  *  "caseStatus": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "caseType": 0,
- *  "buyerId": "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *  "clientType": 0,
+ *  "clientId": "bdddb23a-e4bb-4cb1-84d4-077c8b209395",
  *  "clientName": "Doe, John",
  *  "createAt": "2024-07-18T19:52:16.672Z",
  *  "closeAt": "2024-07-18T19:52:16.672Z",
@@ -144,8 +147,9 @@ router.post(
  * @apiSuccess {String} caseStatus Status of the case (0-WAITING, 1-FINISHED, 2-WARNING).
  * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
- * @apiSuccess {String} buyerId Buyer ID.
- * @apiSuccess {String} sellerId Seller ID.
+ * @apiSuccess {Number} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
+ * @apiSuccess {String} clientId Client ID for buyer or seller.
+ * @apiSuccess {String} organizationId Organization ID if type is COMPANY or TRUST.
  * @apiSuccess {String} clientName Client Name (For display and search).
  * @apiSuccess {String} createAt Creation date of the case.
  * @apiSuccess {String} closeAt Date when the case was closed.
@@ -163,7 +167,8 @@ router.post(
  *  "caseStatus": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "caseType": 0,
- *  "buyerId": "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *  "clientType": 0,
+ *  "clientId": "bdddb23a-e4bb-4cb1-84d4-077c8b209395",
  *  "clientName": "Doe, John",
  *  "createAt": "2024-07-18T19:52:16.672Z",
  *  "closeAt": "2024-07-18T19:52:16.672Z",
@@ -210,8 +215,9 @@ router.post(
  * @apiSuccess {String} caseStatus Status of the case (0-WAITING, 1-FINISHED, 2-WARNING).
  * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
- * @apiSuccess {String} buyerId Buyer ID.
- * @apiSuccess {String} sellerId Seller ID.
+ * @apiSuccess {Number} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
+ * @apiSuccess {String} clientId Client ID for buyer or seller.
+ * @apiSuccess {String} organizationId Organization ID if type is COMPANY or TRUST.
  * @apiSuccess {String} clientName Client Name (For display and search).
  * @apiSuccess {String} createAt Creation date of the case.
  * @apiSuccess {String} closeAt Date when the case was closed.
@@ -229,8 +235,9 @@ router.post(
  *  "caseStatus": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "caseType": 0,
- *  "buyerId": "03c290cf-1758-4edc-95d5-be61f2339fd6",
- *  "clientName": "Doe, John",
+ *  "clientType": 1,
+ *  "organizationId": "bdddb23a-e4bb-4cb1-84d4-077c8b209395",
+ *  "clientName": "Test Company",
  *  "createAt": "2024-07-18T19:52:16.672Z",
  *  "closeAt": "2024-07-18T19:52:16.672Z",
  *  "closingDate": "2024-07-20T20:04:24.740Z",
@@ -276,8 +283,9 @@ router.post(
  * @apiSuccess {String} caseStatus Status of the case (0-WAITING, 1-FINISHED, 2-WARNING).
  * @apiSuccess {String} stageId current Stage ID of this case.
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
- * @apiSuccess {String} buyerId Buyer ID.
- * @apiSuccess {String} sellerId Seller ID.
+ * @apiSuccess {Number} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
+ * @apiSuccess {String} clientId Client ID for buyer or seller.
+ * @apiSuccess {String} organizationId Organization ID if type is COMPANY or TRUST.
  * @apiSuccess {String} clientName Client Name (For display and search).
  * @apiSuccess {String} createAt Creation date of the case.
  * @apiSuccess {String} closeAt Date when the case was closed.
@@ -295,7 +303,8 @@ router.post(
  *  "caseStatus": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "caseType": 0,
- *  "buyerId": "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *  "clientType": 0,
+ *  "clientId": "bdddb23a-e4bb-4cb1-84d4-077c8b209395",
  *  "clientName": "Doe, John",
  *  "createAt": "2024-07-18T19:52:16.672Z",
  *  "closeAt": "2024-07-18T19:52:16.672Z",
@@ -334,8 +343,9 @@ router.post(
  * @apiBody {String} premisesId Premises ID.
  * @apiBody {String} creatorId Creator ID.
  * @apiBody {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
- * @apiBody {String} buyerId Buyer ID.
- * @apiBody {String} sellerId Seller ID.
+ * @apiBody {String} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
+ * @apiBody {String} clientId [0-INDIVIDUAL] Client ID for buyer or seller.
+ * @apiBody {String} organizationId [1-COMPANY, 2-TRUST] Organization ID if type is COMPANY or TRUST.
  * @apiBody {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiBody {Array} additionalClients Additional clients in this case.
  * @apiBody {Array} contacts Contacts in this case.
@@ -345,8 +355,9 @@ router.post(
  * @apiSuccess {Number} premisesId Premises ID.
  * @apiSuccess {String} premisesName Premises Name (For display and search).
  * @apiSuccess {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
- * @apiSuccess {String} buyerId Buyer ID.
- * @apiSuccess {String} sellerId Seller ID.  
+ * @apiSuccess {String} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
+ * @apiSuccess {String} clientId Client ID for buyer or seller.
+ * @apiSuccess {String} organizationId Organization ID if type is COMPANY or TRUST. 
  * @apiSuccess {String} clientName Client Name (For display and search).
  * @apiSuccess {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiSuccess {String} stageId Stage ID created by input stage.
@@ -362,7 +373,8 @@ router.post(
  *  "stage": 0,
  *  "stageId": "badc8b89-1165-406b-8cdd-f3d00d22ea74",
  *  "caseType": 0,
- *  "buyerId": 98765,
+ *  "clientType": 0,
+ *  "clientId": "bdddb23a-e4bb-4cb1-84d4-077c8b209395",
  *  "clientName": "Woooo, Larry",
  *  "createAt": "2024-07-18T19:52:16.672Z",
  *  "additionalClients": [
@@ -387,6 +399,17 @@ router.post(
     check("caseType")
         .notEmpty()
         .withMessage("Client Type is required"),
+    check("clientType")
+        .notEmpty()
+        .withMessage("Client Type is required"),
+    check("clientId")
+        .optional()
+        .isUUID()
+        .withMessage("Client ID should be a valid UUID"),
+    check("organizationId")
+        .optional()
+        .isUUID()
+        .withMessage("Organization ID should be a valid UUID"),
     check("stage")
         .notEmpty()
         .withMessage("Stage is required"),
@@ -488,8 +511,8 @@ router.post(
  *     "premisesName": "130 W 3rd St # 1203_New York NY 10012-1296",
  *     "stage": 0,
  *     "caseType": 1,
- *     "buyerId": null,
- *     "sellerId": "bffc41d3-4ef5-4cc8-8889-6524971e8299",
+ *     "clientType": 0,
+ *     "clientId": "bdddb23a-e4bb-4cb1-84d4-077c8b209395",
  *     "clientName": "Woooo, Larry",
  *     "createAt": "2024-09-14T20:45:29.767Z",
  *     "closeAt": "2024-09-14T21:15:41.199Z",
