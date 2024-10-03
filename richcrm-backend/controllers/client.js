@@ -1,5 +1,6 @@
 var ClientService = require("../db/client/client.service");
 var AddressService = require("../db/address/address.service");
+var OrganizationService = require("../db/organization/organization.service");
 const { v4: uuidv4 } = require('uuid');
 const Types = require("../db/types");
 
@@ -11,14 +12,14 @@ class ClientController {
     }
 
     async registerClient(req, res) {
-        const { clientId, clientType, title, firstName, lastName, gender, cellNumber, email, ssn, addressId } = req.body;
+        const { clientId, clientType, title, firstName, lastName, gender, cellNumber, email, ssn, addressId, organizationId } = req.body;
 
         try {
             // Check if client ID exists
             if (clientId !== undefined) {
                 const existingClient = await ClientService.readClient(clientId);
                 if (existingClient !== null) {
-                    res.status(200).json({
+                    return res.status(200).json({
                         status: "success",
                         data: [{
                             clientId: existingClient.ClientId,
@@ -36,10 +37,10 @@ class ClientController {
                             addressId: existingClient.AddressId,
                             attorneyId: existingClient.AttorneyId,
                             bankAttorneyId: existingClient.BankAttorneyId,
+                            organizationId: existingClient.OrganizationId,
                         }],
                         message: '[ClientController][registerClient] Client already exists'
                     });
-                    return;
                 }
             }
                         
@@ -99,6 +100,18 @@ class ClientController {
                 genderParsed = Types.gender.NA;
             }
 
+            // Check if organization exists
+            if (organizationId !== undefined && organizationId !== "" && organizationId !== null) {
+                const existingOrganization = await OrganizationService.readOrganization(organizationId);
+                if (existingOrganization === null) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[ClientController][registerClient] Organization does not exist'
+                    });
+                }
+            }
+
             const client = await ClientService.createClient({
                 clientId: uuidv4(),
                 clientType: clientType,
@@ -109,7 +122,8 @@ class ClientController {
                 cellNumber: cellNumber,
                 email: email,
                 ssn: ssn,
-                addressId: addressId
+                addressId: addressId,
+                organizationId: organizationId,
             });
             if (client !== null) {
                 res.status(200).json({
@@ -130,6 +144,7 @@ class ClientController {
                         addressId: client.AddressId,
                         attorneyId: client.AttorneyId,
                         bankAttorneyId: client.BankAttorneyId,
+                        organizationId: client.OrganizationId,
                     }],
                     message: '[ClientController][registerClient] Client created successfully'
                 });
@@ -172,6 +187,7 @@ class ClientController {
                         addressId: client.AddressId,
                         attorneyId: client.AttorneyId,
                         bankAttorneyId: client.BankAttorneyId,
+                        organizationId: client.OrganizationId,
                     });
                 });
             }
@@ -214,6 +230,7 @@ class ClientController {
                         addressId: client.AddressId,
                         attorneyId: client.AttorneyId,
                         bankAttorneyId: client.BankAttorneyId,
+                        organizationId: client.OrganizationId,
                     });
                 });
             }
@@ -256,6 +273,7 @@ class ClientController {
                         addressId: client.AddressId,
                         attorneyId: client.AttorneyId,
                         bankAttorneyId: client.BankAttorneyId,
+                        organizationId: client.OrganizationId,
                     });
                 });
             }
@@ -305,6 +323,7 @@ class ClientController {
                         addressId: client.AddressId,
                         attorneyId: client.AttorneyId,
                         bankAttorneyId: client.BankAttorneyId,
+                        organizationId: client.OrganizationId,
                     }],
                     message: '[ClientController][getClient] Client found'
                 });
@@ -326,7 +345,7 @@ class ClientController {
     }
 
     async updateClient(req, res) {
-        const { clientId, clientType, title, firstName, lastName, gender, cellNumber, workNumber, email, wechatAccount, ssn, dob, attorneyId, bankAttorneyId, addressId } = req.body;
+        const { clientId, clientType, title, firstName, lastName, gender, cellNumber, workNumber, email, wechatAccount, ssn, dob, attorneyId, bankAttorneyId, addressId, organizationId } = req.body;
 
         try {
             // Check if client exists
@@ -353,7 +372,8 @@ class ClientController {
                 dob: existingClient.DOB,
                 attorneyId: existingClient.AttorneyId,
                 bankAttorneyId: existingClient.BankAttorneyId,
-                addressId: existingClient.AddressId
+                addressId: existingClient.AddressId,
+                organizationId: existingClient.OrganizationId,
             };
             // Check if client type is valid
             if (Types.castIntToEnum(Types.clientType, clientType) !== undefined) {
@@ -361,7 +381,7 @@ class ClientController {
             }
 
             // Check if address exists
-            if (addressId !== undefined && addressId !== "") {
+            if (addressId !== undefined && addressId !== "" && addressId !== existingClient.AddressId) {
                 const existingAddress = await AddressService.readAddress(addressId);
                 if (existingAddress === null) {
                     return res.status(400).json({
@@ -450,28 +470,24 @@ class ClientController {
                 clientObj.wechatAccount = wechatAccount;
             }
 
+            // Check if organization exists
+            if (organizationId !== undefined && organizationId !== "" && organizationId !== null && organizationId !== clientObj.organizationId) {
+                const existingOrganization = await OrganizationService.readOrganization(organizationId);
+                if (existingOrganization === null) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[ClientController][updateClient] Organization does not exist'
+                    });
+                }
+                clientObj.organizationId = organizationId;
+            }
 
             const client = await ClientService.updateClient(clientObj);
             if (client !== null) {
                 res.status(200).json({
                     status: "success",
-                    data: [{
-                        clientId: clientId,
-                        clientType: client.ClientType,
-                        title: client.Title,
-                        firstName: client.FirstName,
-                        lastName: client.LastName,
-                        gender: client.Gender,
-                        cellNumber: client.CellNumber,
-                        workNumber: client.WorkNumber,
-                        email: client.Email,
-                        wechatAccount: client.WechatAccount,
-                        ssn: client.SSN,
-                        dob: client.DOB,
-                        addressId: client.AddressId,
-                        attorneyId: client.AttorneyId,
-                        bankAttorneyId: client.BankAttorneyId,
-                    }],
+                    data: [clientObj],
                     message: '[ClientController][updateClient] Client updated successfully'
                 });
             } else {

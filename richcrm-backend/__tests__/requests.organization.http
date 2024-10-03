@@ -1,0 +1,43 @@
+### Register Organization
+POST http://localhost:3001/v1/organization/register
+content-type: application/json
+
+{
+    "organizationId": "449a5faa-6377-4604-9361-fbd3e412c299",
+    "organizationName": "Test Organization",
+    "organizationType": 1
+}
+
+### Get Organization
+GET http://localhost:3001/v1/organization/449a5faa-6377-4604-9361-fbd3e412c299
+
+
+### Update Organization
+POST http://localhost:3001/v1/organization/update
+content-type: application/json
+
+{
+    "organizationId": "449a5faa-6377-4604-9361-fbd3e412c299",
+    "organizationName": "Test Organization Updated",
+    "organizationType": 2,
+    "cellNumber": "1234567890",
+    "email": "xyz@gmail.com",
+    "addressId": "New York NY 10012-1296",
+    "website": "www.test.com"
+}
+
+### Query Organizations
+POST http://localhost:3001/v1/organization/query
+content-type: application/json
+
+{
+    "keyword": "Test Organization"
+}
+
+### Query Organizations by Type
+POST http://localhost:3001/v1/organization/query/type
+content-type: application/json
+
+{
+    "organizationType": 3
+}

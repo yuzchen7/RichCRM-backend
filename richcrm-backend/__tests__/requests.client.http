@@ -1,21 +1,22 @@
 ### Register Client
-POST https://api.richcrm.org/v1/client/register
+POST http://localhost:3001/v1/client/register
 content-type: application/json
 
 {
-    "clientId": "d5dbbca5-808c-4df8-b51b-b09b1cb595bd",
+    "clientId": "d2d0cbac-b7d5-439c-b463-a55d1d16d443",
     "clientType": 0,
     "firstName": "John",
     "lastName": "Doe",
     "cellNumber": "1234567891",
-    "email": "john.doe@hotmail.com"
+    "email": "john.doe@hotmail.com",
+    "organizationId": "449a5faa-6377-4604-9361-fbd3e412c299"
 }
 
 ### Get All Clients
 GET http://localhost:3001/v1/client/all
 
 ### Query Clients
-POST https://api.richcrm.org/v1/client/query
+POST http://localhost:3001/v1/client/query
 content-type: application/json
 
 {
@@ -72,5 +73,5 @@ POST https://api.richcrm.org/v1/client/delete
 content-type: application/json
 
 {
-    "clientId": "02d49d26-ceb7-42d7-b934-bc3c412b0812"
+    "clientId": "d2d0cbac-b7d5-439c-b463-a55d1d16d443"
 }

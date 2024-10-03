@@ -291,6 +291,41 @@ router.post(
     check("premisesId")
         .notEmpty()
         .withMessage("Premises ID is required"),
+    check("name")
+        .notEmpty()
+        .withMessage("Name is required"),
+    check("section")
+        .optional()
+        .isInt()
+        .withMessage("Section must be an integer"),
+    check("propertyType")
+        .notEmpty()
+        .isInt()
+        .withMessage("Property Type must be an integer"),
+    check("lot")
+        .optional()
+        .isInt()
+        .withMessage("Lot must be an integer"),
+    check("block")
+        .optional()
+        .isInt()
+        .withMessage("Block must be an integer"),
+    check("parkingSpaces")
+        .optional()
+        .isInt()
+        .withMessage("Parking Spaces must be an integer"),
+    check("maintenanceFee")
+        .optional()
+        .isInt()
+        .withMessage("Maintenance Fee must be an integer"),
+    check("maintenanceFeePer")
+        .optional()
+        .isInt()
+        .withMessage("Maintenance Fee Per must be an integer"),
+    check("assessments")
+        .optional()
+        .isInt()
+        .withMessage("Assessments must be an integer"),
     validate,
     PremisesController.updatePremises
 )

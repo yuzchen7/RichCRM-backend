@@ -16,6 +16,7 @@ var v1StageRouter = require('./routes/v1/stage');
 var v1TaskRouter = require('./routes/v1/task');
 var v1TemplateRouter = require('./routes/v1/template');
 var v1ContactRouter = require('./routes/v1/contact');
+var v1OrganizationRouter = require('./routes/v1/organization');
 
 var app = express();
 
@@ -48,6 +49,7 @@ app.use('/v1/stage', v1StageRouter);
 app.use('/v1/task', v1TaskRouter);
 app.use('/v1/template', v1TemplateRouter);
 app.use('/v1/contact', v1ContactRouter);
+app.use('/v1/organization', v1OrganizationRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

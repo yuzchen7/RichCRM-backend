@@ -15,11 +15,11 @@ content-type: application/json
 
 
 ### Read Case
-GET http://localhost:3001/v1/case/2443b04b-a4d8-43d1-843b-a31b0dd3c1a9
+GET https://api.richcrm.org/v1/case/8db8f6fb-5e94-4439-8bb7-73b629aac339
 
 
 ### Read All Cases by Creator
-POST http://localhost:3001/v1/case/all
+POST https://api.richcrm.org/v1/case/all
 content-type: application/json
 
 {
@@ -33,7 +33,7 @@ POST http://localhost:3001/v1/case/query/client
 content-type: application/json
 
 {
-    "clientId": "738ffc97-299b-423a-b759-2116a402b18d"
+    "clientId": "122aec8a-2a77-418a-840d-ec472d38b63b"
 }
 
 
@@ -42,8 +42,8 @@ POST http://localhost:3001/v1/case/query/contact
 content-type: application/json
 
 {
-    "contactId": "8d587c04-0d59-4b70-8264-922d26bf6f00",
-    "closed": true
+    "contactId": "122aec8a-2a77-418a-840d-ec472d38b63b",
+    "closed": false
 }
 
 ### Read All Cases by Keyword
@@ -61,7 +61,7 @@ POST http://localhost:3001/v1/case/update
 content-type: application/json
 
 {
-    "caseId": "702cdcca-1b5c-4449-974b-26feb4edfeae",
+    "caseId": "7575f2d6-c28f-4058-9710-c42f876fe3db",
     "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
     "creatorId": "test1@gmail.com",
     "stage": 1,
@@ -87,5 +87,5 @@ POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "d2f03d22-dafa-4251-a165-1a2300a3ebfb"
+    "caseId": "46ae254a-7c7e-40c7-8866-879c926bb25a"
 }

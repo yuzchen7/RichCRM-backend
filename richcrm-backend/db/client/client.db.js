@@ -19,6 +19,7 @@
  * @property {string} AttorneyId - Foreign key to Attorney
  * @property {string} BankAttorneyId - Foreign key to Bank Attorney
  * @property {string} AddressId - Foreign key to Address
+ * @property {string} OrganizationId - Foreign key to Organization
  */
 
 const db = require('../dynamodb');
@@ -115,6 +116,7 @@ class Client {
                 AttorneyId: client.attorneyId,
                 BankAttorneyId: client.bankAttorneyId,
                 AddressId: client.addressId,
+                OrganizationId: client.organizationId,
             },
         };
         await db.put(params).promise();
@@ -127,18 +129,30 @@ class Client {
             Key: {
                 ClientId: client.clientId,
             },
-            UpdateExpression: 'set ClientType = :ct, Title = :t, FirstName = :f, LastName = :l, Gender = :g',
+            UpdateExpression: 'set ClientType = :ct',
             ExpressionAttributeValues: {
                 ':ct': client.clientType,
-                ':t': client.title,
-                ':f': client.firstName,
-                ':l': client.lastName,
-                ':g': client.gender,
             },
             ReturnValues: 'UPDATED_NEW',
         };
 
         // Optional fields
+        if (client.title !== undefined) {
+            params.ExpressionAttributeValues[':t'] = client.title;
+            params.UpdateExpression += ', Title = :t';
+        }
+        if (client.firstName !== undefined) {
+            params.ExpressionAttributeValues[':f'] = client.firstName;
+            params.UpdateExpression += ', FirstName = :f';
+        }
+        if (client.lastName !== undefined) {
+            params.ExpressionAttributeValues[':l'] = client.lastName;
+            params.UpdateExpression += ', LastName = :l';
+        }
+        if (client.gender !== undefined) {
+            params.ExpressionAttributeValues[':g'] = client.gender;
+            params.UpdateExpression += ', Gender = :g';
+        }
         if (client.cellNumber !== undefined) {
             params.ExpressionAttributeValues[':c'] = client.cellNumber;
             params.UpdateExpression += ', CellNumber = :c';
@@ -175,7 +189,10 @@ class Client {
             params.ExpressionAttributeValues[':w'] = client.workNumber;
             params.UpdateExpression += ', WorkNumber = :w';
         }
-
+        if (client.organizationId !== undefined) {
+            params.ExpressionAttributeValues[':o'] = client.organizationId;
+            params.UpdateExpression += ', OrganizationId = :o';
+        }
 
         const data = await db.update(params).promise();
         return data.Attributes;

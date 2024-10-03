@@ -642,6 +642,7 @@ class CaseController {
                         "premisesName": c.PremisesName,
                         "stage": c.Stage,
                         "stageId": stageObj.stageId,
+                        "caseStatus": stageObj.stageStatus,
                         "caseType": c.CaseType,
                         "buyerId": c.BuyerId,
                         "sellerId": c.SellerId,

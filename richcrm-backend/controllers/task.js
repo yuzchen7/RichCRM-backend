@@ -144,18 +144,18 @@ class TaskController {
                 taskObj.status = status;
 
                 // Update stage in case of status change
-                const stage = await StageService.getStageById(task.StageId);
-                if (stage === null) {
-                    console.log(`[TaskController][updateTask] Stage not found for taskId: ${taskId}`);
-                } else {
-                    const stage = await StageService.updateStage({
-                        stageId: task.StageId,
-                        stageStatus: status,
-                    });
-                    if (stage === null) {
-                        console.log(`[TaskController][updateTask] Stage not updated for taskId: ${taskId}`);
-                    }
-                }
+                // const stage = await StageService.getStageById(task.StageId);
+                // if (stage === null) {
+                //     console.log(`[TaskController][updateTask] Stage not found for taskId: ${taskId}`);
+                // } else {
+                //     const stage = await StageService.updateStage({
+                //         stageId: task.StageId,
+                //         stageStatus: status,
+                //     });
+                //     if (stage === null) {
+                //         console.log(`[TaskController][updateTask] Stage not updated for taskId: ${taskId}`);
+                //     }
+                // }
             }
 
             if (name !== undefined) {
@@ -175,6 +175,7 @@ class TaskController {
                 status: "success",
                 data: [{
                     taskId: taskObj.taskId,
+                    stageId: taskObj.stageId,
                     taskType: taskObj.taskType,
                     name: taskObj.name,
                     status: taskObj.status,
