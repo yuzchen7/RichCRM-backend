@@ -285,5 +285,12 @@ module.exports = {
         LENDER: 3,
         CLIENT: 4,
         OTHER: 5,
+    },
+
+    // [DB] ORGANIZATION
+    organizationType: {
+        TRUST: 0,
+        COMPANY: 1,
+        OTHER: 2,
     }
 };

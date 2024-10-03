@@ -181,6 +181,14 @@ aws dynamodb create-table \
     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
     --table-class STANDARD
 
+aws dynamodb create-table \
+    --table-name Organization \
+    --attribute-definitions \
+        AttributeName=OrganizationId,AttributeType=S \
+    --key-schema AttributeName=OrganizationId,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --table-class STANDARD
+
 ```
 ### 2. Delete table
 ```bash
