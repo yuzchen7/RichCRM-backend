@@ -289,8 +289,8 @@ module.exports = {
 
     // [DB] ORGANIZATION
     organizationType: {
-        TRUST: 0,
+        OTHER: 0,
         COMPANY: 1,
-        OTHER: 2,
+        TRUST: 2,
     }
 };

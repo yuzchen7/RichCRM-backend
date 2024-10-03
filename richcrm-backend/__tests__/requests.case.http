@@ -3,23 +3,23 @@ POST http://localhost:3001/v1/case/create
 content-type: application/json
 
 {
-    "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+    "premisesId": "cbf8e709-7af2-4433-9276-7d5ba9113950",
     "creatorId": "test1@gmail.com",
     "stage": 0,
     "caseType": 1,
-    "sellerId": "bffc41d3-4ef5-4cc8-8889-6524971e8299",
-    "buyerId": "",
+    "clientType": 2,
+    "clientId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
     "additionalClients": ["738ffc97-299b-423a-b759-2116a402b18d", "86a6d1d3-9644-40cc-bec5-e2710567d882"],
     "contacts": ["8d587c04-0d59-4b70-8264-922d26bf6f00", "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"]
 }
 
 
 ### Read Case
-GET https://api.richcrm.org/v1/case/8db8f6fb-5e94-4439-8bb7-73b629aac339
+GET http://localhost:3001/v1/case/cdc31c0c-2287-4d6d-9ef3-5bbe066f8daa
 
 
 ### Read All Cases by Creator
-POST https://api.richcrm.org/v1/case/all
+POST http://localhost:3001/v1/case/all
 content-type: application/json
 
 {
@@ -61,7 +61,7 @@ POST http://localhost:3001/v1/case/update
 content-type: application/json
 
 {
-    "caseId": "7575f2d6-c28f-4058-9710-c42f876fe3db",
+    "caseId": "df332bdb-bc9b-4246-be6b-04aa7622af47",
     "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
     "creatorId": "test1@gmail.com",
     "stage": 1,
@@ -78,7 +78,7 @@ POST http://localhost:3001/v1/case/close
 content-type: application/json
 
 {
-    "caseId": "2443b04b-a4d8-43d1-843b-a31b0dd3c1a9"
+    "caseId": "df332bdb-bc9b-4246-be6b-04aa7622af47"
 }
 
 
@@ -87,5 +87,5 @@ POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "46ae254a-7c7e-40c7-8866-879c926bb25a"
+    "caseId": "8fc515fc-013b-410d-889e-5cab9ca2823c"
 }

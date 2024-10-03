@@ -2,6 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import caseRouter from '../routes/v1/case';
 import bodyParser from 'body-parser';
+import { clientType } from '../db/types';
 
 const app = new express();
 app.use(bodyParser.json())
@@ -11,12 +12,12 @@ app.use('/v1/case', caseRouter);
 var testCaseId;
 
 const caseObj = {
-    premisesId: "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+    premisesId: "cbf8e709-7af2-4433-9276-7d5ba9113950",
     creatorId: "test1@gmail.com",
     stage: 0,
     caseType: 1,
-    sellerId: "bffc41d3-4ef5-4cc8-8889-6524971e8299",
-    buyerId: null,
+    clientType: 0,
+    clientId: "689f5eac-22ea-4363-bbe3-b8216abf0076",
     additionalClients: ["738ffc97-299b-423a-b759-2116a402b18d", "86a6d1d3-9644-40cc-bec5-e2710567d882"],
     contacts: ["8d587c04-0d59-4b70-8264-922d26bf6f00", "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"]
 }
@@ -36,8 +37,8 @@ describe('Case Routes', function () {
         expect(res.body.data[0].premisesId).toEqual(caseObj.premisesId);
         expect(res.body.data[0].stage).toEqual(caseObj.stage);
         expect(res.body.data[0].caseType).toEqual(caseObj.caseType);
-        expect(res.body.data[0].sellerId).toEqual(caseObj.sellerId);
-        expect(res.body.data[0].buyerId).toEqual(caseObj.buyerId);
+        expect(res.body.data[0].clientType).toEqual(caseObj.clientType);
+        expect(res.body.data[0].clientId).toEqual(caseObj.clientId);
         expect(res.body.data[0].additionalClients).toEqual(caseObj.additionalClients);
         expect(res.body.data[0].contacts).toEqual(caseObj.contacts);
     });
@@ -53,8 +54,8 @@ describe('Case Routes', function () {
         expect(res.body.data[0].premisesId).toEqual(caseObj.premisesId);
         expect(res.body.data[0].stage).toEqual(caseObj.stage);
         expect(res.body.data[0].caseType).toEqual(caseObj.caseType);
-        expect(res.body.data[0].sellerId).toEqual(caseObj.sellerId);
-        expect(res.body.data[0].buyerId).toEqual(caseObj.buyerId);
+        expect(res.body.data[0].clientType).toEqual(caseObj.clientType);
+        expect(res.body.data[0].clientId).toEqual(caseObj.clientId);
         expect(res.body.data[0].additionalClients).toEqual(caseObj.additionalClients);
         expect(res.body.data[0].contacts).toEqual(caseObj.contacts);
     });
@@ -93,7 +94,7 @@ describe('Case Routes', function () {
             closeAt: "2024-07-20T20:24:24.740Z",
             closingDate: "2024-07-20T20:24:24.740Z",
             mortgageContingencyDate: "2024-07-20T20:24:24.740Z",
-            additionalClients: ["26ea9b74-b431-4b08-88cd-436ba25486bb"],
+            additionalClients: ["738ffc97-299b-423a-b759-2116a402b18d"],
             contacts: ["8d587c04-0d59-4b70-8264-922d26bf6f00"]
         }
 

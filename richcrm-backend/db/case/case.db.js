@@ -9,8 +9,9 @@
  * @property {string} PremisesId - Foreign key to Premises
  * @property {string} PremisesName - Name of the premises (for searching purposes)
  * @property {caseType} CaseType - Is this case for buyside or sellside clients? (0-PURCHASING, 1-SELLING)
- * @property {string} BuyerId - Foreign key to Buyers
- * @property {string} SellerId - Foreign key to Sellers
+ * @property {clientType} ClientType - Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST)
+ * @property {string} ClientId - Foreign key to Buyers or Sellers
+ * @property {string} OrganizationId - Foreign key to Organization
  * @property {string} ClientName - Name of the client (for searching purposes)
  * @property {Date} CreateAt - When this case was created
  * @property {Date} CloseAt - When this case was closed
@@ -23,7 +24,7 @@
  */
 
 const db = require("../dynamodb");
-const { stage, caseType } = require("../types");
+const { stage, caseType, clientType } = require("../types");
 
 class Case {
     constructor() {
@@ -59,38 +60,30 @@ class Case {
         return data;
     }
 
-    async getAllCasesByBuyerId(buyerId) {
-        const params = {
-            TableName: this.table,
-            IndexName: "BuyerIdIndex",
-            KeyConditionExpression: "BuyerId = :b OR contains(AdditionalClients, :b)",
-            ExpressionAttributeValues: {
-                ":b": buyerId,
-            },
-        };
-        const data = await db.query(params).promise();
-        return data;
-    }
-
-    async getAllCasesBySellerId(sellerId) {
-        const params = {
-            TableName: this.table,
-            IndexName: "SellerIdIndex",
-            KeyConditionExpression: "SellerId = :s OR contains(AdditionalClients, :s)",
-            ExpressionAttributeValues: {
-                ":s": sellerId,
-            },
-        };
-        const data = await db.query(params).promise();
-        return data;
-    }
-
     async getCasesByClientId(clientId, closed) {
         const params = {
             TableName: this.table,
-            FilterExpression: "(BuyerId = :c OR SellerId = :c OR contains(AdditionalClients, :c))",
+            FilterExpression: "(ClientId = :c OR contains(AdditionalClients, :c))",
             ExpressionAttributeValues: {
                 ":c": clientId,
+            },
+        };
+
+        if (closed === true) {
+            params.FilterExpression += " AND attribute_exists(CloseAt)";
+        } else {
+            params.FilterExpression += " AND NOT attribute_exists(CloseAt)";
+        }
+        const data = await db.scan(params).promise();
+        return data;
+    }
+
+    async getCasesByOrganizationId(organizationId, closed) {
+        const params = {
+            TableName: this.table,
+            FilterExpression: "OrganizationId = :o",
+            ExpressionAttributeValues: {
+                ":o": organizationId,
             },
         };
 
@@ -106,7 +99,7 @@ class Case {
     async getCasesByContactId(contactId, closed) {
         const params = {
             TableName: this.table,
-            FilterExpression: "(contains(Contacts, :c) OR contains(AdditionalClients, :c) OR BuyerId = :c OR SellerId = :c)",
+            FilterExpression: "(contains(Contacts, :c) OR contains(AdditionalClients, :c) OR ClientId = :c)",
             ExpressionAttributeValues: {
                 ":c": contactId,
             },
@@ -124,7 +117,7 @@ class Case {
     async getCaseByPremisesIdAndClientId(premisesId, clientId) {
         const params = {
             TableName: this.table,
-            FilterExpression: "PremisesId = :p AND (BuyerId = :c OR SellerId = :c)",
+            FilterExpression: "PremisesId = :p AND (ClientId = :c)",
             ExpressionAttributeValues: {
                 ":p": premisesId,
                 ":c": clientId,
@@ -169,9 +162,10 @@ class Case {
                 PremisesId: c.premisesId,
                 PremisesName: c.premisesName,
                 CaseType: c.caseType,
-                BuyerId: c.buyerId,
-                SellerId: c.sellerId,
+                ClientId: c.clientId,
                 ClientName: c.clientName,
+                ClientType: c.clientType,
+                OrganizationId: c.organizationId,
                 CreateAt: c.createAt,
                 CloseAt: c.closeAt,
                 ClosingDate: c.closingDate,
@@ -248,12 +242,22 @@ class Case {
             updateExpressions.push('Contacts = :ct');
         }
 
+        if (c.clientId !== undefined) {
+            params.ExpressionAttributeValues[':ci'] = c.clientId;
+            updateExpressions.push('ClientId = :ci');
+        }
+
+        if (c.organizationId !== undefined) {
+            params.ExpressionAttributeValues[':oi'] = c.organizationId;
+            updateExpressions.push('OrganizationId = :oi');
+        }
+
         if (updateExpressions.length > 0) {
             params.UpdateExpression = "SET " + updateExpressions.join(", ");
         } else {
             return null;
         }
-
+        console.log(params);
         const data = await db.update(params).promise();
         return data.Attributes;
     }

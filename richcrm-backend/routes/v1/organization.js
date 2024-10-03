@@ -11,7 +11,7 @@ const router = express.Router();
  * @apiGroup Organization
  * 
  * @apiBody {String} organizationId [Optional] Organization ID (will return the an existing organization).
- * @apiBody {Number} organizationType Organization Type (0-TRUST, 1-COMPANY, 2-OTHER).
+ * @apiBody {Number} organizationType Organization Type (0-OTHER, 1-COMPANY, 2-TRUST).
  * @apiBody {String} organizationName Name of the Organization.
  * @apiBody {String} cellNumber [Optional] Cell Number of the Organization.
  * @apiBody {String} email [Optional] Email of the Organization.
@@ -21,7 +21,7 @@ const router = express.Router();
  * 
  * @apiSuccess {String} organizationId Organization ID.
  * @apiSuccess {String} organizationName Name of the Organization.
- * @apiSuccess {Number} organizationType Organization Type (0-TRUST, 1-COMPANY, 2-OTHER).
+ * @apiSuccess {Number} organizationType Organization Type (0-OTHER, 1-COMPANY, 2-TRUST).
  * @apiSuccess {String} cellNumber Cell Number of the Organization.
  * @apiSuccess {String} email Email of the Organization.
  * @apiSuccess {String} website Website of the Organization.
@@ -77,7 +77,7 @@ router.post(
  * 
  * @apiSuccess {String} organizationId Organization ID.
  * @apiSuccess {String} organizationName Name of the Organization.
- * @apiSuccess {Number} organizationType Organization Type (0-TRUST, 1-COMPANY, 2-OTHER).
+ * @apiSuccess {Number} organizationType Organization Type (0-OTHER, 1-COMPANY, 2-TRUST).
  * @apiSuccess {String} cellNumber Cell Number of the Organization.
  * @apiSuccess {String} email Email of the Organization.
  * @apiSuccess {String} website Website of the Organization.
@@ -110,11 +110,11 @@ router.get(
  * @apiName GetOrganizationByType
  * @apiGroup Organization
  * 
- * @apiBody {Number} organizationType Organization Type (0-TRUST, 1-COMPANY, 2-OTHER).
+ * @apiBody {Number} organizationType Organization Type (0-OTHER, 1-COMPANY, 2-TRUST).
  * 
  * @apiSuccess {String} organizationId Organization ID.
  * @apiSuccess {String} organizationName Name of the Organization.
- * @apiSuccess {Number} organizationType Organization Type (0-TRUST, 1-COMPANY, 2-OTHER).
+ * @apiSuccess {Number} organizationType Organization Type (0-OTHER, 1-COMPANY, 2-TRUST).
  * @apiSuccess {String} cellNumber Cell Number of the Organization.
  * @apiSuccess {String} email Email of the Organization.
  * @apiSuccess {String} website Website of the Organization.
@@ -149,7 +149,7 @@ router.post(
  * 
  * @apiSuccess {String} organizationId Organization ID.
  * @apiSuccess {String} organizationName Name of the Organization.
- * @apiSuccess {Number} organizationType Organization Type (0-TRUST, 1-COMPANY, 2-OTHER).
+ * @apiSuccess {Number} organizationType Organization Type (0-OTHER, 1-COMPANY, 2-TRUST).
  * @apiSuccess {String} cellNumber Cell Number of the Organization.
  * @apiSuccess {String} email Email of the Organization.
  * @apiSuccess {String} website Website of the Organization.
@@ -181,7 +181,7 @@ router.post(
  * @apiGroup Organization
  * 
  * @apiBody {String} organizationId Organization ID.
- * @apiBody {Number} organizationType Organization Type (0-TRUST, 1-COMPANY, 2-OTHER).
+ * @apiBody {Number} organizationType Organization Type (0-OTHER, 1-COMPANY, 2-TRUST).
  * @apiBody {String} organizationName Name of the Organization.
  * @apiBody {String} cellNumber [Optional] Cell Number of the Organization.
  * @apiBody {String} email [Optional] Email of the Organization.
@@ -190,7 +190,7 @@ router.post(
  * 
  * @apiSuccess {String} organizationId Organization ID.
  * @apiSuccess {String} organizationName Name of the Organization.
- * @apiSuccess {Number} organizationType Organization Type (0-TRUST, 1-COMPANY, 2-OTHER).
+ * @apiSuccess {Number} organizationType Organization Type (0-OTHER, 1-COMPANY, 2-TRUST).
  * @apiSuccess {String} cellNumber Cell Number of the Organization.
  * @apiSuccess {String} email Email of the Organization.
  * @apiSuccess {String} website Website of the Organization.
