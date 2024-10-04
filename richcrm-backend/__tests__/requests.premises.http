@@ -27,7 +27,7 @@ POST http://localhost:3001/v1/premises/query/address
 content-type: application/json
 
 {
-    "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US"
+    "addressId": "New York NY 10012-1296"
 }
 
 ### Update Premises
@@ -35,9 +35,9 @@ POST http://localhost:3001/v1/premises/update
 content-type: application/json
 
 {
-    "premisesId": "1820 NW 21st St # COMMERCIAL",
-    "name": "Test Premises #1",
-    "addressId": "1600 AMPHITHEATRE PKWY, MOUNTAIN VIEW, CA 94043-1351 US",
+    "premisesId": "cbf8e709-7af2-4433-9276-7d5ba9113950",
+    "name": "130 W 3rd St # 1203 COMMERCIAL",
+    "addressId": "New York NY 10012-1296",
     "block": 1,
     "lot": 1,
     "section": 1,
@@ -50,7 +50,13 @@ content-type: application/json
     "assessments": 100,
     "assessmentsPaidById": "123456",
     "managingCompany": "RichCRM",
-    "isTwoFamily": false
+    "isTwoFamily": true,
+    "twoFamilyFirstFloorTenantId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
+    "twoFamilySecondFloorTenantId": "71a52418-009f-4669-9b43-b0580cdc639d",
+    "needInspection": true,
+    "inspectionDate": "2024-07-20T20:24:24.740Z",
+    "receivedDate": "2024-08-20T20:24:24.740Z",
+    "needTermitesInspection": true
 }
 
 

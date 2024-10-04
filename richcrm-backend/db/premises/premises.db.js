@@ -23,6 +23,10 @@
  * @property {boolean} IsTwoFamily - Is this premises a two-family house?
  * @property {string} TwoFamilyFirstFloorTenantId - Foreign key to Client
  * @property {string} TwoFamilySecondFloorTenantId - Foreign key to Client
+ * @property {boolean} NeedInspection - Does this premises need inspection?
+ * @property {Date} InspectionDate - When should the inspection be done?
+ * @property {Date} ReceivedDate - When the inspection report was received
+ * @property {boolean} NeedTermitesInspection - Does this premises need termites inspection?
  */
 
 const db = require('../dynamodb');
@@ -81,6 +85,10 @@ class Premises {
                 IsTwoFamily: premises.isTwoFamily,
                 TwoFamilyFirstFloorTenantId: premises.twoFamilyFirstFloorTenantId,
                 TwoFamilySecondFloorTenantId: premises.twoFamilySecondFloorTenantId,
+                NeedInspection: premises.needInspection,
+                InspectionDate: premises.inspectionDate,
+                ReceivedDate: premises.receivedDate,
+                NeedTermitesInspection: premises.needTermitesInspection,
             },
         };
         await db.put(params).promise();
@@ -171,6 +179,22 @@ class Premises {
         if (premises.twoFamilySecondFloorTenantId !== undefined)  {
             params.ExpressionAttributeValues[':tfs'] = premises.twoFamilySecondFloorTenantId;
             params.UpdateExpression  += ", TwoFamilySecondFloorTenantId = :tfs";
+        }
+        if (premises.needInspection !== undefined)  {
+            params.ExpressionAttributeValues[':ni'] = premises.needInspection;
+            params.UpdateExpression  += ", NeedInspection = :ni";
+        }
+        if (premises.inspectionDate !== undefined)  {
+            params.ExpressionAttributeValues[':id'] = premises.inspectionDate;
+            params.UpdateExpression  += ", InspectionDate = :id";
+        }
+        if (premises.receivedDate !== undefined)  {
+            params.ExpressionAttributeValues[':rd'] = premises.receivedDate;
+            params.UpdateExpression  += ", ReceivedDate = :rd";
+        }
+        if (premises.needTermitesInspection !== undefined)  {
+            params.ExpressionAttributeValues[':nti'] = premises.needTermitesInspection;
+            params.UpdateExpression  += ", NeedTermitesInspection = :nti";
         }
 
         const data = await db.update(params).promise();
