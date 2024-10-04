@@ -29,6 +29,7 @@ const router = express.Router();
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * @apiSuccess {Array} additionalClients Additional clients in this case.
  * @apiSuccess {Array} contacts Contacts in this case.
+ * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -52,6 +53,11 @@ const router = express.Router();
  *  "contacts": [
  *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
  *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
+ *   ],
+ *  "additionalOrganizations": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
  *   ]
  * }
  */
@@ -90,6 +96,8 @@ router.get(
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * @apiSuccess {Array} additionalClients Additional clients in this case.
  * @apiSuccess {Array} contacts Contacts in this case.
+ * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
+ * 
  * 
  * @apiSuccessExample Example data on success:
  * [{
@@ -115,6 +123,11 @@ router.get(
  *  "contacts": [
  *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
  *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
+ *   ],
+ *  "additionalOrganizations": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
  *   ]
  * }]
  * 
@@ -157,6 +170,8 @@ router.post(
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * @apiSuccess {Array} additionalClients Additional clients in this case.
  * @apiSuccess {Array} contacts Contacts in this case.
+ * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
+ * 
  * 
  * @apiSuccessExample Example data on success:
  * [{
@@ -182,6 +197,11 @@ router.post(
  *  "contacts": [
  *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
  *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
+ *   ],
+ *  "additionalOrganizations": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
  *   ]
  * }]
  * 
@@ -225,6 +245,8 @@ router.post(
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * @apiSuccess {Array} additionalClients Additional clients in this case.
  * @apiSuccess {Array} contacts Contacts in this case.
+ * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
+ * 
  * 
  * @apiSuccessExample Example data on success:
  * [{
@@ -250,6 +272,11 @@ router.post(
  *  "contacts": [
  *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
  *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
+ *   ],
+ *  "additionalOrganizations": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
  *   ]
  * }]
  * 
@@ -293,6 +320,8 @@ router.post(
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * @apiSuccess {Array} additionalClients Additional clients in this case.
  * @apiSuccess {Array} contacts Contacts in this case.
+ * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
+ * 
  * 
  * @apiSuccessExample Example data on success:
  * [{
@@ -318,6 +347,11 @@ router.post(
  *  "contacts": [
  *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
  *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
+ *   ],
+ *  "additionalOrganizations": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
  *   ]
  * }]
  * 
@@ -363,6 +397,8 @@ router.post(
  * @apiSuccess {String} stageId Stage ID created by input stage.
  * @apiSuccess {String} createAt Creation date of the case.
  * @apiSuccess {Array} additionalClients Additional clients in this case.
+ * @apiSuccess {Array} contacts Contacts in this case.
+ * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -385,6 +421,11 @@ router.post(
  *  "contacts": [
  *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
  *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
+ *   ],
+ *  "additionalOrganizations": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
  *   ]
  * }
  */
@@ -454,6 +495,8 @@ router.post(
  * @apiSuccess {String} closingDate Closing date of the case.
  * @apiSuccess {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * @apiSuccess {Array} additionalClients Additional clients in this case.
+ * @apiSuccess {Array} contacts Contacts in this case.
+ * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -475,6 +518,11 @@ router.post(
  *  "contacts": [
  *      "8d587c04-0d59-4b70-8264-922d26bf6f00",
  *      "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
+ *   ],
+ *  "additionalOrganizations": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
  *   ]
  * }
  */
@@ -526,7 +574,12 @@ router.post(
  *     "contacts": [
  *       "8d587c04-0d59-4b70-8264-922d26bf6f00",
  *       "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"
- *     ]
+ *     ],
+ *  "additionalOrganizations": [
+ *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
+ *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
+ *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
+ *   ]
  * }
  */
 router.post(

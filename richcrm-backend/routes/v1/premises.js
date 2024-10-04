@@ -67,6 +67,12 @@ router.post(
  * @apiSuccess {String} assessmentsPaidById Assessments Paid By ID.
  * @apiSuccess {String} managingCompany Managing Company.
  * @apiSuccess {Boolean} isTwoFamily Is Two Family.
+ * @apiSuccess {String} twoFamilyFirstFloorTenantId Client ID of the First Floor of the Two Family Premises.
+ * @apiSuccess {String} twoFamilySecondFloorTenantId Client ID of the Second Floor of the Two Family Premises.
+ * @apiSuccess {Boolean} needInspection Need Inspection.
+ * @apiSuccess {Date} inspectionDate Inspection Date.
+ * @apiSuccess {Date} receivedDate Inspection Received Date.
+ * @apiSuccess {Boolean} needTermitesInspection Need Termites Inspection.
  * 
  * 
  * @apiSuccessExample Example data on success:
@@ -86,9 +92,15 @@ router.post(
  *  "maintenanceFee": 100,
  *  "maintenanceFeePer": 1,
  *  "assessments": 100,
- *  "assessmentsPaidById": "123456",
+ *  "assessmentsPaidById": "689f5eac-22ea-4363-bbe3-b8216abf0076",
  *  "managingCompany": "RichCRM",
- *  "isTwoFamily": false
+ *  "isTwoFamily": true,
+ *  "twoFamilyFirstFloorTenantId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
+ *  "twoFamilySecondFloorTenantId": "738ffc97-299b-423a-b759-2116a402b18d",
+ *  "needInspection": true,
+ *  "inspectionDate": "2024-07-20T20:24:24.740Z",
+ *  "receivedDate": "2024-07-20T20:24:24.740Z",
+ *  "needTermitesInspection": true
  * }
  * 
  */
@@ -125,7 +137,12 @@ router.post(
  * @apiSuccess {String} assessmentsPaidById Assessments Paid By ID.
  * @apiSuccess {String} managingCompany Managing Company.
  * @apiSuccess {Boolean} isTwoFamily Is Two Family.
- * 
+ * @apiSuccess {String} twoFamilyFirstFloorTenantId Client ID of the First Floor of the Two Family Premises.
+ * @apiSuccess {String} twoFamilySecondFloorTenantId Client ID of the Second Floor of the Two Family Premises.
+ * @apiSuccess {Boolean} needInspection Need Inspection.
+ * @apiSuccess {Date} inspectionDate Inspection Date.
+ * @apiSuccess {Date} receivedDate Inspection Received Date.
+ * @apiSuccess {Boolean} needTermitesInspection Need Termites Inspection.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -144,9 +161,15 @@ router.post(
  *  "maintenanceFee": 100,
  *  "maintenanceFeePer": 1,
  *  "assessments": 100,
- *  "assessmentsPaidById": "123456",
+ *  "assessmentsPaidById": "689f5eac-22ea-4363-bbe3-b8216abf0076",
  *  "managingCompany": "RichCRM",
- *  "isTwoFamily": false
+ *  "isTwoFamily": true,
+ *  "twoFamilyFirstFloorTenantId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
+ *  "twoFamilySecondFloorTenantId": "738ffc97-299b-423a-b759-2116a402b18d",
+ *  "needInspection": true,
+ *  "inspectionDate": "2024-07-20T20:24:24.740Z",
+ *  "receivedDate": "2024-07-20T20:24:24.740Z",
+ *  "needTermitesInspection": true
  * }
  * 
  */
@@ -185,7 +208,12 @@ router.get(
  * @apiSuccess {String} assessmentsPaidById Assessments Paid By ID.
  * @apiSuccess {String} managingCompany Managing Company.
  * @apiSuccess {Boolean} isTwoFamily Is Two Family.
- * 
+ * @apiSuccess {String} twoFamilyFirstFloorTenantId Client ID of the First Floor of the Two Family Premises.
+ * @apiSuccess {String} twoFamilySecondFloorTenantId Client ID of the Second Floor of the Two Family Premises.
+ * @apiSuccess {Boolean} needInspection Need Inspection.
+ * @apiSuccess {Date} inspectionDate Inspection Date.
+ * @apiSuccess {Date} receivedDate Inspection Received Date.
+ * @apiSuccess {Boolean} needTermitesInspection Need Termites Inspection.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -204,9 +232,15 @@ router.get(
  *  "maintenanceFee": 100,
  *  "maintenanceFeePer": 1,
  *  "assessments": 100,
- *  "assessmentsPaidById": "123456",
+ *  "assessmentsPaidById": "689f5eac-22ea-4363-bbe3-b8216abf0076",
  *  "managingCompany": "RichCRM",
- *  "isTwoFamily": false
+ *  "isTwoFamily": true,
+ *  "twoFamilyFirstFloorTenantId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
+ *  "twoFamilySecondFloorTenantId": "738ffc97-299b-423a-b759-2116a402b18d",
+ *  "needInspection": true,
+ *  "inspectionDate": "2024-07-20T20:24:24.740Z",
+ *  "receivedDate": "2024-07-20T20:24:24.740Z",
+ *  "needTermitesInspection": true
  * }
  * 
  */
@@ -244,6 +278,13 @@ router.post(
  * @apiBody {Boolean} isTwoFamily Is Two Family.
  * @apiBody {String} twoFamilyFirstFloorTenantId Tenant ID of the First Floor of the Two Family Premises.
  * @apiBody {String} twoFamilySecondFloorTenantId Tenant ID of the Second Floor of the Two Family Premises.
+ * @apiBody {String} twoFamilyFirstFloorTenantId Client ID of the First Floor of the Two Family Premises.
+ * @apiBody {String} twoFamilySecondFloorTenantId Client ID of the Second Floor of the Two Family Premises.
+ * @apiBody {Boolean} needInspection Need Inspection.
+ * @apiBody {Date} inspectionDate Inspection Date.
+ * @apiBody {Date} receivedDate Inspection Received Date.
+ * @apiBody {Boolean} needTermitesInspection Need Termites Inspection.
+ * 
  * 
  * @apiSuccess {String} premisesId Premises ID.
  * @apiSuccess {String} addressId Address ID of the Premises.
@@ -262,7 +303,12 @@ router.post(
  * @apiSuccess {String} assessmentsPaidById Assessments Paid By ID.
  * @apiSuccess {String} managingCompany Managing Company.
  * @apiSuccess {Boolean} isTwoFamily Is Two Family.
- * 
+ * @apiSuccess {String} twoFamilyFirstFloorTenantId Client ID of the First Floor of the Two Family Premises.
+ * @apiSuccess {String} twoFamilySecondFloorTenantId Client ID of the Second Floor of the Two Family Premises.
+ * @apiSuccess {Boolean} needInspection Need Inspection.
+ * @apiSuccess {Date} inspectionDate Inspection Date.
+ * @apiSuccess {Date} receivedDate Inspection Received Date.
+ * @apiSuccess {Boolean} needTermitesInspection Need Termites Inspection.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -283,7 +329,13 @@ router.post(
  *  "assessments": 100,
  *  "assessmentsPaidById": "123456",
  *  "managingCompany": "RichCRM",
- *  "isTwoFamily": false
+ *  "isTwoFamily": true,
+ *  "twoFamilyFirstFloorTenantId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
+ *  "twoFamilySecondFloorTenantId": "738ffc97-299b-423a-b759-2116a402b18d",
+ *  "needInspection": true,
+ *  "inspectionDate": "2024-07-20T20:24:24.740Z",
+ *  "receivedDate": "2024-07-20T20:24:24.740Z",
+ *  "needTermitesInspection": true
  * }
  */
 router.post(
@@ -299,7 +351,7 @@ router.post(
         .isInt()
         .withMessage("Section must be an integer"),
     check("propertyType")
-        .notEmpty()
+        .optional()
         .isInt()
         .withMessage("Property Type must be an integer"),
     check("lot")
@@ -326,6 +378,22 @@ router.post(
         .optional()
         .isInt()
         .withMessage("Assessments must be an integer"),
+    check("twoFamilyFirstFloorTenantId")
+        .optional()
+        .isUUID()
+        .withMessage("First Floor Tenant ID must be a UUID"),
+    check("twoFamilySecondFloorTenantId")
+        .optional()
+        .isUUID()
+        .withMessage("Second Floor Tenant ID must be a UUID"),
+    check("needInspection")
+        .optional()
+        .isBoolean()
+        .withMessage("Need Inspection must be a boolean"),
+    check("needTermitesInspection")
+        .optional()
+        .isBoolean()
+        .withMessage("Need Termites Inspection must be a boolean"),
     validate,
     PremisesController.updatePremises
 )

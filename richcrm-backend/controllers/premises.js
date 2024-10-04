@@ -34,6 +34,10 @@ class PremisesController {
                         isTwoFamily: p.IsTwoFamily,
                         twoFamilyFirstFloorTenantId: p.TwoFamilyFirstFloorTenantId,
                         twoFamilySecondFloorTenantId: p.TwoFamilySecondFloorTenantId,
+                        needInspection: p.NeedInspection,
+                        inspectionDate: p.InspectionDate,
+                        receivedDate: p.ReceivedDate,
+                        needTermitesInspection: p.NeedTermitesInspection,
                     });
                 });
             }
@@ -92,6 +96,10 @@ class PremisesController {
                     isTwoFamily: premises.IsTwoFamily,
                     twoFamilyFirstFloorTenantId: premises.TwoFamilyFirstFloorTenantId,
                     twoFamilySecondFloorTenantId: premises.TwoFamilySecondFloorTenantId,
+                    needInspection: premises.NeedInspection,
+                    inspectionDate: premises.InspectionDate,
+                    receivedDate: premises.ReceivedDate,
+                    needTermitesInspection: premises.NeedTermitesInspection,
                 }],
                 message: '[PremisesController][getPremises] Successfully retrieved premises',
             });
@@ -197,6 +205,10 @@ class PremisesController {
             isTwoFamily,
             twoFamilyFirstFloorTenantId,
             twoFamilySecondFloorTenantId,
+            needInspection,
+            inspectionDate,
+            receivedDate,
+            needTermitesInspection,
         } = req.body;
 
         try {
@@ -384,31 +396,31 @@ class PremisesController {
                 premisesObj.twoFamilySecondFloorTenantId = twoFamilySecondFloorTenantId;
             }
 
+            // Update needInspection
+            if (needInspection !== undefined) {
+                premisesObj.needInspection = needInspection;
+            }
+
+            // Update inspectionDate
+            if (inspectionDate !== undefined && inspectionDate !== "") {
+                premisesObj.inspectionDate = new Date(inspectionDate).toISOString();
+            }
+
+            // Update receivedDate
+            if (receivedDate !== undefined && receivedDate !== "") {
+                premisesObj.receivedDate = new Date(receivedDate).toISOString();
+            }
+
+            // Update needTermitesInspection
+            if (needTermitesInspection !== undefined) {
+                premisesObj.needTermitesInspection = needTermitesInspection;
+            }
+
             const p = await PremisesService.updatePremises(premisesObj);
             if (p !== null) {
                 res.status(200).json({
                     status: "success",
-                    data: [{
-                        premisesId: premisesObj.premisesId,
-                        name: premisesObj.name,
-                        addressId: premisesObj.addressId,
-                        block: premisesObj.block,
-                        lot: premisesObj.lot,
-                        section: premisesObj.section,
-                        propertyType: premisesObj.propertyType,
-                        vacantAtClosing: premisesObj.vacantAtClosing,
-                        subjectToTenancy: premisesObj.subjectToTenancy,
-                        hoa: premisesObj.hoa,
-                        parkingSpaces: premisesObj.parkingSpaces,
-                        maintenanceFee: premisesObj.maintenanceFee,
-                        maintenanceFeePer: premisesObj.maintenanceFeePer,
-                        assessments: premisesObj.assessments,
-                        assessmentsPaidById: premisesObj.assessmentsPaidById,
-                        managingCompany: premisesObj.managingCompany,
-                        isTwoFamily: premisesObj.isTwoFamily,
-                        twoFamilyFirstFloorTenantId: premisesObj.twoFamilyFirstFloorTenantId,
-                        twoFamilySecondFloorTenantId: premisesObj.twoFamilySecondFloorTenantId,
-                    }],
+                    data: [premisesObj],
                     message: '[PremisesController][updatePremises] Successfully updated premises',
                 });
             } else {

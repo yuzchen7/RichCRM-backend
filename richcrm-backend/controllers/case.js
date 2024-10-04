@@ -155,7 +155,7 @@ class CaseController {
     }
     
     async createCase(req, res) {
-        const {creatorId, premisesId, caseType, clientType, clientId, organizationId, stage, additionalClients, contacts} = req.body;
+        const {creatorId, premisesId, caseType, clientType, clientId, organizationId, stage, additionalClients, contacts, additionalOrganizations} = req.body;
 
         // Check if the creator id is valid
         if (creatorId === undefined) {
@@ -239,6 +239,7 @@ class CaseController {
         var clientName;
         var additionalClientIds = [];
         var contactIds = [];
+        var additionalOrganizationIds = [];
         try {
             switch (clientType) {
                 case Types.clientType.INDIVIDUAL:
@@ -317,6 +318,17 @@ class CaseController {
                     contactIds.push(contacts[i]);
                 }
             }
+
+            // Check additional organizations
+            if (additionalOrganizations !== undefined) {
+                for (let i = 0; i < additionalOrganizations.length; i++) {
+                    const organization = await OrganizationService.readOrganization(additionalOrganizations[i]);
+                    if (organization === null) {
+                        console.log(`[CaseController][createCase] Invalid additional organization id ${additionalOrganizations[i]}`);
+                    }
+                    additionalOrganizationIds.push(additionalOrganizations[i]);
+                }
+            }
         } catch (error) {
             console.log(error);
             return res.status(500).json({
@@ -330,17 +342,20 @@ class CaseController {
 
         try {
             // Check if the case already exists
+            var existingCase;
             if (clientId !== undefined && clientId !== "") {
-                const existingCase = await CaseService.readCaseByPresmisesIdAndClientId(premisesId, clientId);
-                if (existingCase !== null && existingCase.length > 0) {
-                    return res.status(400).json({
-                        status: "failed",
-                        data: [{
-                            caseId: existingCase[0].CaseId,
-                        }],
-                        message: '[CaseController][createCase] Case already exists'
-                    });
-                }
+                existingCase = await CaseService.readCaseByPresmisesIdAndClientId(premisesId, clientId);
+            } else if (organizationId !== undefined && organizationId !== "") {
+                existingCase = await CaseService.readCaseByPresmisesIdAndClientId(premisesId, organizationId);
+            }
+            if (existingCase !== null && existingCase.length > 0) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [{
+                        caseId: existingCase[0].CaseId,
+                    }],
+                    message: '[CaseController][createCase] Case already exists'
+                });
             }
             const c = await CaseService.createCase({
                 creatorId: creatorId,
@@ -356,6 +371,7 @@ class CaseController {
                 createAt: new Date().toISOString(),
                 additionalClients: additionalClientIds,
                 contacts: contactIds,
+                additionalOrganizations: additionalOrganizationIds
             });
             if (c !== null) {
 
@@ -396,7 +412,7 @@ class CaseController {
     }
 
     async updateCase(req, res) {
-        const {caseId, creatorId, stage, premisesId, closeAt, closingDate, mortgageContingencyDate, additionalClients, contacts} = req.body;
+        const {caseId, creatorId, stage, premisesId, closeAt, closingDate, mortgageContingencyDate, additionalClients, contacts, additionalOrganizations} = req.body;
 
         // Check if the case id is valid
         if (caseId === undefined) {
@@ -532,6 +548,11 @@ class CaseController {
                 caseObj.contacts = await this.updateAdditionalContacts(caseObj.contacts, contacts);
             }
 
+            // Update additional organizations list
+            if (additionalOrganizations !== undefined && additionalOrganizations.length > 0) {
+                caseObj.additionalOrganizations = await this.updateAdditionalOrganizations(caseObj.additionalOrganizations, additionalOrganizations);
+            }
+
             // Update the case
             const c = await CaseService.updateCase(caseObj);
             if (c !== null) {
@@ -597,6 +618,7 @@ class CaseController {
                         "mortgageContingencyDate": existingCase.MortgageContingencyDate,
                         "additionalClients": existingCase.AdditionalClients,
                         "contacts": existingCase.Contacts,
+                        "additionalOrganizations": existingCase.AdditionalOrganizations
                     }],
                     message: '[CaseController][closeCase] Case closed successfully'
                 });
@@ -652,6 +674,9 @@ class CaseController {
 
     // Update additional clients list
     async updateAdditionalClients(additionalClients, additionalClientsNew) {
+        if (additionalClients === undefined || additionalClients === null) {
+            additionalClients = [];
+        }
         for (let i = 0; i < additionalClientsNew.length; i++) {
             if (!additionalClients.includes(additionalClientsNew[i])) {
                 const client = await ClientService.readClient(additionalClientsNew[i]);
@@ -667,6 +692,9 @@ class CaseController {
 
     // Update contacts list
     async updateAdditionalContacts(contacts, contactsNew) {
+        if (contacts === undefined || contacts === null) {
+            contacts = [];
+        }
         for (let i = 0; i < contactsNew.length; i++) {
             if (!contacts.includes(contactsNew[i])) {
                 const contact = await ContactService.readContact(contactsNew[i]);
@@ -678,6 +706,24 @@ class CaseController {
             }
         }
         return contacts;
+    }
+
+    // Update additional organizations list
+    async updateAdditionalOrganizations(additionalOrganizations, additionalOrganizationsNew) {
+        if (additionalOrganizations === undefined || additionalOrganizations === null) {
+            additionalOrganizations = [];
+        }
+        for (let i = 0; i < additionalOrganizationsNew.length; i++) {
+            if (!additionalOrganizations.includes(additionalOrganizationsNew[i])) {
+                const organization = await OrganizationService.readOrganization(additionalOrganizationsNew[i]);
+                if (organization === null) {
+                    console.log(`[CaseController][updateAdditionalOrganizations] Invalid additional organization id ${additionalOrganizationsNew[i]}`);
+                    continue;
+                }
+                additionalOrganizations.push(additionalOrganizationsNew[i]);
+            }
+        }
+        return additionalOrganizations;
     }
 
     // Extract case from list
@@ -705,6 +751,7 @@ class CaseController {
             "mortgageContingencyDate": c.MortgageContingencyDate,
             "additionalClients": c.AdditionalClients,
             "contacts": c.Contacts,
+            "additionalOrganizations": c.AdditionalOrganizations
         };
     }
     async procCases(cases) {
