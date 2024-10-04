@@ -3,7 +3,6 @@ POST http://localhost:3001/v1/organization/register
 content-type: application/json
 
 {
-    "organizationId": "449a5faa-6377-4604-9361-fbd3e412c299",
     "organizationName": "Test Organization",
     "organizationType": 1
 }

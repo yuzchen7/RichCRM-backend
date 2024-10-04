@@ -19,7 +19,8 @@ const caseObj = {
     clientType: 0,
     clientId: "689f5eac-22ea-4363-bbe3-b8216abf0076",
     additionalClients: ["738ffc97-299b-423a-b759-2116a402b18d", "86a6d1d3-9644-40cc-bec5-e2710567d882"],
-    contacts: ["8d587c04-0d59-4b70-8264-922d26bf6f00", "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"]
+    contacts: ["8d587c04-0d59-4b70-8264-922d26bf6f00", "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"],
+    additionalOrganizaton: ["449a5faa-6377-4604-9361-fbd3e412c299"],
 }
 
 describe('Case Routes', function () {

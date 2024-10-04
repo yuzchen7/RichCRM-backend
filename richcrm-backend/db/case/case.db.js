@@ -20,6 +20,7 @@
  * @property {stage} Stage - The stage of this case(0-SETUP, 1-CONTRACT_PREPARING, 2-CONTRACT_SIGNING, 3-MORTGAGE, 4-CLOSING)
  * @property {array} AdditionalClients - Additional clients in this case
  * @property {array} Contacts - Contacts in this case (e.g. attorney, bank attorney)
+ * @property {array} AdditionalOrganizations - Additional organizations in this case
  * 
  */
 
@@ -81,7 +82,7 @@ class Case {
     async getCasesByOrganizationId(organizationId, closed) {
         const params = {
             TableName: this.table,
-            FilterExpression: "OrganizationId = :o",
+            FilterExpression: "OrganizationId = :o OR contains(AdditionalOrganizations, :o)",
             ExpressionAttributeValues: {
                 ":o": organizationId,
             },
@@ -99,7 +100,7 @@ class Case {
     async getCasesByContactId(contactId, closed) {
         const params = {
             TableName: this.table,
-            FilterExpression: "(contains(Contacts, :c) OR contains(AdditionalClients, :c) OR ClientId = :c)",
+            FilterExpression: "(contains(Contacts, :c) OR contains(AdditionalClients, :c) OR ClientId = :c OR OrganizationId = :c OR contains(AdditionalOrganizations, :c))",
             ExpressionAttributeValues: {
                 ":c": contactId,
             },
@@ -117,7 +118,7 @@ class Case {
     async getCaseByPremisesIdAndClientId(premisesId, clientId) {
         const params = {
             TableName: this.table,
-            FilterExpression: "PremisesId = :p AND (ClientId = :c)",
+            FilterExpression: "PremisesId = :p AND (ClientId = :c OR OrganizationId = :c)",
             ExpressionAttributeValues: {
                 ":p": premisesId,
                 ":c": clientId,
@@ -172,7 +173,8 @@ class Case {
                 MortgageContingencyDate: c.mortgageContingencyDate,
                 Stage: c.stage,
                 AdditionalClients: c.additionalClients,
-                Contacts: c.contacts
+                Contacts: c.contacts,
+                AdditionalOrganizations: c.additionalOrganizations,
             },
         };
         await db.put(params).promise();
