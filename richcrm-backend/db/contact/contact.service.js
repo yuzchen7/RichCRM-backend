@@ -11,6 +11,16 @@ class ContactService {
         return null;
     }
 
+    async readAllContacts() {
+        const data = await Contact.getAllContacts();
+
+        if (data !== undefined) {
+            return data;
+        }
+
+        return null;
+    }
+
     async readContactsByType(contactType) {
         const data = await Contact.getContactsByType(contactType);
 

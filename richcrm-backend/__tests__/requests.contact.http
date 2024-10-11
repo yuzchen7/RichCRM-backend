@@ -20,6 +20,10 @@ content-type: application/json
 GET http://localhost:3001/v1/contact/8d587c04-0d59-4b70-8264-922d26bf6f00
 
 
+### Query all contacts
+GET http://localhost:3001/v1/contact/all
+
+
 ### Query contact by keyword
 POST http://localhost:3001/v1/contact/query
 content-type: application/json
@@ -43,7 +47,7 @@ POST http://localhost:3001/v1/contact/update
 content-type: application/json
 
 {
-    "contactId": "0a44db91-9efe-4619-85b4-fc1e0c8755d7",
+    "contactId": "8d587c04-0d59-4b70-8264-922d26bf6f00",
     "contactType": 0,
     "firstName": "Larry",
     "lastName": "Woooo",
@@ -51,7 +55,7 @@ content-type: application/json
     "position": "Intern",
     "email": "otter@gmail.com",
     "cellNumber": "0912345678",
-    "mailingAddress": "Hanover PA 17331-1587",
+    "mailingAddress": "Carrollton TX 75006-2917",
     "wechatAccount": "lawsonwu",
     "note": "This is a test contact."
 }
