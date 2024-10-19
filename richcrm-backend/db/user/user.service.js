@@ -24,10 +24,14 @@ class UserService {
 
     async createUser (user) {
         // Check if the user object is valid
-        if (user.emailAddress === undefined ||
+        if (
+            user.emailAddress === undefined ||
             user.password === undefined ||
             user.userName === undefined ||
-            user.role === undefined) {
+            user.salt === undefined ||
+            user.role === undefined ||
+            user.renewToken === undefined
+        ) {
             console.log('[USER-Create] Invalid user object');
             return null;
         }
