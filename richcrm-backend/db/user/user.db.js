@@ -6,8 +6,10 @@
  * @typedef {object} User
  * @property {string} EmailAddress - User's email address (Primary Key)
  * @property {string} Password - User's password
+ * @property {string} Salt - User's salt
  * @property {string} UserName - User's name
  * @property {enum} Role - User's role (ADMIN, ATTORNEY, CLIENT)
+ * @property {string} RenewToken - User's renew token
  */
 
 const db = require('../dynamodb');
@@ -43,6 +45,7 @@ class User {
                 EmailAddress: user.emailAddress,
                 Password: user.password,
                 UserName: user.userName,
+                Salt: user.salt,
                 Role: user.role
             }
         };
