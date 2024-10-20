@@ -55,13 +55,17 @@ class AuthController {
                     message: 'User not found'
                 });
             }
-            if (user.Password !== password) {
+            if (!PasswordUtils.isValidPassword(user.password, password, user.salt)) {
                 return res.status(400).json({
                     status: "failed",
                     data: [],
                     message: 'Invalid password'
                 });
             }
+            
+            let accessToken, renewToken = undefined;
+            // TODO: need to implement access token and renew token, and send to frontend
+
             res.status(200).json({
                 status: "success",
                 data: [{
