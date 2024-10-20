@@ -29,16 +29,14 @@ class UserService {
             user.password === undefined ||
             user.userName === undefined ||
             user.salt === undefined ||
-            user.role === undefined ||
-            user.renewToken === undefined
+            user.role === undefined
         ) {
             console.log('[USER-Create] Invalid user object');
             return null;
         }
 
-        // Check if the password is valid
-        
-
+        // console.log("goos: ", typeof user.role);
+    
         // Check if the role is valid
         switch (user.role) {
             case userRole.ADMIN:
