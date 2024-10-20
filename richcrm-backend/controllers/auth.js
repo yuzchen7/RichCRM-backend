@@ -1,5 +1,5 @@
 var UserService = require('../db/user/user.service');
-const { default: PasswordUtils } = require('../utils/Password');
+const PasswordUtils = require('../utils/Password');
 
 class AuthController {
     async registerUser(req, res) {
