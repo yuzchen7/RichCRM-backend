@@ -12,6 +12,7 @@
  * @property {string} RenewToken - User's renew token
  */
 
+const { GetItemCommand, PutItemCommand } = require('@aws-sdk/client-dynamodb');
 const db = require('../dynamodb');
 
 class User {
@@ -23,10 +24,13 @@ class User {
         const params = {
             TableName: this.table,
             Key: {
-                EmailAddress: emailAddress
+                EmailAddress: { S: emailAddress }
             }
         };
-        const user = await db.get(params).promise();
+        // aws V3
+        const command = new GetItemCommand(params);
+        const user = await db.send(command);
+        // const user = await db.get(params).promise();
         return user;
     }
 
@@ -42,14 +46,16 @@ class User {
         const params = {
             TableName: this.table,
             Item: {
-                EmailAddress: user.emailAddress,
-                Password: user.password,
-                UserName: user.userName,
-                Salt: user.salt,
-                Role: user.role
+                EmailAddress: { S: user.emailAddress },
+                Password: { S: user.password },
+                UserName: { S: user.userName },
+                Salt: { S: user.salt },
+                Role: { N: String(user.role) },
             }
         };
-        await db.put(params).promise();
+
+        const command = new PutItemCommand(params);
+        const result = await db.send(command);
         
         return params.Item;
     }
