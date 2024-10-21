@@ -1,5 +1,5 @@
 // const jwt = require('jsonwebtoken');
-import { sign, verify, decode } from 'jsonwebtoken';
+const { sign, verify, decode } = require('jsonwebtoken');
 
 /**
  * Json Web Token Util Class 
@@ -10,7 +10,7 @@ import { sign, verify, decode } from 'jsonwebtoken';
  */
 class JwTokenUtil {
     /**
-     * generate a new Access Token
+     * generate a new Token
      * 
      * @param {object} data - data to be encoded in the token
      * @param {string} secret - secret key to be used for signing 
@@ -18,7 +18,7 @@ class JwTokenUtil {
      * 
      * @return {string} encoded string with signature, format will be [encoded.encoded.signature]
      */
-    static generateAccessToken(data, secret, timeTravel = '1h') {
+    static generateToken(data, secret, timeTravel = '1h') {
         return sign(data, secret, { expiresIn: timeTravel });
     }
 
