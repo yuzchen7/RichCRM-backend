@@ -6,7 +6,13 @@ class UserService {
         const data = await User.getUserByEmail(userEmail);
 
         if (data.Item !== undefined) {
-            return data.Item;
+            return {
+                EmailAddress: data.Item.EmailAddress.S,
+                Password: data.Item.Password.S,
+                Salt: data.Item.Salt.S,
+                Role: data.Item.Role.N,
+                UserName: data.Item.UserName.S
+            }
         }
 
         return null;
@@ -38,20 +44,23 @@ class UserService {
         // console.log("goos: ", typeof user.role);
     
         // Check if the role is valid
-        switch (user.role) {
-            case userRole.ADMIN:
-                break;
-            case userRole.ATTORNEY:
-                break;
-            case userRole.CLIENT:
-                break;
-            default:
-                console.log('[USER-Create] Invalid role');
-                return null;
+        const roleValid = Object.values(userRole).includes(user.role);
+        if (!roleValid) {
+            console.log('[USER-Create] Invalid role');
+            return null;
         }
 
         const data = await User.createUser(user);
         return data;
+    }
+
+    async updateUserToken (key, token) {
+        if (key === undefined || key === null || token === undefined || token === null) {
+            console.log('[USER_Token-Update] Invalid key or token string');
+            return null;
+        }
+
+        return await User.updateRefreshToken(key, token);
     }
 
     async updateUser (user) {
