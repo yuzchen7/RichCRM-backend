@@ -9,10 +9,10 @@
  * @property {string} Salt - User's salt
  * @property {string} UserName - User's name
  * @property {enum} Role - User's role (ADMIN, ATTORNEY, CLIENT)
- * @property {string} RenewToken - User's renew token
+ * @property {string} RefreshToken - User's renew token
  */
 
-const { GetItemCommand, PutItemCommand } = require('@aws-sdk/client-dynamodb');
+const { GetItemCommand, PutItemCommand, UpdateItemCommand } = require('@aws-sdk/client-dynamodb');
 const db = require('../dynamodb');
 
 class User {
@@ -34,6 +34,7 @@ class User {
         return user;
     }
 
+    // TODO: update to aws v3
     async getAllUsers () {
         const params = {
             TableName: this.table
@@ -64,6 +65,24 @@ class User {
         };
     }
 
+    async updateRefreshToken(key, token) {
+        const params = {
+            TableName: this.table,
+            Key: {
+                EmailAddress: { S: key }
+            },
+            UpdateExpression: 'set RefreshToken = :t',
+            ExpressionAttributeValues: {
+                ':t': { S: token }
+            },
+            ReturnValues: 'UPDATED_NEW'
+        }
+        const command = new UpdateItemCommand(params);
+        const result = await db.send(command);
+        return result.Attributes;
+    }
+
+    // TODO: update to aws v3 and implement partial updates, remove password updates
     async updateUser (user) {
         const params = {
             TableName: this.table,
