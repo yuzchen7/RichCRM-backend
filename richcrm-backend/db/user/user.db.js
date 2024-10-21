@@ -55,9 +55,13 @@ class User {
         };
 
         const command = new PutItemCommand(params);
-        const result = await db.send(command);
-        
-        return params.Item;
+        await db.send(command);
+
+        return {
+            EmailAddress: user.emailAddress,
+            UserName: user.userName,
+            Role: user.role
+        };
     }
 
     async updateUser (user) {
