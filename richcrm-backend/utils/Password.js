@@ -49,7 +49,7 @@ class PasswordUtil {
      * @returns {boolean} True if the entered password is valid, false otherwise.
      */
     static isValidPassword(targetPassword, enterPassword, salt) {
-        const hashedPassword = PasswordUtil.hashPassword(enterPassword, salt);
+        const hashedPassword = PasswordUtil.encrypt(enterPassword, salt);
         return hashedPassword === targetPassword;
     }
 };
