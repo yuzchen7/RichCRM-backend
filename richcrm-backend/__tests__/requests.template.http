@@ -46,14 +46,33 @@ POST http://localhost:3001/v1/template/fill
 content-type: application/json
 
 {
-    "templateTitle": "[IMPORTANT] Closing Confirmation send to all parties",
-    "data": {
-        "clientObj": {
-            "FirstName": "John"
-        },
-        "caseObj": {
-            "ClosingDate": "2024-07-20T20:24:24.740Z",
-            "MortgageContingencyDate": "2024-07-20T20:24:24.740Z"
-        }
-    }
-}
+    "templateTitle":"[IMPORTANT] FEK Notice to Purchaser",
+    "data":{
+        "clientObj":{
+            "clientId":"b00d0c51-ed29-4d4e-9555-758a63e510a2",
+            "clientType":0,
+            "title":0,
+            "firstName":"Mackenzie",
+            "lastName":"Gutmann",
+            "gender":0,
+            "email":"client@client.com",
+            "addressId":"Brooklyn NY 11201-1945#709",
+            "addressLine1":"22 Chapel St # 709",
+            "addressLine2":"709",
+            "city":"Brooklyn",
+            "state":"NY",
+            "zipCode":"11201","plus4":"1945"},
+        "caseObj":{
+            "caseId":"563f390e-1c1b-4645-8ecc-f5887c211cc6",
+            "creatorId":"test1@gmail.com",
+            "premisesId":"fd3bb1b6-4e8c-4ebf-9ae6-f7562e29f00a",
+            "premisesName":"3701 Clay Products Dr_Anchorage AK 99517-1011",
+            "stage":0,
+            "caseStatus":0,
+            "stageId":"eba945f6-c1e7-4581-883b-14466ca4a326",
+            "caseType":0,
+            "clientType":0,
+            "clientId":"b00d0c51-ed29-4d4e-9555-758a63e510a2",
+            "clientName":"Gutmann, Mackenzie",
+            "createAt":"2024-10-08T05:02:29.593Z",
+            "closingDate":"2024-10-23T03:30:00.000Z","additionalClients":["6e1dfd67-ca35-41c1-9d31-180509a92fc5"],"contacts":[],"additionalOrganizations":[]}}}

@@ -7,7 +7,77 @@ const Types = require("../db/types");
 
 class ContactController {
     constructor () {
+        this.getContact = this.getContact.bind(this);
+        this.getAllContacts = this.getAllContacts.bind(this);
+        this.registerContact = this.registerContact.bind(this);
+        this.queryContacts = this.queryContacts.bind(this);
+        this.queryContactsByType = this.queryContactsByType.bind(this);
+        this.updateContact = this.updateContact.bind(this);
+        this.deleteContact = this.deleteContact.bind(this);
+        this.procContacts = this.procContacts.bind(this);
+    }
 
+    async getContact(req, res) {
+        const { contactId } = req.params;
+        try {
+            const contact = await ContactService.readContact(contactId);
+            if (contact !== null) {
+                const contactObj = this.procContact(contact);
+                return res.status(200).json({
+                    status: "success",
+                    data: [contactObj],
+                    message: '[ContactController][getContact] Contact retrieved successfully',
+                });
+            } else {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: '[ContactController][getContact] Contact does not exist',
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: `[ContactController][getContact] Internal server error: ${error}`,
+            });
+        }
+    }
+
+    async getAllContacts(req, res) {
+        try {
+            const contacts = await ContactService.readAllContacts();
+            var contactList = this.procContacts(contacts);
+            const clients = await ClientService.readAllClients();
+            if (clients !== null) {
+                clients.forEach(client => {
+                    contactList.push({
+                        contactId: client.ClientId,
+                        contactType: Types.contactType.CLIENT,
+                        firstName: client.FirstName,
+                        lastName: client.LastName,
+                        cellNumber: client.CellNumber,
+                        workNumber: client.WorkNumber,
+                        email: client.Email,
+                        mailingAddress: client.AddressId,
+                        wechatAccount: client.WechatAccount,
+                    });
+                });
+            }
+            return res.status(200).json({
+                status: "success",
+                data: contactList,
+                message: '[ContactController][getAllContacts] Contacts retrieved successfully',
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: `[ContactController][getAllContacts] Internal server error: ${error}`,
+            });
+        }
     }
 
     async registerContact(req, res) {
@@ -50,21 +120,10 @@ class ContactController {
                 note: note,
             });
             if (contact !== null) {
+                const contactObj = this.procContact(contact);
                 return res.status(200).json({
                     status: "success",
-                    data: [{
-                        contactId: contact.ContactId,
-                        contactType: contact.ContactType,
-                        firstName: contact.FirstName,
-                        lastName: contact.LastName,
-                        company: contact.Company,
-                        position: contact.Position,
-                        cellNumber: contact.CellNumber,
-                        email: contact.Email,
-                        mailingAddress: contact.MailingAddress,
-                        wechatAccount: contact.WechatAccount,
-                        note: contact.Note,
-                    }],
+                    data: [contactObj],
                     message: '[ContactController][registerContact] Contact created successfully',
                 });
             } else {
@@ -90,21 +149,7 @@ class ContactController {
         try {
             const contacts = await ContactService.readContactByKeyWord(keyword);
             if (contacts !== null) {
-                contacts.forEach(contact => {
-                    contactList.push({
-                        contactId: contact.ContactId,
-                        contactType: contact.ContactType,
-                        firstName: contact.FirstName,
-                        lastName: contact.LastName,
-                        company: contact.Company,
-                        position: contact.Position,
-                        cellNumber: contact.CellNumber,
-                        email: contact.Email,
-                        mailingAddress: contact.MailingAddress,
-                        wechatAccount: contact.WechatAccount,
-                        note: contact.Note,
-                    });
-                });
+                contactList = this.procContacts(contacts);
             }
             const clients = await ClientService.readClientByKeyWord(keyword);
             if (clients !== null) {
@@ -166,21 +211,7 @@ class ContactController {
             } else {
                 const contacts = await ContactService.readContactsByType(contactType);
                 if (contacts !== null) {
-                    contacts.forEach(contact => {
-                        contactList.push({
-                            contactId: contact.ContactId,
-                            contactType: contact.ContactType,
-                            firstName: contact.FirstName,
-                            lastName: contact.LastName,
-                            company: contact.Company,
-                            position: contact.Position,
-                            cellNumber: contact.CellNumber,
-                            email: contact.Email,
-                            mailingAddress: contact.MailingAddress,
-                            wechatAccount: contact.WechatAccount,
-                            note: contact.Note,
-                        });
-                    });
+                    contactList = this.procContacts(contacts);
                 }
                 return res.status(200).json({
                     status: "success",
@@ -252,18 +283,16 @@ class ContactController {
             
 
             // Check if address exists
-            if (mailingAddress !== contactObj.mailingAddress) {
-                if (mailingAddress !== undefined) {
-                    const existingAddress = await AddressService.readAddress(mailingAddress);
-                    if (existingAddress === null) {
-                        return res.status(400).json({
-                            status: "failed",
-                            data: [],
-                            message: '[ClientController][updateClient] Address does not exist'
-                        });
-                    }
-                    contactObj.mailingAddress = mailingAddress;
+            if (mailingAddress !== contactObj.mailingAddress && mailingAddress !== undefined && mailingAddress !== null && mailingAddress !== "") {
+                const existingAddress = await AddressService.readAddress(mailingAddress);
+                if (existingAddress === null) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[ClientController][updateClient] Address does not exist'
+                    });
                 }
+                contactObj.mailingAddress = mailingAddress;
             }
             
             // Update first name
@@ -310,19 +339,7 @@ class ContactController {
             if (updatedContact !== null) {
                 return res.status(200).json({
                     status: "success",
-                    data: [{
-                        contactId: updatedContact.ContactId,
-                        contactType: updatedContact.ContactType,
-                        firstName: updatedContact.FirstName,
-                        lastName: updatedContact.LastName,
-                        company: updatedContact.Company,
-                        position: updatedContact.Position,
-                        cellNumber: updatedContact.CellNumber,
-                        email: updatedContact.Email,
-                        mailingAddress: updatedContact.MailingAddress,
-                        wechatAccount: updatedContact.WechatAccount,
-                        note: updatedContact.Note,
-                    }],
+                    data: [contactObj],
                     message: '[ContactController][updateContact] Contact updated successfully',
                 });
             } else {
@@ -376,6 +393,33 @@ class ContactController {
                 message: `[ContactController][deleteContact] Internal server error: ${error}`,
             });
         }
+    }
+
+    // Extract contact from list
+    procContact(contact) {
+        return {
+            contactId: contact.ContactId,
+            contactType: contact.ContactType,
+            firstName: contact.FirstName,
+            lastName: contact.LastName,
+            company: contact.Company,
+            position: contact.Position,
+            cellNumber: contact.CellNumber,
+            email: contact.Email,
+            mailingAddress: contact.MailingAddress,
+            wechatAccount: contact.WechatAccount,
+            note: contact.Note,
+        };
+    }
+    procContacts(contacts) {
+        var contactList = [];
+        if (contacts !== null) {
+            for (let i = 0; i < contacts.length; i++) {
+                const c = contacts[i];
+                contactList.push(this.procContact(c));
+            }
+        }
+        return contactList;
     }
 }
 

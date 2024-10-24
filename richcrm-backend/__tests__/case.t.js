@@ -1,6 +1,10 @@
 import request from 'supertest';
 import express from 'express';
 import caseRouter from '../routes/v1/case';
+import clientRouter from '../routes/v1/client';
+import contactRouter from '../routes/v1/contact';
+import organizationRouter from '../routes/v1/organization';
+import premisesRouter from '../routes/v1/premises';
 import bodyParser from 'body-parser';
 import { clientType } from '../db/types';
 
@@ -8,22 +12,98 @@ const app = new express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/v1/case', caseRouter);
+app.use('/v1/client', clientRouter);
+app.use('/v1/contact', contactRouter);
+app.use('/v1/organization', organizationRouter);
+app.use('/v1/premises', premisesRouter);
 
 var testCaseId;
 
-const caseObj = {
+const clientObj1 = {
+    clientType: 0,
+    firstName: "Testy",
+    lastName: "McTest",
+    cellNumber: "8880909765",
+    email: "testymc@gmail.com",
+}
+const clientObj2 = {
+    clientType: 0,
+    firstName: "Testson",
+    lastName: "McTestment",
+    cellNumber: "6667539201",
+    email: "testson@gmail.com",
+}
+
+const contactObj1 = {
+    contactType: 1,
+    firstName: "TestContact",
+    lastName: "McTestContact",
+    company: "Test Inc.",
+    position: "CTO",
+    mailingAddress: "Jersey City NJ 07302-6312#P2",
+}
+
+const organizationObj1 = {
+    organizationName: "Testy Organization Test",
+    organizationType: 2
+}
+
+
+var caseObj = {
     premisesId: "cbf8e709-7af2-4433-9276-7d5ba9113950",
     creatorId: "test1@gmail.com",
     stage: 0,
     caseType: 1,
     clientType: 0,
-    clientId: "689f5eac-22ea-4363-bbe3-b8216abf0076",
-    additionalClients: ["738ffc97-299b-423a-b759-2116a402b18d", "86a6d1d3-9644-40cc-bec5-e2710567d882"],
-    contacts: ["8d587c04-0d59-4b70-8264-922d26bf6f00", "8c2bfe8d-0e87-4e19-8b32-d372188c56b2"],
-    additionalOrganizaton: ["449a5faa-6377-4604-9361-fbd3e412c299"],
+    additionalClients: [],
+    contacts: [],
+    additionalOrganizations: [],
 }
 
 describe('Case Routes', function () {
+
+    test('/client/register', async () => {
+        const res = await request(app).post('/v1/client/register')
+            .send(clientObj1)
+            .set('Accept', 'application/json');
+        console.log(res.body);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.status).toEqual('success');
+        expect(res.body.data[0].firstName).toEqual(clientObj1.firstName);
+        caseObj.clientId = res.body.data[0].clientId;
+
+        const res2 = await request(app).post('/v1/client/register')
+            .send(clientObj2)
+            .set('Accept', 'application/json');
+        console.log(res2.body);
+        expect(res2.statusCode).toBe(200);
+        expect(res2.body.status).toEqual('success');
+        expect(res2.body.data[0].firstName).toEqual(clientObj2.firstName);
+        caseObj.additionalClients.push(res2.body.data[0].clientId);
+    });
+
+    test('/contact/register', async () => {
+        const res = await request(app).post('/v1/contact/register')
+            .send(contactObj1)
+            .set('Accept', 'application/json');
+        console.log(res.body);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.status).toEqual('success');
+        expect(res.body.data[0].firstName).toEqual(contactObj1.firstName);
+        caseObj.contacts.push(res.body.data[0].contactId);
+    });
+
+    test('/organization/register', async () => {
+        const res = await request(app).post('/v1/organization/register')
+            .send(organizationObj1)
+            .set('Accept', 'application/json');
+        console.log(res.body);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.status).toEqual('success');
+        expect(res.body.data[0].organizationName).toEqual(organizationObj1.organizationName);
+        caseObj.additionalOrganizations.push(res.body.data[0].organizationId);
+    });
+
 
     test('/case/create', async () => {
         const res = await request(app).post('/v1/case/create')
@@ -42,6 +122,7 @@ describe('Case Routes', function () {
         expect(res.body.data[0].clientId).toEqual(caseObj.clientId);
         expect(res.body.data[0].additionalClients).toEqual(caseObj.additionalClients);
         expect(res.body.data[0].contacts).toEqual(caseObj.contacts);
+        expect(res.body.data[0].additionalOrganizations).toEqual(caseObj.additionalOrganizations);
     });
 
     test('case/:id', async () => {
@@ -77,19 +158,19 @@ describe('Case Routes', function () {
     test('case/query/client', async () => {
         const res = await request(app).post('/v1/case/query/client')
             .send({
-                clientId: "738ffc97-299b-423a-b759-2116a402b18d",
+                clientId: caseObj.additionalClients[0],
             })
             .set('Accept', 'application/json');
         console.log(res.body);
         expect(res.statusCode).toBe(200);
         expect(res.body.status).toEqual('success');
-        expect(res.body.data[0].additionalClients).toContain("738ffc97-299b-423a-b759-2116a402b18d");
+        expect(res.body.data[0].additionalClients).toContain(caseObj.additionalClients[0]);
     });
 
     test('case/update', async () => {
         const caseObj = {
             caseId: testCaseId,
-            premisesId: "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+            premisesId: "cbf8e709-7af2-4433-9276-7d5ba9113950",
             creatorId: "test1@gmail.com",
             stage: 1,
             closeAt: "2024-07-20T20:24:24.740Z",
@@ -116,6 +197,40 @@ describe('Case Routes', function () {
             .send({caseId: testCaseId})
             .set('Accept', 'application/json');
 
+        console.log(res.body);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.status).toEqual('success');
+    });
+
+    test('/client/delete', async () => {
+        const res = await request(app).post('/v1/client/delete')
+            .send({clientId: caseObj.clientId})
+            .set('Accept', 'application/json');
+        console.log(res.body);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.status).toEqual('success');
+
+        const res2 = await request(app).post('/v1/client/delete')
+            .send({clientId: caseObj.additionalClients[0]})
+            .set('Accept', 'application/json');
+        console.log(res2.body);
+        expect(res2.statusCode).toBe(200);
+        expect(res2.body.status).toEqual('success');
+    });
+
+    test('/contact/delete', async () => {
+        const res = await request(app).post('/v1/contact/delete')
+            .send({contactId: caseObj.contacts[0]})
+            .set('Accept', 'application/json');
+        console.log(res.body);
+        expect(res.statusCode).toBe(200);
+        expect(res.body.status).toEqual('success');
+    });
+
+    test('/organization/delete', async () => {
+        const res = await request(app).post('/v1/organization/delete')
+            .send({organizationId: caseObj.additionalOrganizations[0]})
+            .set('Accept', 'application/json');
         console.log(res.body);
         expect(res.statusCode).toBe(200);
         expect(res.body.status).toEqual('success');

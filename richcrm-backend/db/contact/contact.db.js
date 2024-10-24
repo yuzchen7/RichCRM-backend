@@ -37,6 +37,24 @@ class Contact {
         return data;
     }
 
+    async getAllContacts() {
+        let params = {
+            TableName: this.table,
+            Limit: 1000,
+        };
+        let contacts = [];
+        while (true) {
+            const data = await db.scan(params).promise();
+            contacts = contacts.concat(data.Items);
+            if (!data.LastEvaluatedKey) {
+                break;
+            }
+            params.ExclusiveStartKey = data.LastEvaluatedKey;
+        }
+        return contacts;
+    }
+
+
     async getContactsByType(contactType) {
         const params = {
             TableName: this.table,

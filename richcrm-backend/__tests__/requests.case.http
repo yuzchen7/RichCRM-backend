@@ -4,7 +4,7 @@ content-type: application/json
 
 {
     "premisesId": "cbf8e709-7af2-4433-9276-7d5ba9113950",
-    "creatorId": "test1@gmail.com",
+    "creatorId": "eden.wu@richtechailab.com",
     "stage": 0,
     "caseType": 1,
     "clientType": 2,
@@ -24,7 +24,7 @@ POST http://localhost:3001/v1/case/all
 content-type: application/json
 
 {
-    "creatorId": "test1@gmail.com",
+    "creatorId": "eden.wu@richtechailab.com",
     "closed": false
 }
 
@@ -62,16 +62,24 @@ POST http://localhost:3001/v1/case/update
 content-type: application/json
 
 {
-    "caseId": "f654fe2c-713b-4806-9bca-138625d113dc",
-    "premisesId": "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
-    "creatorId": "test1@gmail.com",
+    "caseId": "497592f5-d19a-4d42-9cdd-4a40b291ede0",
+    "premisesId": "cbf8e709-7af2-4433-9276-7d5ba9113950",
+    "creatorId": "eden.wu@richtechailab.com",
     "stage": 1,
     "closeAt": "2024-07-20T20:24:24.740Z",
     "closingDate": "2024-07-20T20:24:24.740Z",
     "mortgageContingencyDate": "2024-07-20T20:24:24.740Z",
     "additionalClients": ["26ea9b74-b431-4b08-88cd-436ba25486bb"],
     "contacts": ["8d587c04-0d59-4b70-8264-922d26bf6f00"],
-    "additionalOrganizations": ["449a5faa-6377-4604-9361-fbd3e412c299"]
+    "additionalOrganizations": ["449a5faa-6377-4604-9361-fbd3e412c299", "923f3164-5c15-4192-86c8-ef7d7504a7ce"],
+    "purchaserPrice": 1000000,
+    "downPayment": 200000,
+    "mortgageAmount": 800000,
+    "annualPropertyTax": 10000,
+    "sellersConcession": 10000,
+    "referral": "Jack",
+    "bank": "Chase",
+    "personalNote": "This is a test case"
 }
 
 
@@ -80,7 +88,7 @@ POST http://localhost:3001/v1/case/close
 content-type: application/json
 
 {
-    "caseId": "df332bdb-bc9b-4246-be6b-04aa7622af47"
+    "caseId": "497592f5-d19a-4d42-9cdd-4a40b291ede0"
 }
 
 
@@ -89,5 +97,14 @@ POST http://localhost:3001/v1/case/delete
 content-type: application/json
 
 {
-    "caseId": "a2226749-e307-4302-b48f-1cfca424759c"
+    "caseId": "497592f5-d19a-4d42-9cdd-4a40b291ede0"
+}
+
+
+### DO NOT USE! Delete All Cases
+POST http://localhost:3001/v1/case/delete/all
+content-type: application/json
+
+{
+    "creatorId": "eden.wu@richtechailab.com"
 }

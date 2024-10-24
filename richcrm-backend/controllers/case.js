@@ -156,7 +156,11 @@ class CaseController {
     
     async createCase(req, res) {
         const {creatorId, premisesId, caseType, clientType, clientId, organizationId, stage, additionalClients, contacts, additionalOrganizations} = req.body;
-
+        // Create the case object
+        var caseObj = {
+            creatorId: creatorId,
+            createAt: new Date().toISOString(),
+        }
         // Check if the creator id is valid
         if (creatorId === undefined) {
             return res.status(400).json({
@@ -184,6 +188,23 @@ class CaseController {
             }
         }
 
+        // Check if the case already exists
+        var existingCase;
+        if (clientId !== undefined && clientId !== "") {
+            existingCase = await CaseService.readCaseByPresmisesIdAndClientId(premisesId, clientId);
+        } else if (organizationId !== undefined && organizationId !== "") {
+            existingCase = await CaseService.readCaseByPresmisesIdAndClientId(premisesId, organizationId);
+        }
+        if (existingCase !== null && existingCase.length > 0) {
+            return res.status(400).json({
+                status: "failed",
+                data: [{
+                    caseId: existingCase[0].CaseId,
+                }],
+                message: '[CaseController][createCase] Case already exists'
+            });
+        }
+
         // Check if the premises id is valid
         var premisesName;
         try {
@@ -195,7 +216,8 @@ class CaseController {
                     message: '[CaseController][createCase] Premises does not exist'
                 });
             }
-            premisesName = premises.Name;
+            caseObj.premisesId = premisesId;
+            caseObj.premisesName = premises.Name;
         } catch (error) {
             return res.status(500).json({
                 status: "failed",
@@ -213,6 +235,7 @@ class CaseController {
                 message: '[CaseController][createCase] Invalid stage'
             });
         }
+        caseObj.stage = stage;
 
         // Check if the client type is valid
         const caseTypeEnum = Types.castIntToEnum(Types.caseType, caseType);
@@ -223,6 +246,7 @@ class CaseController {
                 message: '[CaseController][createCase] Invalid case type'
             });
         }
+        caseObj.caseType = caseType;
 
         // Check Client Type
         const clientTypeEnum = Types.castIntToEnum(Types.clientType, clientType);
@@ -233,13 +257,9 @@ class CaseController {
                 message: '[CaseController][createCase] Invalid client type [INDIVIDUAL, COMPANY, TRUST]'
             });
         }
+        caseObj.clientType = clientType;
 
         // Check if the buyerId / SellerId is valid -> Generate caseId
-        var caseId;
-        var clientName;
-        var additionalClientIds = [];
-        var contactIds = [];
-        var additionalOrganizationIds = [];
         try {
             switch (clientType) {
                 case Types.clientType.INDIVIDUAL:
@@ -258,9 +278,10 @@ class CaseController {
                             message: '[CaseController][createCase] Invalid Client id [INDIVIDUAL]'
                         });
                     } else {
-                        clientName = client.LastName + ", " + client.FirstName;
-                        caseId = generateCaseId(caseType, clientId, premisesId);
-                        console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
+                        caseObj.clientName = client.LastName + ", " + client.FirstName;
+                        caseObj.clientId = clientId;
+                        caseObj.caseId = generateCaseId(caseType, clientId, premisesId);
+                        console.log(`[CaseController][createCase] Generated case id: ${caseObj.caseId}`);
                     }
                     break;
                 case Types.clientType.COMPANY:
@@ -280,9 +301,10 @@ class CaseController {
                             message: '[CaseController][createCase] Invalid Organization id [COMPANY, TRUST]'
                         });
                     } else {
-                        clientName = organization.OrganizationName;
-                        caseId = generateCaseId(caseType, organizationId, premisesId);
-                        console.log(`[CaseController][createCase] Generated case id: ${caseId}`);
+                        caseObj.clientName = organization.OrganizationName;
+                        caseObj.organizationId = organizationId;
+                        caseObj.caseId = generateCaseId(caseType, organizationId, premisesId);
+                        console.log(`[CaseController][createCase] Generated case id: ${caseObj.caseId}`);
                     }
                     break;
                 default:
@@ -293,42 +315,21 @@ class CaseController {
                     });
             }
 
-            // Check additional clients
-            if (additionalClients !== undefined) {
-                for (let i = 0; i < additionalClients.length; i++) {
-                    if (additionalClients[i] === clientId) {
-                        console.log(`[CaseController][createCase] Client id ${additionalClients[i]} is the same as the buyer/seller id`);
-                        continue;
-                    }
-                    const client = await ClientService.readClient(additionalClients[i]);
-                    if (client === null) {
-                        console.log(`[CaseController][createCase] Invalid additional client id ${additionalClients[i]}`);
-                    }
-                    additionalClientIds.push(additionalClients[i]);
-                }
+            // Update additional clients list 
+            if (additionalClients !== undefined && additionalClients.length > 0) {
+                caseObj.additionalClients = await this.updateAdditionalClients(additionalClients);
             }
 
-            // Check contacts
-            if (contacts !== undefined) {
-                for (let i = 0; i < contacts.length; i++) {
-                    const contact = await ContactService.readContact(contacts[i]);
-                    if (contact === null) {
-                        console.log(`[CaseController][createCase] Invalid contact id ${contacts[i]}`);
-                    }
-                    contactIds.push(contacts[i]);
-                }
+            // Update contacts list
+            if (contacts !== undefined && contacts.length > 0) {
+                caseObj.contacts = await this.updateAdditionalContacts(contacts);
             }
 
-            // Check additional organizations
-            if (additionalOrganizations !== undefined) {
-                for (let i = 0; i < additionalOrganizations.length; i++) {
-                    const organization = await OrganizationService.readOrganization(additionalOrganizations[i]);
-                    if (organization === null) {
-                        console.log(`[CaseController][createCase] Invalid additional organization id ${additionalOrganizations[i]}`);
-                    }
-                    additionalOrganizationIds.push(additionalOrganizations[i]);
-                }
+            // Update additional organizations list
+            if (additionalOrganizations !== undefined && additionalOrganizations.length > 0) {
+                caseObj.additionalOrganizations = await this.updateAdditionalOrganizations(additionalOrganizations);
             }
+
         } catch (error) {
             console.log(error);
             return res.status(500).json({
@@ -341,38 +342,7 @@ class CaseController {
         
 
         try {
-            // Check if the case already exists
-            var existingCase;
-            if (clientId !== undefined && clientId !== "") {
-                existingCase = await CaseService.readCaseByPresmisesIdAndClientId(premisesId, clientId);
-            } else if (organizationId !== undefined && organizationId !== "") {
-                existingCase = await CaseService.readCaseByPresmisesIdAndClientId(premisesId, organizationId);
-            }
-            if (existingCase !== null && existingCase.length > 0) {
-                return res.status(400).json({
-                    status: "failed",
-                    data: [{
-                        caseId: existingCase[0].CaseId,
-                    }],
-                    message: '[CaseController][createCase] Case already exists'
-                });
-            }
-            const c = await CaseService.createCase({
-                creatorId: creatorId,
-                caseId: caseId,
-                premisesId: premisesId,
-                premisesName: premisesName,
-                stage: stage,
-                caseType: caseType,
-                clientType: clientType,
-                clientId: clientId,
-                organizationId: organizationId,
-                clientName: clientName,
-                createAt: new Date().toISOString(),
-                additionalClients: additionalClientIds,
-                contacts: contactIds,
-                additionalOrganizations: additionalOrganizationIds
-            });
+            const c = await CaseService.createCase(caseObj);
             if (c !== null) {
 
                 // Create the stage
@@ -386,10 +356,10 @@ class CaseController {
                     return res.status(400).json(stageRet);
                 }
 
-                const caseObj = await this.procCase(c);
+                const caseProc = await this.procCase(c);
                 res.status(200).json({
                     status: "success",
-                    data: [caseObj],
+                    data: [caseProc],
                     message: '[CaseController][createCase] Case created successfully'
                 });
             } else {
@@ -401,7 +371,7 @@ class CaseController {
             }
         } catch (error) {
             console.error(error);
-            await CaseService.deleteCase(caseId);
+            await CaseService.deleteCase(caseObj.caseId);
             res.status(500).json({
                 status: "failed",
                 data: [],
@@ -412,7 +382,26 @@ class CaseController {
     }
 
     async updateCase(req, res) {
-        const {caseId, creatorId, stage, premisesId, closeAt, closingDate, mortgageContingencyDate, additionalClients, contacts, additionalOrganizations} = req.body;
+        const {
+            caseId,
+            creatorId,
+            stage,
+            premisesId,
+            closeAt,
+            closingDate,
+            mortgageContingencyDate,
+            additionalClients,
+            contacts,
+            additionalOrganizations,
+            purchaserPrice,
+            downPayment,
+            mortgageAmount,
+            annualPropertyTax,
+            sellersConcession,
+            referral,
+            bank,
+            personalNote,
+        } = req.body;
 
         // Check if the case id is valid
         if (caseId === undefined) {
@@ -459,8 +448,19 @@ class CaseController {
                 clientType: existingCase.ClientType,
                 clientId: existingCase.ClientId,
                 clientName: existingCase.ClientName,
-                organizationId: existingCase.OrganizationId
+                organizationId: existingCase.OrganizationId,
+                additionalOrganizations: existingCase.AdditionalOrganizations,
+                purchaserPrice: existingCase.PurchaserPrice,
+                downPayment: existingCase.DownPayment,
+                mortgageAmount: existingCase.MortgageAmount,
+                annualPropertyTax: existingCase.AnnualPropertyTax,
+                sellersConcession: existingCase.SellersConcession,
+                referral: existingCase.Referral,
+                bank: existingCase.Bank,
+                personalNote: existingCase.PersonalNote,
             }
+
+            console.log(caseObj);
 
             // Check if the stage is valid
             var stageObj;
@@ -540,18 +540,59 @@ class CaseController {
 
             // Update additional clients list 
             if (additionalClients !== undefined && additionalClients.length > 0) {
-                caseObj.additionalClients = await this.updateAdditionalClients(caseObj.additionalClients, additionalClients);
+                caseObj.additionalClients = await this.updateAdditionalClients(additionalClients);
             }
 
             // Update contacts list
             if (contacts !== undefined && contacts.length > 0) {
-                caseObj.contacts = await this.updateAdditionalContacts(caseObj.contacts, contacts);
+                caseObj.contacts = await this.updateAdditionalContacts(contacts);
             }
 
             // Update additional organizations list
             if (additionalOrganizations !== undefined && additionalOrganizations.length > 0) {
-                caseObj.additionalOrganizations = await this.updateAdditionalOrganizations(caseObj.additionalOrganizations, additionalOrganizations);
+                caseObj.additionalOrganizations = await this.updateAdditionalOrganizations(additionalOrganizations);
             }
+
+            // Update purchaser price
+            if (purchaserPrice !== undefined && purchaserPrice !== "" && purchaserPrice > 0) {
+                caseObj.purchaserPrice = purchaserPrice;
+            }
+
+            // Update down payment
+            if (downPayment !== undefined && downPayment !== "" && downPayment > 0) {
+                caseObj.downPayment = downPayment;
+            }
+
+            // Update mortgage amount
+            if (mortgageAmount !== undefined && mortgageAmount !== "" && mortgageAmount > 0) {
+                caseObj.mortgageAmount = mortgageAmount;
+            }
+
+            // Update annual property tax
+            if (annualPropertyTax !== undefined && annualPropertyTax !== "" && annualPropertyTax > 0) {
+                caseObj.annualPropertyTax = annualPropertyTax;
+            }
+
+            // Update sellers concession
+            if (sellersConcession !== undefined && sellersConcession !== "" && sellersConcession > 0) {
+                caseObj.sellersConcession = sellersConcession;
+            }
+
+            // Update referral
+            if (referral !== undefined && referral !== "") {
+                caseObj.referral = referral;
+            }
+
+            // Update bank
+            if (bank !== undefined && bank !== "") {
+                caseObj.bank = bank;
+            }
+
+            // Update personal note
+            if (personalNote !== undefined && personalNote !== "") {
+                caseObj.personalNote = personalNote;
+            }
+
 
             // Update the case
             const c = await CaseService.updateCase(caseObj);
@@ -618,7 +659,15 @@ class CaseController {
                         "mortgageContingencyDate": existingCase.MortgageContingencyDate,
                         "additionalClients": existingCase.AdditionalClients,
                         "contacts": existingCase.Contacts,
-                        "additionalOrganizations": existingCase.AdditionalOrganizations
+                        "additionalOrganizations": existingCase.AdditionalOrganizations,
+                        "purchaserPrice": existingCase.PurchaserPrice,
+                        "downPayment": existingCase.DownPayment,
+                        "mortgageAmount": existingCase.MortgageAmount,
+                        "annualPropertyTax": existingCase.AnnualPropertyTax,
+                        "sellersConcession": existingCase.SellersConcession,
+                        "referral": existingCase.Referral,
+                        "bank": existingCase.Bank,
+                        "personalNote": existingCase.PersonalNote
                     }],
                     message: '[CaseController][closeCase] Case closed successfully'
                 });
@@ -672,58 +721,92 @@ class CaseController {
         }
     }
 
+    // [Debugging Functions]
+    async deleteAllCases(req, res) {
+        const { creatorId } = req.body;
+        if (creatorId === undefined) {
+            console.log("[CaseController][DeleteAllCases] Invalid creator id");
+            return null;
+        }
+        try {
+            var cases = await CaseService.readAllCasesByCreatorId(creatorId, false);
+            if (cases !== null) {
+                for (let i = 0; i < cases.length; i++) {
+                    await CaseService.deleteCase(cases[i].CaseId);
+                    await StageController.deleteStagesByCaseId(cases[i].CaseId);
+                }
+            }
+            cases = await CaseService.readAllCasesByCreatorId(creatorId, true);
+            if (cases !== null) {
+                for (let i = 0; i < cases.length; i++) {
+                    await CaseService.deleteCase(cases[i].CaseId);
+                    await StageController.deleteStagesByCaseId(cases[i].CaseId);
+                }
+            }
+            return res.status(200).json({
+                status: "success",
+                data: [],
+                message: '[CaseController][DeleteAllCases] Cases deleted successfully'
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                status: "failed",
+                data: [],
+                message: `[CaseController][DeleteAllCases] Internal server error: ${error}`
+            });
+        }
+    }
+
     // Update additional clients list
-    async updateAdditionalClients(additionalClients, additionalClientsNew) {
+    async updateAdditionalClients(additionalClients) {
         if (additionalClients === undefined || additionalClients === null) {
             additionalClients = [];
         }
-        for (let i = 0; i < additionalClientsNew.length; i++) {
-            if (!additionalClients.includes(additionalClientsNew[i])) {
-                const client = await ClientService.readClient(additionalClientsNew[i]);
-                if (client === null) {
-                    console.log(`[CaseController][updateAdditionalClients] Invalid additional client id ${additionalClientsNew[i]}`);
-                    continue;
-                }
-                additionalClients.push(additionalClientsNew[i]);
+        var additionalClientIds = [];
+        for (let i = 0; i < additionalClients.length; i++) {
+            const client = await ClientService.readClient(additionalClients[i]);
+            if (client === null) {
+                console.log(`[CaseController][updateAdditionalClients] Invalid additional client id ${additionalClients[i]}`);
+            } else {
+                additionalClientIds.push(additionalClients[i]);
             }
         }
-        return additionalClients;
+        return additionalClientIds;
     }
 
     // Update contacts list
-    async updateAdditionalContacts(contacts, contactsNew) {
+    async updateAdditionalContacts(contacts) {
+        var contactIds = [];
         if (contacts === undefined || contacts === null) {
             contacts = [];
         }
-        for (let i = 0; i < contactsNew.length; i++) {
-            if (!contacts.includes(contactsNew[i])) {
-                const contact = await ContactService.readContact(contactsNew[i]);
-                if (contact === null) {
-                    console.log(`[CaseController][updateAdditionalContacts] Invalid contact id ${contactsNew[i]}`);
-                    continue;
-                }
-                contacts.push(contactsNew[i]);
+        for (let i = 0; i < contacts.length; i++) {
+            const contact = await ContactService.readContact(contacts[i]);
+            if (contact === null) {
+                console.log(`[CaseController][updateAdditionalContacts] Invalid contact id ${contacts[i]}`);
+            } else {
+                contactIds.push(contacts[i]);
             }
         }
-        return contacts;
+        return contactIds;
     }
 
     // Update additional organizations list
-    async updateAdditionalOrganizations(additionalOrganizations, additionalOrganizationsNew) {
+    async updateAdditionalOrganizations(additionalOrganizations) {
         if (additionalOrganizations === undefined || additionalOrganizations === null) {
             additionalOrganizations = [];
         }
-        for (let i = 0; i < additionalOrganizationsNew.length; i++) {
-            if (!additionalOrganizations.includes(additionalOrganizationsNew[i])) {
-                const organization = await OrganizationService.readOrganization(additionalOrganizationsNew[i]);
-                if (organization === null) {
-                    console.log(`[CaseController][updateAdditionalOrganizations] Invalid additional organization id ${additionalOrganizationsNew[i]}`);
-                    continue;
-                }
-                additionalOrganizations.push(additionalOrganizationsNew[i]);
+        var additionalOrganizationIds = [];
+        for (let i = 0; i < additionalOrganizations.length; i++) {
+            const organization = await OrganizationService.readOrganization(additionalOrganizations[i]);
+            if (organization === null) {
+                console.log(`[CaseController][updateAdditionalOrganizations] Invalid additional organization id ${additionalOrganizations[i]}`);
+            } else {
+                additionalOrganizationIds.push(additionalOrganizations[i]);
             }
         }
-        return additionalOrganizations;
+        return additionalOrganizationIds;
     }
 
     // Extract case from list
@@ -751,7 +834,15 @@ class CaseController {
             "mortgageContingencyDate": c.MortgageContingencyDate,
             "additionalClients": c.AdditionalClients,
             "contacts": c.Contacts,
-            "additionalOrganizations": c.AdditionalOrganizations
+            "additionalOrganizations": c.AdditionalOrganizations,
+            "purchaserPrice": c.PurchaserPrice,
+            "downPayment": c.DownPayment,
+            "mortgageAmount": c.MortgageAmount,
+            "annualPropertyTax": c.AnnualPropertyTax,
+            "sellersConcession": c.SellersConcession,
+            "referral": c.Referral,
+            "bank": c.Bank,
+            "personalNote": c.PersonalNote,
         };
     }
     async procCases(cases) {

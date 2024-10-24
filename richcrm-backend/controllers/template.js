@@ -188,9 +188,10 @@ class TemplateController {
             }
 
             // Replace the placeholders in the template content
-            const templateContent = sprintf(templateObj.templateContent, data);
-            console.log(templateContent);
             console.log(templateObj.templateContent);
+            const templateContent = sprintf(templateObj.templateContent, data);
+            // console.log(templateContent);
+            // console.log(templateObj.templateContent);
 
             return res.status(200).json({
                 status: "success",
