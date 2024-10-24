@@ -7,39 +7,22 @@ const { v4: uuidv4 } = require('uuid');
 
 class PremisesController {
 
+    constructor() {
+        this.readAllPremisesByAddressId = this.readAllPremisesByAddressId.bind(this);
+        this.getPremises = this.getPremises.bind(this);
+        this.createPremises = this.createPremises.bind(this);
+        this.updatePremises = this.updatePremises.bind(this);
+        this.deletePremises = this.deletePremises.bind(this);
+        this.procPremisesList = this.procPremisesList.bind(this);
+    }
+
     async readAllPremisesByAddressId(req, res) {
         const { addressId } = req.body;
         try {
             var premisesList = [];
             const premises = await PremisesService.readPremisesByAddressId(addressId);
             if (premises !== null) {
-                premises.forEach(p => {
-                    premisesList.push({
-                        premisesId: p.PremisesId,
-                        addressId: p.AddressId,
-                        name: p.Name,
-                        block: p.Block,
-                        lot: p.Lot,
-                        section: p.Section,
-                        propertyType: p.PropertyType,
-                        vacantAtClosing: p.VacantAtClosing,
-                        subjectToTenancy: p.SubjectToTenancy,
-                        hoa: p.HOA,
-                        parkingSpaces: p.ParkingSpaces,
-                        maintenanceFee: p.MaintenanceFee,
-                        maintenanceFeePer: p.MaintenanceFeePer,
-                        assessments: p.Assessments,
-                        assessmentsPaidById: p.AssessmentsPaidById,
-                        managingCompany: p.ManagingCompany,
-                        isTwoFamily: p.IsTwoFamily,
-                        twoFamilyFirstFloorTenantId: p.TwoFamilyFirstFloorTenantId,
-                        twoFamilySecondFloorTenantId: p.TwoFamilySecondFloorTenantId,
-                        needInspection: p.NeedInspection,
-                        inspectionDate: p.InspectionDate,
-                        receivedDate: p.ReceivedDate,
-                        needTermitesInspection: p.NeedTermitesInspection,
-                    });
-                });
+                premisesList = await this.procPremisesList(premises);
             }
             res.status(200).json({
                 status: "success",
@@ -74,33 +57,10 @@ class PremisesController {
                     message: '[PremisesController][getPremises] Premises not found',
                 });
             }
+            const premisesObj = await this.procPremises(premises);
             res.status(200).json({
                 status: "success",
-                data: [{
-                    premisesId: premises.PremisesId,
-                    addressId: premises.AddressId,
-                    name: premises.Name,
-                    block: premises.Block,
-                    lot: premises.Lot,
-                    section: premises.Section,
-                    propertyType: premises.PropertyType,
-                    vacantAtClosing: premises.VacantAtClosing,
-                    subjectToTenancy: premises.SubjectToTenancy,
-                    hoa: premises.HOA,
-                    parkingSpaces: premises.ParkingSpaces,
-                    maintenanceFee: premises.MaintenanceFee,
-                    maintenanceFeePer: premises.MaintenanceFeePer,
-                    assessments: premises.Assessments,
-                    assessmentsPaidById: premises.AssessmentsPaidById,
-                    managingCompany: premises.ManagingCompany,
-                    isTwoFamily: premises.IsTwoFamily,
-                    twoFamilyFirstFloorTenantId: premises.TwoFamilyFirstFloorTenantId,
-                    twoFamilySecondFloorTenantId: premises.TwoFamilySecondFloorTenantId,
-                    needInspection: premises.NeedInspection,
-                    inspectionDate: premises.InspectionDate,
-                    receivedDate: premises.ReceivedDate,
-                    needTermitesInspection: premises.NeedTermitesInspection,
-                }],
+                data: [premisesObj],
                 message: '[PremisesController][getPremises] Successfully retrieved premises',
             });
         } catch (error) {
@@ -157,14 +117,10 @@ class PremisesController {
 
             const p = await PremisesService.createPremises(premises);
             if (p !== null) {
+                const premisesObj = await this.procPremises(p);
                 res.status(200).json({
                     status: "success",
-                    data: [{
-                        premisesId: p.PremisesId,
-                        name: p.Name,
-                        addressId: p.AddressId,
-                        propertyType: p.PropertyType,
-                    }],
+                    data: [premisesObj],
                     message: '[PremisesController][createPremises] Successfully created premises',
                 });
             } else {
@@ -200,7 +156,7 @@ class PremisesController {
             maintenanceFee,
             maintenanceFeePer,
             assessments,
-            assessmentsPaidById,
+            assessmentsPer,
             managingCompany,
             isTwoFamily,
             twoFamilyFirstFloorTenantId,
@@ -238,7 +194,7 @@ class PremisesController {
                 maintenanceFee: premises.MaintenanceFee,
                 maintenanceFeePer: premises.MaintenanceFeePer,
                 assessments: premises.Assessments,
-                assessmentsPaidById: premises.AssessmentsPaidById,
+                assessmentsPer: premises.AssessmentsPer,
                 managingCompany: premises.ManagingCompany,
                 isTwoFamily: premises.IsTwoFamily,
                 twoFamilyFirstFloorTenantId: premises.TwoFamilyFirstFloorTenantId,
@@ -353,9 +309,18 @@ class PremisesController {
                 premisesObj.assessments = assessments;
             }
 
-            // Update assessmentsPaidById
-            if (assessmentsPaidById !== undefined) {
-                premisesObj.assessmentsPaidById = assessmentsPaidById;
+            // Update assessmentsPer
+            if (assessmentsPer !== undefined) {
+                const assessmentsPerEnum = Types.castIntToEnum(Types.maintenanceFeePer, assessmentsPer);
+                if (assessmentsPerEnum === undefined) {
+                    return res.status(400).json({
+                        status: "failed",
+                        data: [],
+                        message: '[PremisesController][updatePremises] Invalid assessments per',
+                    });
+                }
+
+                premisesObj.assessmentsPer = assessmentsPer;
             }
 
             // Update managingCompany
@@ -372,28 +337,30 @@ class PremisesController {
             if (twoFamilyFirstFloorTenantId !== undefined) {
                 const client = await ClientService.readClient(twoFamilyFirstFloorTenantId);
                 if (client === null) {
-                    res.status(400).json({
-                        status: "failed",
-                        data: [],
-                        message: '[PremisesController][updatePremises] Two-family first floor tenant not found',
-                    });
-                    return;
+                    // res.status(400).json({
+                    //     status: "failed",
+                    //     data: [],
+                    //     message: '[PremisesController][updatePremises] Two-family first floor tenant not found',
+                    // });
+                    console.log("[PremisesController][updatePremises] Two-family first floor tenant not found");
+                } else {
+                    premisesObj.twoFamilyFirstFloorTenantId = twoFamilyFirstFloorTenantId;
                 }
-                premisesObj.twoFamilyFirstFloorTenantId = twoFamilyFirstFloorTenantId;
             }
 
             // Update twoFamilySecondFloorTenantId
             if (twoFamilySecondFloorTenantId !== undefined) {
                 const client = await ClientService.readClient(twoFamilySecondFloorTenantId);
                 if (client === null) {
-                    res.status(400).json({
-                        status: "failed",
-                        data: [],
-                        message: '[PremisesController][updatePremises] Two-family second floor tenant not found',
-                    });
-                    return;
+                    // res.status(400).json({
+                    //     status: "failed",
+                    //     data: [],
+                    //     message: '[PremisesController][updatePremises] Two-family second floor tenant not found',
+                    // });
+                    console.log("[PremisesController][updatePremises] Two-family second floor tenant not found");
+                } else {
+                    premisesObj.twoFamilySecondFloorTenantId = twoFamilySecondFloorTenantId;
                 }
-                premisesObj.twoFamilySecondFloorTenantId = twoFamilySecondFloorTenantId;
             }
 
             // Update needInspection
@@ -474,6 +441,46 @@ class PremisesController {
                 message: '[PremisesController][deletePremises] Internal server error',
             });
         }
+    }
+
+    // Extract premises data
+    async procPremises(p) {
+        return {
+            premisesId: p.PremisesId,
+            addressId: p.AddressId,
+            name: p.Name,
+            block: p.Block,
+            lot: p.Lot,
+            section: p.Section,
+            propertyType: p.PropertyType,
+            vacantAtClosing: p.VacantAtClosing,
+            subjectToTenancy: p.SubjectToTenancy,
+            hoa: p.HOA,
+            parkingSpaces: p.ParkingSpaces,
+            maintenanceFee: p.MaintenanceFee,
+            maintenanceFeePer: p.MaintenanceFeePer,
+            assessments: p.Assessments,
+            assessmentsPer: p.AssessmentsPer,
+            managingCompany: p.ManagingCompany,
+            isTwoFamily: p.IsTwoFamily,
+            twoFamilyFirstFloorTenantId: p.TwoFamilyFirstFloorTenantId,
+            twoFamilySecondFloorTenantId: p.TwoFamilySecondFloorTenantId,
+            needInspection: p.NeedInspection,
+            inspectionDate: p.InspectionDate,
+            receivedDate: p.ReceivedDate,
+            needTermitesInspection: p.NeedTermitesInspection,
+        };
+    }
+
+    async procPremisesList(premises) {
+        var premisesList = [];
+        if (premises !== null) {
+            for (let i = 0; i < premises.length; i++) {
+                const p = premises[i];
+                premisesList.push(await this.procPremises(p));
+            }
+        }
+        return premisesList;
     }
 }
 

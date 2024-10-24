@@ -18,7 +18,7 @@
  * @property {int} MaintenanceFee - Unit maintenance fee
  * @property {maintenanceFeePer} MaintenanceFeePer - Maintenance fee per (month, quarter, year)
  * @property {int} Assessments - Assessments fee
- * @property {string} AssessmentsPaidById - Foreign key to User who paid assessments
+ * @property {string} AssessmentsPer - Assessments fee per (month, quarter, year)
  * @property {string} ManagingCompany - Name of managing company
  * @property {boolean} IsTwoFamily - Is this premises a two-family house?
  * @property {string} TwoFamilyFirstFloorTenantId - Foreign key to Client
@@ -80,7 +80,7 @@ class Premises {
                 MaintenanceFee: premises.maintenanceFee,
                 MaintenanceFeePer: premises.maintenanceFeePer,
                 Assessments: premises.assessments,
-                AssessmentsPaidById: premises.assessmentsPaidById,
+                AssessmentsPer: premises.assessmentsPer,
                 ManagingCompany: premises.managingCompany,
                 IsTwoFamily: premises.isTwoFamily,
                 TwoFamilyFirstFloorTenantId: premises.twoFamilyFirstFloorTenantId,
@@ -160,9 +160,9 @@ class Premises {
             params.ExpressionAttributeNames['#as'] = 'Assessments';
             params.UpdateExpression  += ", #as = :as";
         }
-        if (premises.assessmentsPaidById !== undefined)  {
-            params.ExpressionAttributeValues[':ap'] = premises.assessmentsPaidById;
-            params.UpdateExpression  += ", AssessmentsPaidById = :ap";
+        if (premises.assessmentsPer !== undefined)  {
+            params.ExpressionAttributeValues[':asp'] = premises.assessmentsPer;
+            params.UpdateExpression  += ", AssessmentsPer = :asp";
         }
         if (premises.managingCompany !== undefined)  {
             params.ExpressionAttributeValues[':mc'] = premises.managingCompany;

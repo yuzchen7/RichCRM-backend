@@ -64,7 +64,7 @@ router.post(
  * @apiSuccess {Number} maintenanceFee Maintenance Fee.
  * @apiSuccess {Number} maintenanceFeePer Maintenance Fee Per (0-Month, 1-Quarter, 2-Year).
  * @apiSuccess {Number} assessments Assessments.
- * @apiSuccess {String} assessmentsPaidById Assessments Paid By ID.
+ * @apiSuccess {Number} assessmentsPer Assessments Per (0-Month, 1-Quarter, 2-Year).
  * @apiSuccess {String} managingCompany Managing Company.
  * @apiSuccess {Boolean} isTwoFamily Is Two Family.
  * @apiSuccess {String} twoFamilyFirstFloorTenantId Client ID of the First Floor of the Two Family Premises.
@@ -92,7 +92,7 @@ router.post(
  *  "maintenanceFee": 100,
  *  "maintenanceFeePer": 1,
  *  "assessments": 100,
- *  "assessmentsPaidById": "689f5eac-22ea-4363-bbe3-b8216abf0076",
+ *  "assessmentsPer": 2,
  *  "managingCompany": "RichCRM",
  *  "isTwoFamily": true,
  *  "twoFamilyFirstFloorTenantId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
@@ -134,7 +134,7 @@ router.post(
  * @apiSuccess {Number} maintenanceFee Maintenance Fee.
  * @apiSuccess {Number} maintenanceFeePer Maintenance Fee Per (0-Month, 1-Quarter, 2-Year).
  * @apiSuccess {Number} assessments Assessments.
- * @apiSuccess {String} assessmentsPaidById Assessments Paid By ID.
+ * @apiSuccess {Number} assessmentsPer Assessments Per (0-Month, 1-Quarter, 2-Year).
  * @apiSuccess {String} managingCompany Managing Company.
  * @apiSuccess {Boolean} isTwoFamily Is Two Family.
  * @apiSuccess {String} twoFamilyFirstFloorTenantId Client ID of the First Floor of the Two Family Premises.
@@ -161,7 +161,7 @@ router.post(
  *  "maintenanceFee": 100,
  *  "maintenanceFeePer": 1,
  *  "assessments": 100,
- *  "assessmentsPaidById": "689f5eac-22ea-4363-bbe3-b8216abf0076",
+ *  "assessmentsPer": 2,
  *  "managingCompany": "RichCRM",
  *  "isTwoFamily": true,
  *  "twoFamilyFirstFloorTenantId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
@@ -205,7 +205,7 @@ router.get(
  * @apiSuccess {Number} maintenanceFee Maintenance Fee.
  * @apiSuccess {Number} maintenanceFeePer Maintenance Fee Per (0-Month, 1-Quarter, 2-Year).
  * @apiSuccess {Number} assessments Assessments.
- * @apiSuccess {String} assessmentsPaidById Assessments Paid By ID.
+ * @apiSuccess {Number} assessmentsPer Assessments Per (0-Month, 1-Quarter, 2-Year).
  * @apiSuccess {String} managingCompany Managing Company.
  * @apiSuccess {Boolean} isTwoFamily Is Two Family.
  * @apiSuccess {String} twoFamilyFirstFloorTenantId Client ID of the First Floor of the Two Family Premises.
@@ -232,7 +232,7 @@ router.get(
  *  "maintenanceFee": 100,
  *  "maintenanceFeePer": 1,
  *  "assessments": 100,
- *  "assessmentsPaidById": "689f5eac-22ea-4363-bbe3-b8216abf0076",
+ *  "assessmentsPer": 2,
  *  "managingCompany": "RichCRM",
  *  "isTwoFamily": true,
  *  "twoFamilyFirstFloorTenantId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
@@ -273,7 +273,7 @@ router.post(
  * @apiBody {Number} maintenanceFee Maintenance Fee.
  * @apiBody {Number} maintenanceFeePer Maintenance Fee Per (0-Month, 1-Quarter, 2-Year).
  * @apiBody {Number} assessments Assessments.
- * @apiBody {String} assessmentsPaidById Assessments Paid By ID.
+ * @apiBody {Number} assessmentsPer Assessments Per (0-Month, 1-Quarter, 2-Year).
  * @apiBody {String} managingCompany Managing Company.
  * @apiBody {Boolean} isTwoFamily Is Two Family.
  * @apiBody {String} twoFamilyFirstFloorTenantId Client ID of the First Floor of the Two Family Premises.
@@ -298,7 +298,7 @@ router.post(
  * @apiSuccess {Number} maintenanceFee Maintenance Fee.
  * @apiSuccess {Number} maintenanceFeePer Maintenance Fee Per (0-Month, 1-Quarter, 2-Year).
  * @apiSuccess {Number} assessments Assessments.
- * @apiSuccess {String} assessmentsPaidById Assessments Paid By ID.
+ * @apiSuccess {Number} assessmentsPer Assessments Per (0-Month, 1-Quarter, 2-Year).
  * @apiSuccess {String} managingCompany Managing Company.
  * @apiSuccess {Boolean} isTwoFamily Is Two Family.
  * @apiSuccess {String} twoFamilyFirstFloorTenantId Client ID of the First Floor of the Two Family Premises.
@@ -325,7 +325,7 @@ router.post(
  *  "maintenanceFee": 100,
  *  "maintenanceFeePer": 1,
  *  "assessments": 100,
- *  "assessmentsPaidById": "123456",
+ *  "assessmentsPer": 2,
  *  "managingCompany": "RichCRM",
  *  "isTwoFamily": true,
  *  "twoFamilyFirstFloorTenantId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
@@ -376,6 +376,10 @@ router.post(
         .optional()
         .isInt()
         .withMessage("Assessments must be an integer"),
+    check("assessmentsPer")
+        .optional()
+        .isInt()
+        .withMessage("Assessments Per must be an integer"),
     check("twoFamilyFirstFloorTenantId")
         .optional()
         .isUUID()
