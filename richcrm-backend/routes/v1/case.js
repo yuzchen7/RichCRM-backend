@@ -11,7 +11,7 @@ const router = express.Router();
  * @apiName GetCase
  * @apiGroup Case
  *
- * @apiParam {String} caseId Case ID.
+ * @apiParam {String} caseId [REQUIRED] Case ID.
  *
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
@@ -30,6 +30,15 @@ const router = express.Router();
  * @apiSuccess {Array} additionalClients Additional clients in this case.
  * @apiSuccess {Array} contacts Contacts in this case.
  * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
+ * @apiSuccess {Number} purchaserPrice Purchaser price.
+ * @apiSuccess {Number} downPayment Down payment.
+ * @apiSuccess {Number} mortgageAmount Mortgage amount.
+ * @apiSuccess {Number} annualPropertyTax Annual property tax.
+ * @apiSuccess {Number} sellersConcession Seller's concession.
+ * @apiSuccess {String} referral Referral.
+ * @apiSuccess {String} bank Bank.
+ * @apiSuccess {String} personalNote Personal note.
+ * 
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -58,7 +67,15 @@ const router = express.Router();
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
- *   ]
+ *   ],
+ *   "purchaserPrice": 1000000,
+ *   "downPayment": 200000,
+ *   "mortgageAmount": 800000,
+ *   "annualPropertyTax": 10000,
+ *   "sellersConcession": 10000,
+ *   "referral": "Jack",
+ *   "bank": "Chase",
+ *   "personalNote": "This is a test case",
  * }
  */
 router.get(
@@ -75,7 +92,7 @@ router.get(
  * @apiName GetAllCases
  * @apiGroup Case
  * 
- * @apiBody {String} creatorId Creator ID.
+ * @apiBody {String} creatorId [REQUIRED] Creator ID.
  * @apiBody {Boolean} closed Show closed cases or not (default: false).
  * 
  * @apiSuccess {String} caseId Case ID.
@@ -97,6 +114,14 @@ router.get(
  * @apiSuccess {Array} additionalClients Additional clients in this case.
  * @apiSuccess {Array} contacts Contacts in this case.
  * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
+ * @apiSuccess {Number} purchaserPrice Purchaser price.
+ * @apiSuccess {Number} downPayment Down payment.
+ * @apiSuccess {Number} mortgageAmount Mortgage amount.
+ * @apiSuccess {Number} annualPropertyTax Annual property tax.
+ * @apiSuccess {Number} sellersConcession Seller's concession.
+ * @apiSuccess {String} referral Referral.
+ * @apiSuccess {String} bank Bank.
+ * @apiSuccess {String} personalNote Personal note.
  * 
  * 
  * @apiSuccessExample Example data on success:
@@ -128,7 +153,15 @@ router.get(
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
- *   ]
+ *   ],
+ *   "purchaserPrice": 1000000,
+ *   "downPayment": 200000,
+ *   "mortgageAmount": 800000,
+ *   "annualPropertyTax": 10000,
+ *   "sellersConcession": 10000,
+ *   "referral": "Jack",
+ *   "bank": "Chase",
+ *   "personalNote": "This is a test case",
  * }]
  * 
  */
@@ -149,7 +182,7 @@ router.post(
  * @apiName GetAllCasesByClientId
  * @apiGroup Case
  * 
- * @apiBody {String} clientId Seller ID, Buyer ID, or Additional Client ID.
+ * @apiBody {String} clientId [REQUIRED] Seller ID, Buyer ID, or Additional Client ID.
  * @apiBody {Boolean} closed Show closed cases or not (default: false).
  * 
  * @apiSuccess {String} caseId Case ID.
@@ -171,6 +204,14 @@ router.post(
  * @apiSuccess {Array} additionalClients Additional clients in this case.
  * @apiSuccess {Array} contacts Contacts in this case.
  * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
+ * @apiSuccess {Number} purchaserPrice Purchaser price.
+ * @apiSuccess {Number} downPayment Down payment.
+ * @apiSuccess {Number} mortgageAmount Mortgage amount.
+ * @apiSuccess {Number} annualPropertyTax Annual property tax.
+ * @apiSuccess {Number} sellersConcession Seller's concession.
+ * @apiSuccess {String} referral Referral.
+ * @apiSuccess {String} bank Bank.
+ * @apiSuccess {String} personalNote Personal note.
  * 
  * 
  * @apiSuccessExample Example data on success:
@@ -202,7 +243,15 @@ router.post(
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
- *   ]
+ *   ],
+ *   "purchaserPrice": 1000000,
+ *   "downPayment": 200000,
+ *   "mortgageAmount": 800000,
+ *   "annualPropertyTax": 10000,
+ *   "sellersConcession": 10000,
+ *   "referral": "Jack",
+ *   "bank": "Chase",
+ *   "personalNote": "This is a test case",
  * }]
  * 
  */
@@ -223,7 +272,7 @@ router.post(
  * @apiName GetAllCasesByContactId
  * @apiGroup Case
  * 
- * @apiBody {String} contactId Contact ID.
+ * @apiBody {String} contactId [REQUIRED] Contact ID.
  * @apiBody {Boolean} closed Show closed cases or not (default: false).
  * 
  * 
@@ -246,6 +295,14 @@ router.post(
  * @apiSuccess {Array} additionalClients Additional clients in this case.
  * @apiSuccess {Array} contacts Contacts in this case.
  * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
+ * @apiSuccess {Number} purchaserPrice Purchaser price.
+ * @apiSuccess {Number} downPayment Down payment.
+ * @apiSuccess {Number} mortgageAmount Mortgage amount.
+ * @apiSuccess {Number} annualPropertyTax Annual property tax.
+ * @apiSuccess {Number} sellersConcession Seller's concession.
+ * @apiSuccess {String} referral Referral.
+ * @apiSuccess {String} bank Bank.
+ * @apiSuccess {String} personalNote Personal note.
  * 
  * 
  * @apiSuccessExample Example data on success:
@@ -277,7 +334,15 @@ router.post(
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
- *   ]
+ *   ],
+ *   "purchaserPrice": 1000000,
+ *   "downPayment": 200000,
+ *   "mortgageAmount": 800000,
+ *   "annualPropertyTax": 10000,
+ *   "sellersConcession": 10000,
+ *   "referral": "Jack",
+ *   "bank": "Chase",
+ *   "personalNote": "This is a test case",
  * }]
  * 
  */
@@ -298,7 +363,7 @@ router.post(
  * @apiName GetAllCasesByKeyword
  * @apiGroup Case
  * 
- * @apiBody {String} keyword Keyword to search.
+ * @apiBody {String} keyword [REQUIRED] Keyword to search.
  * @apiBody {Boolean} closed Show closed cases or not (default: false).
  * 
  * 
@@ -321,6 +386,14 @@ router.post(
  * @apiSuccess {Array} additionalClients Additional clients in this case.
  * @apiSuccess {Array} contacts Contacts in this case.
  * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
+ * @apiSuccess {Number} purchaserPrice Purchaser price.
+ * @apiSuccess {Number} downPayment Down payment.
+ * @apiSuccess {Number} mortgageAmount Mortgage amount.
+ * @apiSuccess {Number} annualPropertyTax Annual property tax.
+ * @apiSuccess {Number} sellersConcession Seller's concession.
+ * @apiSuccess {String} referral Referral.
+ * @apiSuccess {String} bank Bank.
+ * @apiSuccess {String} personalNote Personal note.
  * 
  * 
  * @apiSuccessExample Example data on success:
@@ -352,7 +425,15 @@ router.post(
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
- *   ]
+ *   ],
+ *   "purchaserPrice": 1000000,
+ *   "downPayment": 200000,
+ *   "mortgageAmount": 800000,
+ *   "annualPropertyTax": 10000,
+ *   "sellersConcession": 10000,
+ *   "referral": "Jack",
+ *   "bank": "Chase",
+ *   "personalNote": "This is a test case",
  * }]
  * 
  */
@@ -374,15 +455,16 @@ router.post(
  * @apiGroup Case
  * @apiDescription Create a new case, **the stage object will be created accordingly, its stageId will be returned**!
  *
- * @apiBody {String} premisesId Premises ID.
- * @apiBody {String} creatorId Creator ID.
- * @apiBody {Number} caseType Client Type (0-PURCHASING, 1-SELLING).
- * @apiBody {String} clientType Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
- * @apiBody {String} clientId [0-INDIVIDUAL] Client ID for buyer or seller.
- * @apiBody {String} organizationId [1-COMPANY, 2-TRUST] Organization ID if type is COMPANY or TRUST.
+ * @apiBody {String} premisesId [REQUIRED] Premises ID.
+ * @apiBody {String} creatorId [REQUIRED] Creator ID.
+ * @apiBody {Number} caseType [REQUIRED] Client Type (0-PURCHASING, 1-SELLING).
+ * @apiBody {String} clientType [REQUIRED] Client Type (0-INDIVIDUAL, 1-COMPANY, 2-TRUST).
+ * @apiBody {String} clientId [REQUIRED WHEN clientType 0] Client ID for buyer or seller.
+ * @apiBody {String} organizationId [REQUIRED WHEN clientType 1 and 2] Organization ID if type is COMPANY or TRUST.
  * @apiBody {String} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
  * @apiBody {Array} additionalClients Additional clients in this case.
  * @apiBody {Array} contacts Contacts in this case.
+ * @apiBody {Array} additionalOrganizations Additional organizations in this case.
  *
  * @apiSuccess {String} caseId Case ID.
  * @apiSuccess {Number} creatorId Creator ID.
@@ -473,7 +555,7 @@ router.post(
  * @apiGroup Case
  * @apiDescription Update a case by ID, **if the stage is updated, the new stage will be created and the stageId will be returned**!
  *
- * @apiBody {String} caseId Case ID.
+ * @apiBody {String} caseId [REQUIRED] Case ID.
  * @apiBody {String} creatorId Creator ID.
  * @apiBody {String} premisesId Premises ID.
  * @apiBody {Number} stage Stage of the case (0-Case Setup, 1-Contract Preparing, 2-Contract Signing, 3-Mortgage, 4-Closing).
@@ -482,6 +564,15 @@ router.post(
  * @apiBody {String} mortgageContingencyDate Date when the mortgage contingency should be removed.
  * @apiBody {Array} additionalClients Additional clients in this case.
  * @apiBody {Array} contacts Contacts in this case.
+ * @apiBody {Array} additionalOrganizations Additional organizations in this case.
+ * @apiBody {Number} purchaserPrice Purchaser price.
+ * @apiBody {Number} downPayment Down payment.
+ * @apiBody {Number} mortgageAmount Mortgage amount.
+ * @apiBody {Number} annualPropertyTax Annual property tax.
+ * @apiBody {Number} sellersConcession Seller's concession.
+ * @apiBody {String} referral Referral.
+ * @apiBody {String} bank Bank.
+ * @apiBody {String} personalNote Personal note.
  * 
  *
  * @apiSuccess {String} caseId Case ID.
@@ -497,6 +588,15 @@ router.post(
  * @apiSuccess {Array} additionalClients Additional clients in this case.
  * @apiSuccess {Array} contacts Contacts in this case.
  * @apiSuccess {Array} additionalOrganizations Additional organizations in this case.
+ * @apiSuccess {Number} purchaserPrice Purchaser price.
+ * @apiSuccess {Number} downPayment Down payment.
+ * @apiSuccess {Number} mortgageAmount Mortgage amount.
+ * @apiSuccess {Number} annualPropertyTax Annual property tax.
+ * @apiSuccess {Number} sellersConcession Seller's concession.
+ * @apiSuccess {String} referral Referral.
+ * @apiSuccess {String} bank Bank.
+ * @apiSuccess {String} personalNote Personal note.
+ * 
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -523,7 +623,15 @@ router.post(
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
- *   ]
+ *   ],
+ *   "purchaserPrice": 1000000,
+ *   "downPayment": 200000,
+ *   "mortgageAmount": 800000,
+ *   "annualPropertyTax": 10000,
+ *   "sellersConcession": 10000,
+ *   "referral": "Jack",
+ *   "bank": "Chase",
+ *   "personalNote": "This is a test case",
  * }
  */
 router.post(
@@ -539,6 +647,34 @@ router.post(
         .optional()
         .isArray()
         .withMessage("Contacts should be an array"),
+    check("additionalOrganizations")
+        .optional()
+        .isArray()
+        .withMessage("Additional Organizations should be an array"),
+    check("purchaserPrice")
+        .optional()
+        .isNumeric()
+        .withMessage("Purchaser Price should be a number"),
+    check("sellerPrice")
+        .optional()
+        .isNumeric()
+        .withMessage("Seller Price should be a number"),
+    check("downPayment")
+        .optional()
+        .isNumeric()
+        .withMessage("Down Payment should be a number"),
+    check("mortgageAmount")
+        .optional()
+        .isNumeric()
+        .withMessage("Mortgage Amount should be a number"),
+    check("annualPropertyTax")
+        .optional()
+        .isNumeric()
+        .withMessage("Annual Property Tax should be a number"),
+    check("sellersConcession")
+        .optional()
+        .isNumeric()
+        .withMessage("Sellers Concession should be a number"),
     validate,
     CaseController.updateCase
 );
@@ -549,7 +685,7 @@ router.post(
  * @apiName CloseCase
  * @apiGroup Case
  * 
- * @apiBody {String} caseId Case ID.
+ * @apiBody {String} caseId [REQUIRED] Case ID.
  * 
  * @apiSuccessExample Example data on success:
  * {
@@ -579,7 +715,15 @@ router.post(
  *      "7c377ce8-d6d5-4823-b60f-92ce5603d53f",
  *      "03c290cf-1758-4edc-95d5-be61f2339fd6",
  *      "b4e53724-6e7b-4070-be8a-d6c78d961ade"
- *   ]
+ *   ],
+ *   "purchaserPrice": 1000000,
+ *   "downPayment": 200000,
+ *   "mortgageAmount": 800000,
+ *   "annualPropertyTax": 10000,
+ *   "sellersConcession": 10000,
+ *   "referral": "Jack",
+ *   "bank": "Chase",
+ *   "personalNote": "This is a test case",
  * }
  */
 router.post(
@@ -597,7 +741,7 @@ router.post(
  * @apiGroup Case
  * @apiDescription Delete a case by ID. **Note that all stages and tasks related to the case will be deleted as well**!
  *
- * @apiBody {String} caseId Case ID.
+ * @apiBody {String} caseId [REQUIRED] Case ID.
  * 
  * @apiSuccessExample Example data on success:
  * {}

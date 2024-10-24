@@ -19,16 +19,16 @@
  * @property {Date} MortgageContingencyDate - When should the mortgage contingency be removed
  * @property {stage} Stage - The stage of this case(0-SETUP, 1-CONTRACT_PREPARING, 2-CONTRACT_SIGNING, 3-MORTGAGE, 4-CLOSING)
  * @property {array} AdditionalClients - Additional clients in this case
- * @property {array} Contacts - Contacts in this case (e.g. attorney, bank attorney)
+ * @property {array} Contacts - Contacts in this case (e.g. attorney, bank attorney, realtors)
  * @property {array} AdditionalOrganizations - Additional organizations in this case
  * @property {float} PurchaserPrice - Purchaser's price
  * @property {float} DownPayment - Down payment
  * @property {float} MortgageAmount - Mortgage amount
  * @property {float} AnnualPropertyTax - Annual property tax
  * @property {float} SellersConcession - Seller's concession
- * @property {array} Reators - Realtors in this case
  * @property {string} Referral - Referral in this case
  * @property {string} Bank - Bank in this case
+ * @property {string} PersonalNote - Personal note for this case
  */
 
 const db = require("../dynamodb");
@@ -260,6 +260,52 @@ class Case {
             params.ExpressionAttributeValues[':oi'] = c.organizationId;
             updateExpressions.push('OrganizationId = :oi');
         }
+
+        if (c.additionalOrganizations !== undefined) {
+            params.ExpressionAttributeValues[':ao'] = c.additionalOrganizations;
+            updateExpressions.push('AdditionalOrganizations = :ao');
+        }
+
+        if (c.purchaserPrice !== undefined) {
+            params.ExpressionAttributeValues[':pp'] = c.purchaserPrice;
+            updateExpressions.push('PurchaserPrice = :pp');
+        }
+
+        if (c.downPayment !== undefined) {
+            params.ExpressionAttributeValues[':dp'] = c.downPayment;
+            updateExpressions.push('DownPayment = :dp');
+        }
+
+        if (c.mortgageAmount !== undefined) {
+            params.ExpressionAttributeValues[':ma'] = c.mortgageAmount;
+            updateExpressions.push('MortgageAmount = :ma');
+        }
+
+        if (c.annualPropertyTax !== undefined) {
+            params.ExpressionAttributeValues[':apt'] = c.annualPropertyTax;
+            updateExpressions.push('AnnualPropertyTax = :apt');
+        }
+
+        if (c.sellersConcession !== undefined) {
+            params.ExpressionAttributeValues[':sc'] = c.sellersConcession;
+            updateExpressions.push('SellersConcession = :sc');
+        }
+
+        if (c.referral !== undefined) {
+            params.ExpressionAttributeValues[':rf'] = c.referral;
+            updateExpressions.push('Referral = :rf');
+        }
+
+        if (c.bank !== undefined) {
+            params.ExpressionAttributeValues[':b'] = c.bank;
+            updateExpressions.push('Bank = :b');
+        }
+
+        if (c.personalNote !== undefined) {
+            params.ExpressionAttributeValues[':pn'] = c.personalNote;
+            updateExpressions.push('PersonalNote = :pn');
+        }
+
 
         if (updateExpressions.length > 0) {
             params.UpdateExpression = "SET " + updateExpressions.join(", ");
