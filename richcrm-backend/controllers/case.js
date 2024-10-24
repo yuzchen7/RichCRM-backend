@@ -672,6 +672,43 @@ class CaseController {
         }
     }
 
+    // [Debugging Functions]
+    async deleteAllCases(req, res) {
+        const { creatorId } = req.body;
+        if (creatorId === undefined) {
+            console.log("[CaseController][DeleteAllCases] Invalid creator id");
+            return null;
+        }
+        try {
+            var cases = await CaseService.readAllCasesByCreatorId(creatorId, false);
+            if (cases !== null) {
+                for (let i = 0; i < cases.length; i++) {
+                    await CaseService.deleteCase(cases[i].CaseId);
+                    await StageController.deleteStagesByCaseId(cases[i].CaseId);
+                }
+            }
+            cases = await CaseService.readAllCasesByCreatorId(creatorId, true);
+            if (cases !== null) {
+                for (let i = 0; i < cases.length; i++) {
+                    await CaseService.deleteCase(cases[i].CaseId);
+                    await StageController.deleteStagesByCaseId(cases[i].CaseId);
+                }
+            }
+            return res.status(200).json({
+                status: "success",
+                data: [],
+                message: '[CaseController][DeleteAllCases] Cases deleted successfully'
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                status: "failed",
+                data: [],
+                message: `[CaseController][DeleteAllCases] Internal server error: ${error}`
+            });
+        }
+    }
+
     // Update additional clients list
     async updateAdditionalClients(additionalClients) {
         if (additionalClients === undefined || additionalClients === null) {

@@ -21,7 +21,14 @@
  * @property {array} AdditionalClients - Additional clients in this case
  * @property {array} Contacts - Contacts in this case (e.g. attorney, bank attorney)
  * @property {array} AdditionalOrganizations - Additional organizations in this case
- * 
+ * @property {float} PurchaserPrice - Purchaser's price
+ * @property {float} DownPayment - Down payment
+ * @property {float} MortgageAmount - Mortgage amount
+ * @property {float} AnnualPropertyTax - Annual property tax
+ * @property {float} SellersConcession - Seller's concession
+ * @property {array} Reators - Realtors in this case
+ * @property {string} Referral - Referral in this case
+ * @property {string} Bank - Bank in this case
  */
 
 const db = require("../dynamodb");

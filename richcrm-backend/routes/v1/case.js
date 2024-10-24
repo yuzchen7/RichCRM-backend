@@ -611,4 +611,14 @@ router.post(
     CaseController.deleteCase
 )
 
+
+router.post(
+    "/delete/all",
+    check("creatorId")
+        .notEmpty()
+        .withMessage("Creator ID is required"),
+    validate,
+    CaseController.deleteAllCases
+)
+
 module.exports = router;

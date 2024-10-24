@@ -89,7 +89,7 @@ describe('Case Routes', function () {
     test('case/update', async () => {
         const caseObj = {
             caseId: testCaseId,
-            premisesId: "8e5ac210-7c07-4dde-8ed2-f0d2b9f23699",
+            premisesId: "cbf8e709-7af2-4433-9276-7d5ba9113950",
             creatorId: "test1@gmail.com",
             stage: 1,
             closeAt: "2024-07-20T20:24:24.740Z",

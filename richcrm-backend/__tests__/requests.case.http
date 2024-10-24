@@ -91,3 +91,12 @@ content-type: application/json
 {
     "caseId": "d3a44633-8999-4538-b7ca-f16deb2f73f8"
 }
+
+
+### DO NOT USE! Delete All Cases
+POST http://localhost:3001/v1/case/delete/all
+content-type: application/json
+
+{
+    "creatorId": "test1@gmail.com"
+}
