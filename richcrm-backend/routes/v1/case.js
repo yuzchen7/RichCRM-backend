@@ -540,6 +540,10 @@ router.post(
         .optional()
         .isArray()
         .withMessage("Additional Clients should be an array"),
+    check("additionalOrganizations")
+        .optional()
+        .isArray()
+        .withMessage("Additional Organizations should be an array"),
     check("contacts")
         .optional()
         .isArray()

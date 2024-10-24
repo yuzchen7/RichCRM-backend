@@ -25,7 +25,7 @@ content-type: application/json
 
 {
     "creatorId": "eden.wu@richtechailab.com",
-    "closed": true
+    "closed": false
 }
 
 
@@ -106,5 +106,5 @@ POST http://localhost:3001/v1/case/delete/all
 content-type: application/json
 
 {
-    "creatorId": "test1@gmail.com"
+    "creatorId": "eden.wu@richtechailab.com"
 }

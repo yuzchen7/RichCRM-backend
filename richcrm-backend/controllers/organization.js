@@ -306,7 +306,7 @@ class OrganizationController {
     }
 
     async deleteOrganization(req, res) {
-        const { organizationId } = req.params;
+        const { organizationId } = req.body;
 
         try {
             const organization = await OrganizationService.deleteOrganization(organizationId);
