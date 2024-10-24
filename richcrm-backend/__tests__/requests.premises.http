@@ -14,7 +14,7 @@ POST http://localhost:3001/v1/premises/query/id
 content-type: application/json
 
 {
-    "premisesId": "1820 NW 21st St #undefined CONDO"
+    "premisesId": "181d0a79-a1b9-4626-b764-15f04a31ead1"
 }
 
 
@@ -27,7 +27,7 @@ POST http://localhost:3001/v1/premises/query/address
 content-type: application/json
 
 {
-    "addressId": "New York NY 10012-1296"
+    "addressId": "Brooklyn NY 11201-1945"
 }
 
 ### Update Premises
@@ -35,7 +35,7 @@ POST http://localhost:3001/v1/premises/update
 content-type: application/json
 
 {
-    "premisesId": "cbf8e709-7af2-4433-9276-7d5ba9113950",
+    "premisesId": "181d0a79-a1b9-4626-b764-15f04a31ead1",
     "name": "130 W 3rd St # 1203 COMMERCIAL",
     "addressId": "New York NY 10012-1296",
     "block": 1,
@@ -48,7 +48,7 @@ content-type: application/json
     "maintenanceFee": 100,
     "maintenanceFeePer": 1,
     "assessments": 100,
-    "assessmentsPaidById": "123456",
+    "assessmentsPer": 2,
     "managingCompany": "RichCRM",
     "isTwoFamily": true,
     "twoFamilyFirstFloorTenantId": "689f5eac-22ea-4363-bbe3-b8216abf0076",
@@ -65,5 +65,5 @@ POST http://localhost:3001/v1/premises/delete
 content-type: application/json
 
 {
-    "premisesId": "1820 NW 21st St # COMMERCIAL"
+    "premisesId": "181d0a79-a1b9-4626-b764-15f04a31ead1"
 }
