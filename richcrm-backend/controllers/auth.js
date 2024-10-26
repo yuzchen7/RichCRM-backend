@@ -56,6 +56,7 @@ class AuthController {
                     message: 'User not found'
                 });
             }
+            
             if (!PasswordUtils.isValidPassword(user.Password, password, user.Salt)) {
                 return res.status(400).json({
                     status: "failed",
@@ -74,7 +75,10 @@ class AuthController {
                 throw new Error('token generation failed');
             }
             
-            const tokenResult = await UserService.updateUserToken(user.EmailAddress, refreshToken);
+            const tokenResult = await UserService.updateUser({
+                emailAddress: user.EmailAddress,
+                refreshToken
+            });
             if (tokenResult === undefined || tokenResult === null) {
                 throw new Error('refresh token update failed');
             }
