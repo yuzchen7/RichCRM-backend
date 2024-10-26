@@ -40,8 +40,6 @@ class UserService {
             console.log('[USER-Create] Invalid user object');
             return null;
         }
-
-        // console.log("goos: ", typeof user.role);
     
         // Check if the role is valid
         const roleValid = Object.values(userRole).includes(user.role);
@@ -65,30 +63,19 @@ class UserService {
 
     async updateUser (user) {
         // Check if the user object is valid
-        if (user.emailAddress === undefined ||
-            user.password === undefined ||
-            user.userName === undefined ||
-            user.role === undefined) {
-            console.log('[USER-Update] Invalid user object');
+        if (user.emailAddress === undefined) {
+            console.log('[USER-Update] Invalid user KEY');
             return null;
         }
-        
 
         // Check if the role is valid
-        switch (user.role) {
-            case userRole.ADMIN:
-                break;
-            case userRole.ATTORNEY:
-                break;
-            case userRole.CLIENT:
-                break;
-            default:
-                console.log('[USER-Update] Invalid role');
-                return null;
+        const roleValid = Object.values(userRole).includes(user.role);
+        if (user.role !== undefined && !roleValid) {
+            console.log('[USER-Update] Invalid role');
+            return null;
         }
 
-        const data = await User.updateUser(user);
-        return data;
+        return await User.updateUser(user);
     }
 
     async deleteUser (userEmail) {
