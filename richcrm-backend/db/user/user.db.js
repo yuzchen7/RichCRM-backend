@@ -27,11 +27,9 @@ class User {
                 EmailAddress: { S: emailAddress }
             }
         };
-        // aws V3
+
         const command = new GetItemCommand(params);
-        const user = await db.send(command);
-        // const user = await db.get(params).promise();
-        return user;
+        return await db.send(command);
     }
 
     // TODO: update to aws v3
@@ -65,43 +63,40 @@ class User {
         };
     }
 
-    async updateRefreshToken(key, token) {
-        const params = {
-            TableName: this.table,
-            Key: {
-                EmailAddress: { S: key }
-            },
-            UpdateExpression: 'set RefreshToken = :t',
-            ExpressionAttributeValues: {
-                ':t': { S: token }
-            },
-            ReturnValues: 'UPDATED_NEW'
-        }
-        const command = new UpdateItemCommand(params);
-        const result = await db.send(command);
-        return result.Attributes;
-    }
-
-    // TODO: update to aws v3 and implement partial updates, remove password updates
     async updateUser (user) {
         const params = {
             TableName: this.table,
             Key: {
-                EmailAddress: user.emailAddress
+                EmailAddress: {S: user.emailAddress}
             },
-            UpdateExpression: 'set UserName = :n, Password = :p, #r = :r',
-            ExpressionAttributeNames: {
-                "#r": "Role"
-            },
-            ExpressionAttributeValues: {
-                ':n': user.userName,
-                ':p': user.password,
-                ':r': user.role
-            },
+            UpdateExpression: undefined,
+            ExpressionAttributeValues: undefined,
             ReturnValues: 'UPDATED_NEW'
         };
-        const update = await db.update(params).promise();
-        return update.Attributes;
+
+        let updateExpression = 'set ';
+        let expressionAttributeValues = {};
+        if (user.userName !== undefined) {
+            updateExpression += 'UserName = :n, ';
+            expressionAttributeValues[':n'] = { S: user.userName };
+        }
+
+        if (user.role !== undefined) {
+            updateExpression += 'Role = :r, ';
+            expressionAttributeValues[':r'] = { N: String(user.role) };
+        }
+
+        if (user.refreshToken !== undefined) {
+            updateExpression += 'RefreshToken = :t, ';
+            expressionAttributeValues[':t'] = { S: user.refreshToken };
+        }
+
+        params.UpdateExpression = updateExpression.slice(0, -2);
+        params.ExpressionAttributeValues = expressionAttributeValues;
+
+        const updateCommand = new UpdateItemCommand(params);
+        const result = await db.send(updateCommand);
+        return result.Attributes;
     }
 
     async deleteUser (emailAddress) {
