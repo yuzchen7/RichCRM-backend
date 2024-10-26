@@ -180,6 +180,37 @@ class AuthController {
         }
         res.end();
     }
+
+    async me(req, res) {
+        const emailAddress = req.user.EmailAddress;
+        try {
+            const user = await UserService.readUser(emailAddress);
+            if (user === null) {
+                return res.status(500).json({
+                    status: "failed",
+                    data: [],
+                    message: 'User info failed'
+                });
+            } 
+            return res.status(200).json({
+                status: "success",
+                data: [{
+                    emailAddress: user.EmailAddress,
+                    userName: user.UserName,
+                    role: user.Role
+                }],
+                message: 'User info successfully'
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: 'Internal server error'
+            });
+        }
+        res.end();
+    }
 }
 
 module.exports = new AuthController();
