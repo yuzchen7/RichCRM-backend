@@ -69,9 +69,14 @@ class UserService {
             return null;
         }
 
+        if (user.password === undefined) {
+            console.log('[USER-Update] This Update Function should not be used for update users password');
+            return null;
+        }
+
         // Check if the role is valid
         const roleValid = Object.values(userRole).includes(user.role);
-        if (user.role !== undefined && !roleValid) {
+        if (!roleValid) {
             console.log('[USER-Update] Invalid role');
             return null;
         }
