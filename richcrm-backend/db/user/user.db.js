@@ -91,6 +91,12 @@ class User {
             expressionAttributeValues[':t'] = { S: user.refreshToken };
         }
 
+        if (user.verificationCode !== undefined && user.verificationExp !== undefined) {
+            updateExpression += 'verificationCode = :v, verificationExp = :e, ';
+            expressionAttributeValues[':v'] = { S: user.verificationCode };
+            expressionAttributeValues[':e'] = { N: String(user.verificationExp.getTime()) };
+        }
+
         params.UpdateExpression = updateExpression.slice(0, -2);
         params.ExpressionAttributeValues = expressionAttributeValues;
 
