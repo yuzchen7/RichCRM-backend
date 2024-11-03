@@ -29,7 +29,7 @@ class JwTokenUtil {
     }
 
     /**
-     * Checks if the given token is valid by verifying it with the provided secret.
+     * Verifying it with the provided secret.
      * 
      * This asynchronous method attempts to verify the provided JWT (JSON Web Token) 
      * using the secret key. If the token is valid and not expired, it resolves the promise 
@@ -45,27 +45,18 @@ class JwTokenUtil {
      * 
      * @throws {Error} Throws an error if there is an issue during the verification process.
      */
-    static async isValid(token, secret) {
-        try {
-            const promise = new Promise((resolve, reject) => {
-                verify(token, secret, (err, data) => {
-                    if (err) {
-                        let err = new Error();
-                        err.message = 'error invalid token';
-                        err.status = 401;
-                        reject(err);
-                    } else {
-                        const retData = {
-                            ... data
-                        }
-                        resolve(retData);
-                    }
-                });
-            }); 
-            return promise;
-        } catch (err) {
-            throw err;
-        }
+    static async verify(token, secret) {
+        return new Promise((resolve, reject) => {
+            verify(token, secret, (err, data) => {
+                if (err) {
+                    err.message = 'error invalid token';
+                    err.status = 401;
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
     }
 
     /**
