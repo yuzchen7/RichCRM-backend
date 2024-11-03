@@ -52,6 +52,18 @@ class PasswordUtil {
         const hashedPassword = PasswordUtil.encrypt(enterPassword, salt);
         return hashedPassword === targetPassword;
     }
+
+    /**
+     * Generates a verification code of a specified length.
+     * The code is created using random bytes, converted to a hexadecimal string,
+     * and then returned in uppercase.
+     *
+     * @param {number} length - The length of the verification code to generate.
+     * @returns {string} A verification code consisting of uppercase hexadecimal characters.
+     */
+    static generateVerificationCode(length) {
+        return randomBytes(length).toString('hex').slice(0, length).toUpperCase();
+    }
 };
 
 module.exports = PasswordUtil;
