@@ -10,6 +10,8 @@
  * @property {string} UserName - User's name
  * @property {enum} Role - User's role (ADMIN, ATTORNEY, CLIENT)
  * @property {string} RefreshToken - User's renew token
+ * @property {string} VerificationCode - User's verification code
+ * @property {number} VerificationExp - User's verification expiration time
  */
 
 const { GetItemCommand, PutItemCommand, UpdateItemCommand } = require('@aws-sdk/client-dynamodb');

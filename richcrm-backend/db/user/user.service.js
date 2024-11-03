@@ -12,7 +12,9 @@ class UserService {
                 Salt: data.Item.Salt.S,
                 Role: data.Item.Role.N,
                 UserName: data.Item.UserName.S,
-                RefreshToken: data.Item.RefreshToken?.S
+                RefreshToken: data.Item.RefreshToken?.S,
+                VerificationCode: data.Item.verificationCode?.S,
+                VerificationExp: data.Item.verificationExp?.N
             }
         }
 
@@ -69,14 +71,14 @@ class UserService {
             return null;
         }
 
-        if (user.password === undefined) {
+        if (user.password !== undefined) {
             console.log('[USER-Update] This Update Function should not be used for update users password');
             return null;
         }
 
         // Check if the role is valid
         const roleValid = Object.values(userRole).includes(user.role);
-        if (!roleValid) {
+        if (user.role !== undefined && !roleValid) {
             console.log('[USER-Update] Invalid role');
             return null;
         }
