@@ -67,6 +67,7 @@ class AuthController {
 
             delete user.Password;
             delete user.Salt;
+            delete user.RefreshToken;
             
             let accessToken, refreshToken = undefined;
             accessToken = JwTokenUtil.generateToken(user, process.env.ACCESS_TOKEN_KEY, process.env.ACCESS_TOKEN_TIME_EXPIRATION);
