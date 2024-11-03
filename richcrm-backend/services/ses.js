@@ -1,22 +1,16 @@
-var AWS = require("aws-sdk");
+const { SESClient, SendEmailCommand, VerifyEmailIdentityCommand } = require('@aws-sdk/client-ses');
 require('dotenv').config();
 
-if (process.env.NODE_ENV === 'local') {
-    AWS.config.update({
+let SESClientConfig = {
+    region: process.env.REGION,
+    credentials: {
         accessKeyId: process.env.ACCESSKEYID,
-        secretAccessKey: process.env.SECRETACCESSKEY,
-        region: process.env.REGION,
-        endpoint: new AWS.Endpoint(process.env.ENDPOINT)
-    });
-} else {
-    AWS.config.update({
-        accessKeyId: process.env.ACCESSKEYID,
-        secretAccessKey: process.env.SECRETACCESSKEY,
-        region: process.env.REGION,
-    });
+        secretAccessKey: process.env.SECRETACCESSKEY
+    },
+    ...(process.env.NODE_ENV === 'local' && {endpoint: process.env.ENDPOINT})
 }
 
-const SES = new AWS.SES();
+let sesClient = new SESClient(SESClientConfig);
 
 const ses = {
 
@@ -26,8 +20,11 @@ const ses = {
                 const params = {
                     EmailAddress: email,
                 }
-                return await SES.verifyEmailIdentity(params).promise();
+                return await sesClient.send(new VerifyEmailIdentityCommand(params))
             })
+            const result = await Promise.all(verificationPromises);
+            console.log('Email verification results: ', result);
+            return true;
         } catch (err) {
             console.log("Fail to verify emails: ", err, err.stack);
             return false;
@@ -66,7 +63,7 @@ const ses = {
         }
 
         try {
-            const data = await SES.sendEmail(params).promise();
+            const data = await sesClient.send(new SendEmailCommand(params));
             return data;
         } catch (err) {
             console.log("Fail to send email: ", err, err.stack);
