@@ -181,6 +181,61 @@ class AuthController {
         res.end();
     }
 
+    async refresh(req, res) {
+        const token = req.body.token;
+        try {
+            const tokenPayload = await JwTokenUtil.verify(token, process.env.REFRESH_TOKEN_KEY); 
+
+            const user = await UserService.readUser(tokenPayload.EmailAddress);
+            if (user === null ) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: 'User invalid error'
+                });
+            }
+
+            if (user.RefreshToken !== token) {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: 'Token invalid error'
+                });
+            }
+
+            let accessToken = JwTokenUtil.generateToken(user, process.env.ACCESS_TOKEN_KEY, process.env.ACCESS_TOKEN_TIME_EXPIRATION);
+
+            res.status(200).json({
+                status: "success",
+                data: [{
+                    token: {
+                        access: accessToken
+                    }
+                }],
+                message: 'Token refreshed successfully'
+            });
+
+        } catch (error) {
+            console.error(error);
+
+            if (error.name === 'TokenExpiredError') {
+                return res.status(400).json({
+                    status: "failed",
+                    data: [],
+                    message: 'Token expired error'
+                });
+            }
+
+            res.status(500).json({
+                status: "failed",
+                data: [],
+                message: 'Internal server error'
+            });
+        }
+
+        res.end();
+    }
+
     async me(req, res) {
         const emailAddress = req.user.EmailAddress;
         try {
