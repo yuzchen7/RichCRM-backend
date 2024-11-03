@@ -11,7 +11,8 @@ class UserService {
                 Password: data.Item.Password.S,
                 Salt: data.Item.Salt.S,
                 Role: data.Item.Role.N,
-                UserName: data.Item.UserName.S
+                UserName: data.Item.UserName.S,
+                RefreshToken: data.Item.RefreshToken?.S
             }
         }
 
