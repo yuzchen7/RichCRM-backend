@@ -171,8 +171,35 @@ router.post(
  */
 router.get(
     "/me",
+    check("Authorization")
+        .exists()
+        .withMessage("Authorization header is required")
+        .matches(/^Bearer\s.+$/)
+        .withMessage('Authorization header not in format: Bearer <token>'),
+    validate,
     passport.authenticate("user-jwtStrategy", {session: false}),
     AuthController.me
+);
+
+/**
+ * @api {post} v1/auth/refresh Refresh access token
+ * @apiName RefreshAccessToken
+ * @apiGroup Auth
+ * 
+ * @apiBody {String} Authorization refresh token to authenticate the user.
+ * 
+ * @apiSuccess {String} new Access token of the User.
+ * 
+ * @apiError Unauthorized The user is not authenticated.
+ */
+router.post(
+    "/refresh",
+    check('refreshToken')
+        .notEmpty()
+        .isJWT()
+        .withMessage('invalid refresh token'),
+    validate,
+    AuthController.refresh
 );
 
 module.exports = router;
