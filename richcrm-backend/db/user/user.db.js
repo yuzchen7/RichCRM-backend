@@ -99,6 +99,12 @@ class User {
             expressionAttributeValues[':e'] = { N: String(user.verificationExp.getTime()) };
         }
 
+        if (user.password !== undefined && user.salt !== undefined) {
+            updateExpression += 'Password = :p, Salt = :s, ';
+            expressionAttributeValues[':p'] = { S: user.password};
+            expressionAttributeValues[':s'] = { S: user.salt };
+        } 
+
         params.UpdateExpression = updateExpression.slice(0, -2);
         params.ExpressionAttributeValues = expressionAttributeValues;
 
